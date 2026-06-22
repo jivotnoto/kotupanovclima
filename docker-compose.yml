@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kotupanovklima-php
+    ports:
+      - "3001:80"
+    environment:
+      TZ: Europe/Sofia
+      APP_ENV: local
+    volumes:
+      - ./:/var/www/html
+    restart: unless-stopped

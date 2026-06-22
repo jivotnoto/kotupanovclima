@@ -1,0 +1,66 @@
+# Context
+
+This file is the current working memory for the project.
+It should be updated whenever architecture, deployment assumptions, security behavior, or unfinished work changes.
+
+## Project overview
+
+- Stack: plain PHP application without a framework
+- Web server: Apache in Docker
+- Runtime: PHP 8.3 Apache image
+- Storage: JSON files in `storage/data`
+- Admin auth: code-based login plus optional IP allowlist mode
+
+## Key paths
+
+- Public entry: [public/index.php](public/index.php)
+- Main app/router: [src/App.php](src/App.php)
+- Auth and allowlist logic: [src/Auth.php](src/Auth.php)
+- IP detection helpers: [src/helpers.php](src/helpers.php)
+- Docker Apache vhost: [docker/apache/vhost.conf](docker/apache/vhost.conf)
+- Admin settings view: [views/admin/settings.php](views/admin/settings.php)
+
+## Current networking behavior
+
+- Local access is currently through Docker port mapping: `localhost:3001 -> container:80`
+- Because requests are hitting the container directly, Apache currently sees the Docker-side peer IP such as `172.21.0.1`
+- No reverse proxy is currently injecting `X-Forwarded-For`
+- Result: admin allowlist checks must allow the container-visible IP or a matching CIDR
+
+## Current allowlist behavior
+
+- Access modes:
+  - `open`
+  - `allowlist_only`
+- Allowed entries support:
+  - exact IPs like `192.168.1.50`
+  - CIDR ranges like `192.168.1.0/24`
+- Client IP resolution prefers proxy headers only when `REMOTE_ADDR` is treated as a trusted proxy
+- Trusted proxies are recognized from:
+  - private or loopback IP ranges
+  - optional `TRUSTED_PROXY_RANGES` environment variable
+
+## Current logging behavior
+
+- App access logs include request and IP context
+- Security logs include admin login and allowlist denial events
+- Apache access logs are configured to include:
+  - `X-Forwarded-For`
+  - `X-Real-IP`
+- Note: Apache config changes require container rebuild/restart to take effect
+
+## Open follow-up options
+
+- Keep the current direct Docker exposure and allow container-visible IP/CIDR in admin settings
+- Add a reverse proxy in front of the container so the app can rely on forwarded client IP headers
+- Add a small troubleshooting page or admin diagnostics block if repeated IP confusion continues
+
+## Session guidance for future work
+
+- Read this file and `GISTORY.md` before continuing project work
+- Check recent lines in:
+  - `storage/logs/access.log`
+  - `storage/logs/security.log`
+  - `storage/logs/apache-access.log`
+- If admin access fails in local Docker, verify the detected IP shown on `/admin/settings` after login
+- If Apache header logging seems missing, rebuild the container image before debugging further
