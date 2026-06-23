@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-session_set_cookie_params([
-    'httponly' => true,
-    'samesite' => 'Lax',
-    'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
-]);
+$basePath = dirname(__DIR__);
 
-require_once dirname(__DIR__) . '/src/App.php';
+require_once $basePath . '/bootstrap.php';
 
-$app = new App(dirname(__DIR__));
+$app = boot_kotupanovklima($basePath);
 $app->run();
