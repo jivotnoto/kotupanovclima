@@ -9,7 +9,7 @@ $isAdmin = starts_with($currentPath ?? '/', '/admin');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle ?? 'Котупановклима') ?></title>
     <meta name="description" content="Климатици, термопомпи, монтаж и консултация за Перник и региона.">
-    <meta name="theme-color" content="#f6eee2">
+    <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="/assets/site.css">
     <script src="/assets/site.js" defer></script>
 </head>

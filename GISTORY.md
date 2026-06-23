@@ -33,6 +33,7 @@ It complements Git commits with short human-readable context about what changed 
   - `xRealIp`
 - Updated the admin settings screen to show the currently detected client IP and source.
 - Updated Apache log format in the Docker vhost to include `X-Forwarded-For` and `X-Real-IP`.
+- Switched the site theme to a consistent white/light palette and removed the dark-mode palette override.
 
 ### Runtime note
 

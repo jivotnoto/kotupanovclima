@@ -242,7 +242,7 @@ final class App
         $products = $this->catalog->getProductsByCategory($category);
         $title = $category === 'heatPumps'
             ? 'Подбрани въздух-вода решения за модерни инсталации'
-            : 'Каталог с по-ясен избор по марка, серия и цена';
+            : 'Намери своя идеален модел: Филтрирай бързо по марка, серия и бюджет.';
 
         echo $this->view->render('public/catalog', [
             'pageTitle' => $category === 'heatPumps' ? 'Термопомпи' : 'Климатици',
@@ -253,7 +253,7 @@ final class App
             'title' => $title,
             'description' => $category === 'heatPumps'
                 ? 'Структурата е подготвена за по-ясно сравнение между серии, мощности и типове системи.'
-                : 'Подредихме моделите така, че клиентът да стига лесно до подходящата мощност, технология и ценови диапазон.',
+                : 'Намери точния модел за секунди: Селекция, филтрирана по мощност, технология и бюджет.',
             'officialLinks' => $this->catalog->getOfficialBrandLinks(),
         ]);
     }

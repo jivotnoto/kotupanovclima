@@ -10,6 +10,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - Runtime: PHP 8.3 Apache image
 - Storage: JSON files in `storage/data`
 - Admin auth: code-based login plus optional IP allowlist mode
+- Theme: forced light/white UI palette
 
 ## Key paths
 

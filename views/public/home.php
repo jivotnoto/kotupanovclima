@@ -1,12 +1,12 @@
 <section class="hero">
     <div class="hero__content">
-        <span class="hero__eyebrow"><?= e($settings['promo']['title'] ?? 'Промоции') ?></span>
-        <h1 class="hero__title">Климатична техника, подбрана да изглежда добре и да работи правилно.</h1>
+        <a class="hero__eyebrow hero__eyebrow--link" href="/promocii"><?= e($settings['promo']['title'] ?? 'Промоции') ?></a>
+        <h1 class="hero__title hero__title--compact">Климатична техника, подбрана да изглежда добре и да работи правилно.</h1>
         <p class="hero__lead"><?= e($settings['promo']['subtitle'] ?? '') ?></p>
         <div class="button-row">
             <a class="button button--primary" href="/produkti/klimatici">Разгледай климатици</a>
-            <a class="button" href="/produkti/termopompi">Виж термопомпи</a>
-            <a class="button" href="/promocii">Промоции</a>
+            <a class="button button--primary" href="/produkti/termopompi">Виж термопомпи</a>
+            <a class="button button--primary" href="/promocii">Промоции</a>
         </div>
         <div class="feature-grid">
             <div class="feature-card">Официални марки и подбрани серии</div>
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="hero__sidebar">
-        <div class="stack-card">
+        <div class="stack-card stack-card--brands">
             <h2>Официални марки</h2>
             <p>Подбрани производители за дома, офиса и по-сериозни отоплителни решения.</p>
             <div class="brand-grid">
@@ -30,21 +30,13 @@
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class="stack-card">
-            <h2>Свържи се за оферта</h2>
-            <p>Консултация за избор на подходящ модел, базова цена и насока според помещението и бюджета.</p>
-            <div class="button-row button-row--stacked">
-                <a class="button button--dark" href="tel:<?= e($company['phones'][0] ?? '') ?>"><?= e($company['phones'][0] ?? '') ?></a>
-                <a class="button" href="/kontakti">Пълни контакти</a>
-            </div>
-        </div>
     </div>
 </section>
 
 <section class="section-block">
     <div class="section-heading">
         <span class="section-heading__eyebrow">Промоции</span>
-        <h2 class="section-heading__title">Актуални оферти с по-ясна стойност за клиента</h2>
+        <h2 class="section-heading__title">Актуални оферти за клиента</h2>
     </div>
     <div class="promo-grid">
         <?php foreach ($promotions as $promotion): ?>
