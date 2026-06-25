@@ -89,3 +89,4 @@ It complements Git commits with short human-readable context about what changed 
 - Avoided starting a PHP session for `robots.txt` and `sitemap.xml`, so crawlers receive clean cacheable responses.
 - Added static host-specific sitemap and robots files mapped by `.htaccess` to make Search Console fetches independent from PHP sessions.
 - Made public page canonical and Open Graph URLs same-domain for `.bg` and `.eu`.
+- Added an explicit homepage-only 301 redirect from `kotupanovklima.bg` to `https://kotupanovclima.eu/`.

@@ -4,11 +4,18 @@ DirectoryIndex index.php index.html
 AddType application/xml .xml
 AddType text/plain .txt
 
+RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovklima\.bg$ [NC]
+RewriteRule ^$ https://kotupanovclima.eu/ [R=301,L]
+
 RewriteCond %{HTTP_HOST} ^www\.kotupanovclima\.eu$ [NC]
 RewriteRule ^ https://kotupanovclima.eu%{REQUEST_URI} [R=301,L]
 
 RewriteCond %{HTTP_HOST} ^www\.kotupanovklima\.bg$ [NC]
 RewriteRule ^ https://kotupanovklima.bg%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} ^kotupanovclima\.eu$ [NC]
+RewriteRule ^$ https://kotupanovclima.eu/ [R=301,L]
 
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP_HOST} ^(kotupanovklima\.bg|kotupanovclima\.eu)$ [NC]

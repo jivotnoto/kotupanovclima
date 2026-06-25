@@ -44,7 +44,8 @@ It should be updated whenever architecture, deployment assumptions, security beh
 
 ## Current SEO behavior
 
-- Public pages render same-domain canonical tags for `kotupanovklima.bg` and `kotupanovclima.eu`.
+- The `kotupanovklima.bg` homepage redirects with 301 to `https://kotupanovclima.eu/`.
+- Other public pages render same-domain canonical tags for `kotupanovklima.bg` and `kotupanovclima.eu`.
 - Admin pages render `noindex, nofollow`.
 - `robots.txt` and `sitemap.xml` are served dynamically by `src/App.php` as a fallback.
 - Static host-specific `robots.txt` and `sitemap.xml` files are mapped through `.htaccess` for `kotupanovklima.bg` and `kotupanovclima.eu`.
