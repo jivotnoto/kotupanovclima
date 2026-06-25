@@ -72,6 +72,16 @@ final class App
     {
         $method = strtoupper($method);
 
+        if ($path === '/robots.txt') {
+            $this->robotsTxt();
+            return;
+        }
+
+        if ($path === '/sitemap.xml') {
+            $this->sitemapXml();
+            return;
+        }
+
         if ($path === '/') {
             $this->home();
             return;
@@ -255,6 +265,53 @@ final class App
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/remont-i-profilaktika',
         ]);
+    }
+
+    private function robotsTxt(): void
+    {
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo implode("\n", [
+            'User-agent: *',
+            'Disallow: /admin/',
+            'Disallow: /admin',
+            'Sitemap: https://kotupanovklima.bg/sitemap.xml',
+            '',
+        ]);
+    }
+
+    private function sitemapXml(): void
+    {
+        $urls = [
+            ['loc' => 'https://kotupanovklima.bg/', 'priority' => '1.0'],
+            ['loc' => 'https://kotupanovklima.bg/promocii', 'priority' => '0.8'],
+            ['loc' => 'https://kotupanovklima.bg/remont-i-profilaktika', 'priority' => '0.8'],
+            ['loc' => 'https://kotupanovklima.bg/produkti/klimatici', 'priority' => '0.8'],
+            ['loc' => 'https://kotupanovklima.bg/produkti/termopompi', 'priority' => '0.8'],
+            ['loc' => 'https://kotupanovklima.bg/kontakti', 'priority' => '0.7'],
+        ];
+
+        foreach (['airConditioners' => 'klimatici', 'heatPumps' => 'termopompi'] as $category => $path) {
+            foreach ($this->catalog->getProductsByCategory($category) as $product) {
+                $urls[] = [
+                    'loc' => 'https://kotupanovklima.bg/produkti/' . $path . '/' . $product['slug'],
+                    'priority' => '0.6',
+                ];
+            }
+        }
+
+        header('Content-Type: application/xml; charset=UTF-8');
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+        foreach ($urls as $url) {
+            echo '  <url>' . "\n";
+            echo '    <loc>' . e($url['loc']) . '</loc>' . "\n";
+            echo '    <changefreq>weekly</changefreq>' . "\n";
+            echo '    <priority>' . e($url['priority']) . '</priority>' . "\n";
+            echo '  </url>' . "\n";
+        }
+
+        echo '</urlset>' . "\n";
     }
 
     private function catalogPage(string $category): void

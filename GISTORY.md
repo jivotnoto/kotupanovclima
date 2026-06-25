@@ -65,3 +65,9 @@ It complements Git commits with short human-readable context about what changed 
 
 - Added `.htaccess` redirects from HTTP to HTTPS for `kotupanovklima.bg` and `kotupanovclima.eu`, including `www` variants.
 - Updated the SuperHosting deployment template so future uploads keep the same HTTPS behavior.
+
+### SEO canonical and sitemap
+
+- Set `kotupanovklima.bg` as the canonical SEO domain across public pages.
+- Added `noindex, nofollow` metadata for admin pages.
+- Added dynamic `robots.txt` and `sitemap.xml` endpoints.

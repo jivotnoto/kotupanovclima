@@ -37,6 +37,13 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - Result: admin allowlist checks must allow the container-visible IP or a matching CIDR
 - Live domains `kotupanovklima.bg` and `kotupanovclima.eu` have trusted HTTPS certificates and `public/.htaccess` forces HTTP requests for both domains to HTTPS.
 
+## Current SEO behavior
+
+- `kotupanovklima.bg` is the canonical SEO domain.
+- `kotupanovclima.eu` remains reachable, but public pages render canonical tags pointing to `https://kotupanovklima.bg`.
+- Admin pages render `noindex, nofollow`.
+- `robots.txt` and `sitemap.xml` are served dynamically by `src/App.php`.
+
 ## Current allowlist behavior
 
 - Access modes:
