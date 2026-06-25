@@ -158,6 +158,12 @@ final class App
             return;
         }
 
+        if ($path === '/admin/products/reorder' && $method === 'POST') {
+            $this->auth->requireAdmin();
+            $this->adminProductReorder();
+            return;
+        }
+
         if ($path === '/admin/promotions') {
             $this->auth->requireAdmin();
             $this->adminPromotionsList();
@@ -482,6 +488,49 @@ final class App
         redirect_to('/admin/products');
     }
 
+    private function adminProductReorder(): void
+    {
+        if (!$this->auth->verifyCsrf($_POST['_csrf'] ?? null)) {
+            flash_set('products', 'Невалидна заявка за пренареждане.', 'error');
+            redirect_to('/admin/products');
+        }
+
+        $category = ($_POST['category'] ?? 'airConditioners') === 'heatPumps' ? 'heatPumps' : 'airConditioners';
+        $direction = ($_POST['direction'] ?? '') === 'down' ? 'down' : 'up';
+        $slug = trim((string) ($_POST['slug'] ?? ''));
+        $key = $category === 'heatPumps' ? 'heatPumps' : 'airConditioners';
+        $seed = $this->dataStore->getProductSeed();
+        $items = $this->flattenRawProductOrder($seed[$key] ?? []);
+        $index = null;
+
+        foreach ($items as $itemIndex => $item) {
+            if (($item['slug'] ?? null) === $slug) {
+                $index = $itemIndex;
+                break;
+            }
+        }
+
+        $targetIndex = $index === null ? null : $index + ($direction === 'down' ? 1 : -1);
+        if ($index === null || $targetIndex < 0 || $targetIndex >= count($items)) {
+            flash_set('products', 'Продуктът не може да бъде преместен в тази посока.', 'error');
+            redirect_to('/admin/products');
+        }
+
+        [$items[$index], $items[$targetIndex]] = [$items[$targetIndex], $items[$index]];
+        $seed[$key] = $this->rebuildSeriesFromProductOrder($items);
+        $seed['generatedAt'] = date('Y-m-d');
+        $this->dataStore->saveProductSeed($seed);
+
+        $this->logger->security('catalog_product_reordered', $this->requestContext([
+            'category' => $category,
+            'slug' => $slug,
+            'direction' => $direction,
+        ]));
+
+        flash_set('products', 'Редът на продуктите е обновен.', 'success');
+        redirect_to('/admin/products');
+    }
+
     private function adminPromotionsList(): void
     {
         echo $this->view->render('admin/promotions-list', [
@@ -732,6 +781,62 @@ final class App
             'series' => $seriesName,
             'models' => [$model],
         ];
+
+        return $seriesList;
+    }
+
+    private function flattenRawProductOrder(array $seriesList): array
+    {
+        $items = [];
+
+        foreach ($seriesList as $series) {
+            if (!is_array($series)) {
+                continue;
+            }
+
+            $seriesData = $series;
+            unset($seriesData['models']);
+
+            foreach (($series['models'] ?? []) as $model) {
+                if (!is_array($model)) {
+                    continue;
+                }
+
+                $items[] = [
+                    'slug' => slugify(($series['brand'] ?? '') . '-' . ($series['series'] ?? '') . '-' . ($model['modelLabel'] ?? '')),
+                    'series' => $seriesData,
+                    'model' => $model,
+                ];
+            }
+        }
+
+        return $items;
+    }
+
+    private function rebuildSeriesFromProductOrder(array $items): array
+    {
+        $seriesList = [];
+
+        foreach ($items as $item) {
+            if (!is_array($item['series'] ?? null) || !is_array($item['model'] ?? null)) {
+                continue;
+            }
+
+            $seriesData = $item['series'];
+            $lastIndex = count($seriesList) - 1;
+            if ($lastIndex >= 0) {
+                $lastSeriesData = $seriesList[$lastIndex];
+                unset($lastSeriesData['models']);
+
+                if ($lastSeriesData == $seriesData) {
+                    $seriesList[$lastIndex]['models'][] = $item['model'];
+                    continue;
+                }
+            }
+
+            $seriesData['models'] = [$item['model']];
+            $seriesList[] = $seriesData;
+        }
 
         return $seriesList;
     }

@@ -45,3 +45,11 @@ It complements Git commits with short human-readable context about what changed 
 - Add one dated entry per meaningful task or milestone.
 - Keep entries short and decision-focused.
 - Use Git commits for the exact code diff and `CONTEXT.md` for the latest working state.
+
+## 2026-06-25
+
+### Admin product ordering
+
+- Added up/down controls to the admin product list for both `Климатици` and `Термопомпи`.
+- Added a CSRF-protected `/admin/products/reorder` POST action.
+- Reordering updates `storage/data/seed-products.json` order while preserving product data and category membership.

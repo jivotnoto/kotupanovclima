@@ -22,11 +22,12 @@
                         <th>Модел</th>
                         <th>Цена</th>
                         <th>Статус</th>
+                        <th>Ред</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($items as $item): ?>
+                    <?php foreach ($items as $itemIndex => $item): ?>
                         <tr>
                             <td><?= e($item['brand']) ?></td>
                             <td><?= e($item['title']) ?></td>
@@ -35,6 +36,24 @@
                                 <div class="table-subvalue"><?= e(format_price_bgn($item['priceBgn'])) ?></div>
                             </td>
                             <td><?= e($item['status']) ?></td>
+                            <td>
+                                <div class="table-order-actions">
+                                    <form method="post" action="/admin/products/reorder">
+                                        <input type="hidden" name="_csrf" value="<?= e($csrfToken) ?>">
+                                        <input type="hidden" name="category" value="<?= e($categoryKey) ?>">
+                                        <input type="hidden" name="slug" value="<?= e($item['slug']) ?>">
+                                        <input type="hidden" name="direction" value="up">
+                                        <button class="button button--compact" type="submit"<?= $itemIndex === 0 ? ' disabled' : '' ?>>Нагоре</button>
+                                    </form>
+                                    <form method="post" action="/admin/products/reorder">
+                                        <input type="hidden" name="_csrf" value="<?= e($csrfToken) ?>">
+                                        <input type="hidden" name="category" value="<?= e($categoryKey) ?>">
+                                        <input type="hidden" name="slug" value="<?= e($item['slug']) ?>">
+                                        <input type="hidden" name="direction" value="down">
+                                        <button class="button button--compact" type="submit"<?= $itemIndex === count($items) - 1 ? ' disabled' : '' ?>>Надолу</button>
+                                    </form>
+                                </div>
+                            </td>
                             <td class="table-actions">
                                 <a class="button" href="/admin/products/edit?category=<?= e($categoryKey) ?>&slug=<?= e($item['slug']) ?>">Редакция</a>
                                 <form method="post" action="/admin/products/delete" onsubmit="return confirm('Сигурен ли си, че искаш да изтриеш продукта?');">

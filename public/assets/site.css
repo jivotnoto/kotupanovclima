@@ -363,6 +363,18 @@ button {
     color: var(--danger);
 }
 
+.button--compact {
+    min-height: 2.25rem;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.82rem;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+}
+
 .feature-grid,
 .stats-grid,
 .promo-grid,
@@ -929,6 +941,16 @@ button {
 }
 
 .table-actions form {
+    margin: 0;
+}
+
+.table-order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.table-order-actions form {
     margin: 0;
 }
 

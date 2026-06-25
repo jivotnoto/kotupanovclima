@@ -20,6 +20,14 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - IP detection helpers: [src/helpers.php](src/helpers.php)
 - Docker Apache vhost: [docker/apache/vhost.conf](docker/apache/vhost.conf)
 - Admin settings view: [views/admin/settings.php](views/admin/settings.php)
+- Admin product ordering UI: [views/admin/products-list.php](views/admin/products-list.php)
+
+## Current admin catalog behavior
+
+- Products are stored in `storage/data/seed-products.json`.
+- Admin product lists for `Климатици` and `Термопомпи` include `Нагоре` and `Надолу` controls per entry.
+- The reorder action is handled by `POST /admin/products/reorder` with CSRF validation.
+- Reordering preserves the visible product order even when a move crosses series boundaries.
 
 ## Current networking behavior
 
