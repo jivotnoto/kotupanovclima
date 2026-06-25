@@ -35,6 +35,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - Because requests are hitting the container directly, Apache currently sees the Docker-side peer IP such as `172.21.0.1`
 - No reverse proxy is currently injecting trusted `X-Forwarded-For`
 - Result: admin allowlist checks must allow the container-visible IP or a matching CIDR
+- Live domains `kotupanovklima.bg` and `kotupanovclima.eu` have trusted HTTPS certificates and `public/.htaccess` forces HTTP requests for both domains to HTTPS.
 
 ## Current allowlist behavior
 

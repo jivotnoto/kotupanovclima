@@ -60,3 +60,8 @@ It complements Git commits with short human-readable context about what changed 
 - Tightened forwarded-header trust so `X-Forwarded-For` is used only for explicit `TRUSTED_PROXY_RANGES`.
 - Added safe URL rendering for admin-managed public links to block unsafe schemes such as `javascript:`.
 - Made the admin login page itself IP-aware: disallowed IPs now receive `403` instead of the login form.
+
+### HTTPS redirects
+
+- Added `.htaccess` redirects from HTTP to HTTPS for `kotupanovklima.bg` and `kotupanovclima.eu`, including `www` variants.
+- Updated the SuperHosting deployment template so future uploads keep the same HTTPS behavior.
