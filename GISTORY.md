@@ -76,3 +76,9 @@ It complements Git commits with short human-readable context about what changed 
 
 - Made catalog product images clickable links to their product detail pages.
 - Added a lightweight product image viewer so detail-page images open larger in an overlay.
+
+### SEO Open Graph
+
+- Added Open Graph and Twitter Card metadata across public pages.
+- Added product-specific SEO titles, descriptions and social preview images.
+- Extended the dynamic sitemap with `lastmod` values.

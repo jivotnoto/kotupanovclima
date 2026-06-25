@@ -230,6 +230,9 @@ final class App
     {
         echo $this->view->render('public/home', [
             'pageTitle' => 'Котупановклима ЕООД',
+            'metaTitle' => 'Котупановклима ЕООД | Климатици и термопомпи в Перник',
+            'metaDescription' => 'Продажба, монтаж, ремонт и профилактика на климатици и термопомпи за Перник и региона.',
+            'ogImage' => '/images/brands/gree-pular-bg.jpg',
             'company' => $this->catalog->getCompany(),
             'settings' => $this->catalog->getSettings(),
             'promotions' => array_slice($this->catalog->getPromotions(true), 0, 4),
@@ -242,6 +245,8 @@ final class App
     {
         echo $this->view->render('public/promotions', [
             'pageTitle' => 'Промоции',
+            'metaTitle' => 'Промоции за климатици и термопомпи | Котупановклима',
+            'metaDescription' => 'Актуални промоции за климатици и термопомпи с цени в евро и лева, монтаж и консултация.',
             'company' => $this->catalog->getCompany(),
             'promotions' => $this->catalog->getPromotions(true),
             'currentPath' => '/promocii',
@@ -252,6 +257,8 @@ final class App
     {
         echo $this->view->render('public/contacts', [
             'pageTitle' => 'Контакти',
+            'metaTitle' => 'Контакти | Котупановклима ЕООД',
+            'metaDescription' => 'Свържи се с Котупановклима ЕООД за оферта, монтаж, ремонт или профилактика на климатична техника.',
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/kontakti',
         ]);
@@ -261,6 +268,7 @@ final class App
     {
         echo $this->view->render('public/repair-service', [
             'pageTitle' => 'Ремонт и профилактика',
+            'metaTitle' => 'Ремонт и профилактика на климатици | Котупановклима',
             'metaDescription' => 'Ремонт, профилактика, почистване и диагностика на климатична техника за Перник и региона.',
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/remont-i-profilaktika',
@@ -281,13 +289,14 @@ final class App
 
     private function sitemapXml(): void
     {
+        $lastmod = date('Y-m-d');
         $urls = [
-            ['loc' => 'https://kotupanovklima.bg/', 'priority' => '1.0'],
-            ['loc' => 'https://kotupanovklima.bg/promocii', 'priority' => '0.8'],
-            ['loc' => 'https://kotupanovklima.bg/remont-i-profilaktika', 'priority' => '0.8'],
-            ['loc' => 'https://kotupanovklima.bg/produkti/klimatici', 'priority' => '0.8'],
-            ['loc' => 'https://kotupanovklima.bg/produkti/termopompi', 'priority' => '0.8'],
-            ['loc' => 'https://kotupanovklima.bg/kontakti', 'priority' => '0.7'],
+            ['loc' => 'https://kotupanovklima.bg/', 'priority' => '1.0', 'lastmod' => $lastmod],
+            ['loc' => 'https://kotupanovklima.bg/promocii', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => 'https://kotupanovklima.bg/remont-i-profilaktika', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => 'https://kotupanovklima.bg/produkti/klimatici', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => 'https://kotupanovklima.bg/produkti/termopompi', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => 'https://kotupanovklima.bg/kontakti', 'priority' => '0.7', 'lastmod' => $lastmod],
         ];
 
         foreach (['airConditioners' => 'klimatici', 'heatPumps' => 'termopompi'] as $category => $path) {
@@ -295,6 +304,7 @@ final class App
                 $urls[] = [
                     'loc' => 'https://kotupanovklima.bg/produkti/' . $path . '/' . $product['slug'],
                     'priority' => '0.6',
+                    'lastmod' => $lastmod,
                 ];
             }
         }
@@ -306,6 +316,7 @@ final class App
         foreach ($urls as $url) {
             echo '  <url>' . "\n";
             echo '    <loc>' . e($url['loc']) . '</loc>' . "\n";
+            echo '    <lastmod>' . e($url['lastmod']) . '</lastmod>' . "\n";
             echo '    <changefreq>weekly</changefreq>' . "\n";
             echo '    <priority>' . e($url['priority']) . '</priority>' . "\n";
             echo '  </url>' . "\n";
@@ -324,6 +335,12 @@ final class App
 
         echo $this->view->render('public/catalog', [
             'pageTitle' => $category === 'heatPumps' ? 'Термопомпи' : 'Климатици',
+            'metaTitle' => $category === 'heatPumps'
+                ? 'Термопомпи въздух-вода | Котупановклима'
+                : 'Климатици за дома и офиса | Котупановклима',
+            'metaDescription' => $category === 'heatPumps'
+                ? 'Каталог с подбрани термопомпи въздух-вода, мощности, цени и технически параметри.'
+                : 'Каталог с подбрани климатици, марки, мощности, цени и технически параметри.',
             'company' => $this->catalog->getCompany(),
             'currentPath' => $path,
             'products' => $products,
@@ -353,6 +370,10 @@ final class App
 
         echo $this->view->render('public/product', [
             'pageTitle' => $product['title'],
+            'metaTitle' => $product['title'] . ' | Котупановклима',
+            'metaDescription' => $product['description'] ?: $product['title'] . ' с цена ' . format_price_bgn($product['priceBgn']) . ' и технически параметри.',
+            'ogType' => 'product',
+            'ogImage' => $product['imagePath'] ?? null,
             'company' => $this->catalog->getCompany(),
             'currentPath' => request_path(),
             'product' => $product,
