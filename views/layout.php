@@ -1,6 +1,7 @@
 <?php
 
 $isAdmin = starts_with($currentPath ?? '/', '/admin');
+$metaDescription = $metaDescription ?? 'Климатици, термопомпи, монтаж и консултация за Перник и региона.';
 ?>
 <!doctype html>
 <html lang="bg">
@@ -8,7 +9,7 @@ $isAdmin = starts_with($currentPath ?? '/', '/admin');
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle ?? 'Котупановклима') ?></title>
-    <meta name="description" content="Климатици, термопомпи, монтаж и консултация за Перник и региона.">
+    <meta name="description" content="<?= e($metaDescription) ?>">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="/assets/site.css">
     <script src="/assets/site.js" defer></script>

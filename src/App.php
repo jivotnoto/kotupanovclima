@@ -245,6 +245,7 @@ final class App
     {
         echo $this->view->render('public/repair-service', [
             'pageTitle' => 'Ремонт и профилактика',
+            'metaDescription' => 'Ремонт, профилактика, почистване и диагностика на климатична техника за Перник и региона.',
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/remont-i-profilaktika',
         ]);
