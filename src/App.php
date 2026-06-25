@@ -34,7 +34,8 @@ final class App
 
     public function run(): void
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        $path = request_path();
+        if (!in_array($path, ['/robots.txt', '/sitemap.xml'], true) && session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
 
@@ -42,7 +43,6 @@ final class App
         header('X-Request-Id: ' . $this->requestId);
         register_shutdown_function(fn () => $this->logAccess());
 
-        $path = request_path();
         if ($this->isSuspiciousPath($path)) {
             $this->logger->security('suspicious_request_path', $this->requestContext([
                 'path' => $path,
@@ -278,11 +278,14 @@ final class App
     private function robotsTxt(): void
     {
         header('Content-Type: text/plain; charset=UTF-8');
+        header('Cache-Control: public, max-age=3600');
+        $baseUrl = $this->currentSeoBaseUrl();
+
         echo implode("\n", [
             'User-agent: *',
             'Disallow: /admin/',
             'Disallow: /admin',
-            'Sitemap: https://kotupanovklima.bg/sitemap.xml',
+            'Sitemap: ' . $baseUrl . '/sitemap.xml',
             '',
         ]);
     }
@@ -290,19 +293,20 @@ final class App
     private function sitemapXml(): void
     {
         $lastmod = date('Y-m-d');
+        $baseUrl = $this->currentSeoBaseUrl();
         $urls = [
-            ['loc' => 'https://kotupanovklima.bg/', 'priority' => '1.0', 'lastmod' => $lastmod],
-            ['loc' => 'https://kotupanovklima.bg/promocii', 'priority' => '0.8', 'lastmod' => $lastmod],
-            ['loc' => 'https://kotupanovklima.bg/remont-i-profilaktika', 'priority' => '0.8', 'lastmod' => $lastmod],
-            ['loc' => 'https://kotupanovklima.bg/produkti/klimatici', 'priority' => '0.8', 'lastmod' => $lastmod],
-            ['loc' => 'https://kotupanovklima.bg/produkti/termopompi', 'priority' => '0.8', 'lastmod' => $lastmod],
-            ['loc' => 'https://kotupanovklima.bg/kontakti', 'priority' => '0.7', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/', 'priority' => '1.0', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/promocii', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/remont-i-profilaktika', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/produkti/klimatici', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/produkti/termopompi', 'priority' => '0.8', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/kontakti', 'priority' => '0.7', 'lastmod' => $lastmod],
         ];
 
         foreach (['airConditioners' => 'klimatici', 'heatPumps' => 'termopompi'] as $category => $path) {
             foreach ($this->catalog->getProductsByCategory($category) as $product) {
                 $urls[] = [
-                    'loc' => 'https://kotupanovklima.bg/produkti/' . $path . '/' . $product['slug'],
+                    'loc' => $baseUrl . '/produkti/' . $path . '/' . $product['slug'],
                     'priority' => '0.6',
                     'lastmod' => $lastmod,
                 ];
@@ -310,6 +314,7 @@ final class App
         }
 
         header('Content-Type: application/xml; charset=UTF-8');
+        header('Cache-Control: public, max-age=3600');
         echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
@@ -323,6 +328,17 @@ final class App
         }
 
         echo '</urlset>' . "\n";
+    }
+
+    private function currentSeoBaseUrl(): string
+    {
+        $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? 'kotupanovklima.bg'));
+        $host = preg_replace('/:\d+$/', '', $host) ?? $host;
+
+        return match ($host) {
+            'kotupanovclima.eu', 'www.kotupanovclima.eu' => 'https://kotupanovclima.eu',
+            default => 'https://kotupanovklima.bg',
+        };
     }
 
     private function catalogPage(string $category): void

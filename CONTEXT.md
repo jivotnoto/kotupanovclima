@@ -47,7 +47,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - `kotupanovklima.bg` is the canonical SEO domain.
 - `kotupanovclima.eu` remains reachable, but public pages render canonical tags pointing to `https://kotupanovklima.bg`.
 - Admin pages render `noindex, nofollow`.
-- `robots.txt` and `sitemap.xml` are served dynamically by `src/App.php`.
+- `robots.txt` and `sitemap.xml` are served dynamically by `src/App.php` and use same-domain URLs for the requested host.
 - Public pages render Open Graph and Twitter Card tags; product pages use their product image as the social preview image when available.
 
 ## Current allowlist behavior

@@ -82,3 +82,8 @@ It complements Git commits with short human-readable context about what changed 
 - Added Open Graph and Twitter Card metadata across public pages.
 - Added product-specific SEO titles, descriptions and social preview images.
 - Extended the dynamic sitemap with `lastmod` values.
+
+### Host-aware sitemap fix
+
+- Made `robots.txt` and `sitemap.xml` generate same-domain URLs for `kotupanovklima.bg` and `kotupanovclima.eu`.
+- Avoided starting a PHP session for `robots.txt` and `sitemap.xml`, so crawlers receive clean cacheable responses.
