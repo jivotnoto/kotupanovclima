@@ -84,14 +84,15 @@ sort($powers);
 
     <div class="product-grid">
         <?php foreach ($filtered as $product): ?>
+            <?php $productHref = '/produkti/' . $categoryPath . '/' . $product['slug']; ?>
             <article class="product-card">
-                <div class="product-card__image">
+                <a class="product-card__image product-card__image--link" href="<?= e($productHref) ?>" aria-label="Виж <?= e($product['title']) ?>">
                     <?php if (!empty($product['imagePath'])): ?>
                         <img src="<?= e($product['imagePath']) ?>" alt="<?= e($product['title']) ?>">
                     <?php else: ?>
                         <div class="product-card__image-placeholder"><?= e($product['brand']) ?></div>
                     <?php endif; ?>
-                </div>
+                </a>
                 <div class="product-card__body">
                     <div class="product-card__top">
                         <div>
@@ -127,7 +128,7 @@ sort($powers);
                         <span class="tag">Монтаж до 3 м</span>
                     </div>
 
-                    <a class="button button--dark" href="/produkti/<?= e($categoryPath) ?>/<?= e($product['slug']) ?>">Виж детайли</a>
+                    <a class="button button--dark" href="<?= e($productHref) ?>">Виж детайли</a>
                 </div>
             </article>
         <?php endforeach; ?>

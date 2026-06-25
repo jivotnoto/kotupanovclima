@@ -71,3 +71,8 @@ It complements Git commits with short human-readable context about what changed 
 - Set `kotupanovklima.bg` as the canonical SEO domain across public pages.
 - Added `noindex, nofollow` metadata for admin pages.
 - Added dynamic `robots.txt` and `sitemap.xml` endpoints.
+
+### Product image interactions
+
+- Made catalog product images clickable links to their product detail pages.
+- Added a lightweight product image viewer so detail-page images open larger in an overlay.

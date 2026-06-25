@@ -29,6 +29,11 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - The reorder action is handled by `POST /admin/products/reorder` with CSRF validation.
 - Reordering preserves the visible product order even when a move crosses series boundaries.
 
+## Current product UI behavior
+
+- Catalog product images link to their product detail pages.
+- Product detail images open in a lightweight overlay controlled by `public/assets/site.js`.
+
 ## Current networking behavior
 
 - Local access is currently through Docker port mapping: `localhost:3001 -> container:80`

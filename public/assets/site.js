@@ -26,4 +26,48 @@
         input.addEventListener('change', update);
         update();
     });
+
+    const imageViewer = document.querySelector('[data-image-viewer]');
+    if (!imageViewer) {
+        return;
+    }
+
+    const image = imageViewer.querySelector('[data-image-viewer-image]');
+    const openButtons = document.querySelectorAll('[data-image-viewer-open]');
+    const closeButtons = imageViewer.querySelectorAll('[data-image-viewer-close]');
+
+    const closeViewer = () => {
+        imageViewer.hidden = true;
+        document.body.classList.remove('has-image-viewer');
+    };
+
+    const openViewer = (button) => {
+        if (!(button instanceof HTMLElement) || !(image instanceof HTMLImageElement)) {
+            return;
+        }
+
+        const src = button.getAttribute('data-image-src');
+        const alt = button.getAttribute('data-image-alt') || '';
+        if (src) {
+            image.src = src;
+            image.alt = alt;
+        }
+
+        imageViewer.hidden = false;
+        document.body.classList.add('has-image-viewer');
+    };
+
+    openButtons.forEach((button) => {
+        button.addEventListener('click', () => openViewer(button));
+    });
+
+    closeButtons.forEach((button) => {
+        button.addEventListener('click', closeViewer);
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !imageViewer.hidden) {
+            closeViewer();
+        }
+    });
 })();

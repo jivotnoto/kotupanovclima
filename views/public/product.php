@@ -5,7 +5,9 @@
         <article class="detail-card">
             <div class="detail-card__hero">
                 <?php if (!empty($product['imagePath'])): ?>
-                    <img src="<?= e($product['imagePath']) ?>" alt="<?= e($product['title']) ?>">
+                    <button class="detail-card__image-button" type="button" data-image-viewer-open data-image-src="<?= e($product['imagePath']) ?>" data-image-alt="<?= e($product['title']) ?>" aria-label="Покажи снимката по-голяма">
+                        <img src="<?= e($product['imagePath']) ?>" alt="<?= e($product['title']) ?>">
+                    </button>
                 <?php endif; ?>
             </div>
             <span class="product-card__brand"><?= e($product['brand']) ?></span>
@@ -55,3 +57,13 @@
         </aside>
     </div>
 </section>
+
+<?php if (!empty($product['imagePath'])): ?>
+    <div class="image-viewer" data-image-viewer hidden>
+        <button class="image-viewer__backdrop" type="button" data-image-viewer-close aria-label="Затвори увеличената снимка"></button>
+        <div class="image-viewer__dialog" role="dialog" aria-modal="true" aria-label="<?= e($product['title']) ?>">
+            <button class="image-viewer__close" type="button" data-image-viewer-close aria-label="Затвори">×</button>
+            <img data-image-viewer-image src="<?= e($product['imagePath']) ?>" alt="<?= e($product['title']) ?>">
+        </div>
+    </div>
+<?php endif; ?>
