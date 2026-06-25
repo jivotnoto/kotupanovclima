@@ -45,10 +45,11 @@
                 <li>Стандартен монтаж до 3 метра тръбен път е включен в цената.</li>
             </ul>
             <p class="detail-meta">Статус: <?= e($product['status']) ?></p>
-            <?php if (!empty($product['sourceUrl'])): ?>
+            <?php $sourceUrl = safe_href($product['sourceUrl'] ?? null); ?>
+            <?php if ($sourceUrl !== null): ?>
                 <p class="detail-meta">
                     Технически данни:
-                    <a href="<?= e($product['sourceUrl']) ?>" target="_blank" rel="noopener noreferrer"><?= e($product['sourceTitle'] ?? 'официален източник') ?></a>
+                    <a href="<?= e($sourceUrl) ?>" target="_blank" rel="noopener noreferrer"><?= e($product['sourceTitle'] ?? 'официален източник') ?></a>
                 </p>
             <?php endif; ?>
         </aside>

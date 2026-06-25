@@ -125,6 +125,7 @@ final class Auth
             return false;
         }
 
+        session_regenerate_id(true);
         $_SESSION[self::SESSION_KEY] = [
             'authenticated' => true,
             'sessionVersion' => $settings['adminSecurity']['sessionVersion'] ?? 1,

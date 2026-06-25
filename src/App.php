@@ -304,6 +304,21 @@ final class App
 
     private function adminLoginPage(): void
     {
+        $settings = $this->catalog->getSettings();
+        if (!$this->auth->isAllowedIp($settings)) {
+            http_response_code(403);
+            $this->logger->security('admin_login_page_denied_by_ip', $this->requestContext(), 'warn');
+
+            echo $this->view->render('public/error', [
+                'pageTitle' => 'Достъпът е ограничен',
+                'company' => $this->catalog->getCompany(),
+                'currentPath' => '/admin/login',
+                'statusCode' => 403,
+                'message' => 'Този IP адрес няма достъп до администрацията.',
+            ]);
+            return;
+        }
+
         echo $this->view->render('admin/login', [
             'pageTitle' => 'Админ вход',
             'company' => $this->catalog->getCompany(),

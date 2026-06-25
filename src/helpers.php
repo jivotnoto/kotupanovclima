@@ -58,6 +58,29 @@ function redirect_to(string $url, int $status = 302): never
     exit;
 }
 
+function safe_href(mixed $value): ?string
+{
+    if (!is_string($value)) {
+        return null;
+    }
+
+    $value = trim($value);
+    if ($value === '') {
+        return null;
+    }
+
+    if (str_starts_with($value, '/') && !str_starts_with($value, '//')) {
+        return $value;
+    }
+
+    $scheme = strtolower((string) (parse_url($value, PHP_URL_SCHEME) ?? ''));
+    if (in_array($scheme, ['http', 'https', 'tel', 'mailto'], true)) {
+        return $value;
+    }
+
+    return null;
+}
+
 function detect_client_ip(): ?string
 {
     return detect_client_ip_context()['clientIp'];
@@ -129,11 +152,7 @@ function forwarded_ip_chain(mixed $value): array
 
 function is_trusted_proxy_ip(string $ip): bool
 {
-    if (ip_matches_allowlist($ip, trusted_proxy_allowlist())) {
-        return true;
-    }
-
-    return is_private_or_loopback_ip($ip);
+    return ip_matches_allowlist($ip, trusted_proxy_allowlist());
 }
 
 function trusted_proxy_allowlist(): array

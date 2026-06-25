@@ -29,8 +29,9 @@
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>
-                <?php if (!empty($promotion['ctaHref'])): ?>
-                    <a class="button" href="<?= e($promotion['ctaHref']) ?>"><?= e($promotion['ctaLabel'] ?? 'Виж продукта') ?></a>
+                <?php $ctaHref = safe_href($promotion['ctaHref'] ?? null); ?>
+                <?php if ($ctaHref !== null): ?>
+                    <a class="button" href="<?= e($ctaHref) ?>"><?= e($promotion['ctaLabel'] ?? 'Виж продукта') ?></a>
                 <?php endif; ?>
             </article>
         <?php endforeach; ?>

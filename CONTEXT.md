@@ -33,7 +33,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 
 - Local access is currently through Docker port mapping: `localhost:3001 -> container:80`
 - Because requests are hitting the container directly, Apache currently sees the Docker-side peer IP such as `172.21.0.1`
-- No reverse proxy is currently injecting `X-Forwarded-For`
+- No reverse proxy is currently injecting trusted `X-Forwarded-For`
 - Result: admin allowlist checks must allow the container-visible IP or a matching CIDR
 
 ## Current allowlist behavior
@@ -45,9 +45,8 @@ It should be updated whenever architecture, deployment assumptions, security beh
   - exact IPs like `192.168.1.50`
   - CIDR ranges like `192.168.1.0/24`
 - Client IP resolution prefers proxy headers only when `REMOTE_ADDR` is treated as a trusted proxy
-- Trusted proxies are recognized from:
-  - private or loopback IP ranges
-  - optional `TRUSTED_PROXY_RANGES` environment variable
+- Trusted proxies are recognized only from the optional `TRUSTED_PROXY_RANGES` environment variable
+- Private Docker/proxy IPs are not trusted for `X-Forwarded-For` by default, so spoofed forwarded headers cannot bypass the admin allowlist
 
 ## Current logging behavior
 
@@ -61,7 +60,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 ## Open follow-up options
 
 - Keep the current direct Docker exposure and allow container-visible IP/CIDR in admin settings
-- Add a reverse proxy in front of the container so the app can rely on forwarded client IP headers
+- Add a reverse proxy in front of the container and set `TRUSTED_PROXY_RANGES` before relying on forwarded client IP headers
 - Add a small troubleshooting page or admin diagnostics block if repeated IP confusion continues
 
 ## Session guidance for future work

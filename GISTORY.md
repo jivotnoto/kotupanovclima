@@ -53,3 +53,10 @@ It complements Git commits with short human-readable context about what changed 
 - Added up/down controls to the admin product list for both `Климатици` and `Термопомпи`.
 - Added a CSRF-protected `/admin/products/reorder` POST action.
 - Reordering updates `storage/data/seed-products.json` order while preserving product data and category membership.
+
+### Admin hardening review
+
+- Regenerated the PHP session ID after successful admin login.
+- Tightened forwarded-header trust so `X-Forwarded-For` is used only for explicit `TRUSTED_PROXY_RANGES`.
+- Added safe URL rendering for admin-managed public links to block unsafe schemes such as `javascript:`.
+- Made the admin login page itself IP-aware: disallowed IPs now receive `403` instead of the login form.
