@@ -302,8 +302,7 @@ button {
     font-size: clamp(0.95rem, 3.4vw, 2.2rem);
     line-height: 1.18;
     text-wrap: balance;
-    text-align: justify;
-    text-align-last: left;
+    text-align: left;
 }
 
 .hero__lead,
@@ -1051,7 +1050,13 @@ button {
     }
 
     .hero__title {
-        max-width: 9.5ch;
+        max-width: 100%;
+    }
+
+    .hero__title--compact {
+        font-size: 2em;
+        line-height: 1.02;
+        text-wrap: wrap;
     }
 
     .brand-grid {

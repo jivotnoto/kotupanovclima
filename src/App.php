@@ -87,6 +87,11 @@ final class App
             return;
         }
 
+        if ($path === '/remont-i-profilaktika') {
+            $this->serviceRepairPage();
+            return;
+        }
+
         if ($path === '/produkti/klimatici') {
             $this->catalogPage('airConditioners');
             return;
@@ -233,6 +238,15 @@ final class App
             'pageTitle' => 'Контакти',
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/kontakti',
+        ]);
+    }
+
+    private function serviceRepairPage(): void
+    {
+        echo $this->view->render('public/repair-service', [
+            'pageTitle' => 'Ремонт и профилактика',
+            'company' => $this->catalog->getCompany(),
+            'currentPath' => '/remont-i-profilaktika',
         ]);
     }
 

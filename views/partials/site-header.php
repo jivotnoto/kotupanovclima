@@ -2,6 +2,7 @@
 $publicLinks = [
     '/' => 'Начало',
     '/promocii' => 'Промоции',
+    '/remont-i-profilaktika' => 'Ремонт и профилактика',
     '/produkti/klimatici' => 'Климатици',
     '/produkti/termopompi' => 'Термопомпи',
     '/kontakti' => 'Контакти',
