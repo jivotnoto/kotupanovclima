@@ -25,6 +25,8 @@ It should be updated whenever architecture, deployment assumptions, security beh
 ## Current admin catalog behavior
 
 - Products are stored in `storage/data/seed-products.json`.
+- The live server catalog/pricing file is the source of truth for configured air conditioners, heat pumps, models, prices, and admin edits.
+- Do not overwrite product/model/price files from stale local copies. Before changing catalog schema, product data, pricing, or generated catalog-derived files, fetch the current live files from the server and migrate/update those live contents.
 - Admin product lists for `Климатици` and `Термопомпи` include `Нагоре` and `Надолу` controls per entry.
 - The reorder action is handled by `POST /admin/products/reorder` with CSRF validation.
 - Reordering preserves the visible product order even when a move crosses series boundaries.
@@ -84,6 +86,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 ## Session guidance for future work
 
 - Read this file and `GISTORY.md` before continuing project work
+- Treat live catalog data as protected customer/admin content: fetch it from the server before any edits involving products, models, prices, sitemap generation from products, or storage format migrations.
 - Check recent lines in:
   - `storage/logs/access.log`
   - `storage/logs/security.log`

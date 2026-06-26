@@ -98,3 +98,7 @@ It complements Git commits with short human-readable context about what changed 
 - Updated static sitemap and robots files so no SEO file advertises `kotupanovklima.bg` as canonical.
 - Served `sitemap.xml` and `robots.txt` directly on both `kotupanovclima.eu` and `www.kotupanovclima.eu` using Apache `[END]` rewrites to support either Search Console URL-prefix property.
 - Routed public `sitemap.xml` and `robots.txt` back through PHP so the sitemap reflects the live product catalog instead of stale static files.
+
+### Catalog data protection rule
+
+- Added a standing project rule: do not overwrite configured product, model, and price data from stale local files; fetch current live catalog files first and migrate/update those contents when changes are needed.
