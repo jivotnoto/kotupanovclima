@@ -12,10 +12,10 @@ RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
-RewriteRule ^robots\.txt$ robots-kotupanovclima.txt [END]
+RewriteRule ^robots\.txt$ index.php [QSA,END]
 
 RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
-RewriteRule ^sitemap\.xml$ sitemap-kotupanovclima.xml [END]
+RewriteRule ^sitemap\.xml$ index.php [QSA,END]
 
 RewriteCond %{HTTP_HOST} ^www\.kotupanovclima\.eu$ [NC]
 RewriteRule ^ https://kotupanovclima.eu%{REQUEST_URI} [R=301,L]

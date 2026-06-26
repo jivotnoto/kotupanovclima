@@ -49,8 +49,8 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - Public pages render canonical and Open Graph URLs on `https://kotupanovclima.eu`.
 - `kotupanovklima.bg` redirects with 301 to the matching path on `https://kotupanovclima.eu`.
 - Admin pages render `noindex, nofollow`.
-- `robots.txt` and `sitemap.xml` point to `https://kotupanovclima.eu`.
-- Static `robots.txt` and `sitemap.xml` files are mapped through `.htaccess` for `kotupanovclima.eu`.
+- `robots.txt` and `sitemap.xml` are served dynamically through PHP and point to `https://kotupanovclima.eu`.
+- Static host-specific `robots-*` and `sitemap-*` files remain in `public/` only as deployment fallbacks; `.htaccess` routes public crawler requests to PHP so catalog changes are reflected automatically.
 - Public pages render Open Graph and Twitter Card tags; product pages use their product image as the social preview image when available.
 
 ## Current allowlist behavior

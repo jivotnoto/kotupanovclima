@@ -97,3 +97,4 @@ It complements Git commits with short human-readable context about what changed 
 - Changed `.htaccess` so all `kotupanovklima.bg` requests redirect with 301 to the same path on `https://kotupanovclima.eu`.
 - Updated static sitemap and robots files so no SEO file advertises `kotupanovklima.bg` as canonical.
 - Served `sitemap.xml` and `robots.txt` directly on both `kotupanovclima.eu` and `www.kotupanovclima.eu` using Apache `[END]` rewrites to support either Search Console URL-prefix property.
+- Routed public `sitemap.xml` and `robots.txt` back through PHP so the sitemap reflects the live product catalog instead of stale static files.
