@@ -7,18 +7,18 @@ AddType text/plain .txt
 RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovklima\.bg$ [NC]
 RewriteRule ^ https://kotupanovclima.eu%{REQUEST_URI} [R=301,L]
 
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
+RewriteRule ^robots\.txt$ robots-kotupanovclima.txt [END]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
+RewriteRule ^sitemap\.xml$ sitemap-kotupanovclima.xml [END]
+
 RewriteCond %{HTTP_HOST} ^www\.kotupanovclima\.eu$ [NC]
 RewriteRule ^ https://kotupanovclima.eu%{REQUEST_URI} [R=301,L]
-
-RewriteCond %{HTTPS} !=on
-RewriteCond %{HTTP_HOST} ^kotupanovclima\.eu$ [NC]
-RewriteRule ^ https://kotupanovclima.eu%{REQUEST_URI} [R=301,L]
-
-RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
-RewriteRule ^robots\.txt$ robots-kotupanovclima.txt [L]
-
-RewriteCond %{HTTP_HOST} ^(www\.)?kotupanovclima\.eu$ [NC]
-RewriteRule ^sitemap\.xml$ sitemap-kotupanovclima.xml [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

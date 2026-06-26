@@ -96,3 +96,4 @@ It complements Git commits with short human-readable context about what changed 
 - Made `kotupanovclima.eu` the canonical SEO base for public pages, Open Graph URLs, dynamic `robots.txt`, and dynamic `sitemap.xml`.
 - Changed `.htaccess` so all `kotupanovklima.bg` requests redirect with 301 to the same path on `https://kotupanovclima.eu`.
 - Updated static sitemap and robots files so no SEO file advertises `kotupanovklima.bg` as canonical.
+- Served `sitemap.xml` and `robots.txt` directly on both `kotupanovclima.eu` and `www.kotupanovclima.eu` using Apache `[END]` rewrites to support either Search Console URL-prefix property.
