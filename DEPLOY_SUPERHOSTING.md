@@ -7,7 +7,8 @@ This project can be deployed to SuperHosting shared hosting in two ways:
 
 This guide covers the **main domain** case for:
 
-- domain: `kotupanovklima.bg`
+- canonical domain: `kotupanovclima.eu`
+- secondary redirect domain: `kotupanovklima.bg`
 - document root: `/home/kotupano/public_html`
 
 ## Recommended production layout
@@ -28,6 +29,14 @@ Use this structure in the hosting account:
     views/
     storage/
 ```
+
+## Domain setup
+
+`kotupanovclima.eu` should be the primary/canonical domain for the hosting account.
+
+`kotupanovklima.bg` must be configured in the hosting control panel as an Alias/Parked domain for the same document root, or as a panel-level permanent redirect to `https://kotupanovclima.eu`. If `http://kotupanovklima.bg/` shows `/cgi-sys/defaultwebpage.cgi`, Apache is not routing that domain to this account yet and the project `.htaccess` redirect cannot run.
+
+When `kotupanovklima.bg` reaches this project document root, `public/.htaccess` redirects all `.bg` requests with 301 to the matching path on `https://kotupanovclima.eu`.
 
 ## What goes where
 
@@ -89,8 +98,9 @@ Use PHP `8.3`.
 1. Upload the `public_html` files.
 2. Upload the `kotupanovklima-app` files above `public_html`.
 3. Confirm `storage/data/admin-settings.json` and the other JSON files are present.
-4. Open `https://kotupanovklima.bg/`.
-5. Open `https://kotupanovklima.bg/admin/login`.
+4. Open `https://kotupanovclima.eu/`.
+5. Open `https://kotupanovclima.eu/admin/login`.
+6. Confirm `https://kotupanovklima.bg/` redirects to `https://kotupanovclima.eu/`.
 6. Test image loading and admin login.
 
 ## Admin allowlist note

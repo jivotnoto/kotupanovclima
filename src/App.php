@@ -332,13 +332,7 @@ final class App
 
     private function currentSeoBaseUrl(): string
     {
-        $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? 'kotupanovklima.bg'));
-        $host = preg_replace('/:\d+$/', '', $host) ?? $host;
-
-        return match ($host) {
-            'kotupanovclima.eu', 'www.kotupanovclima.eu' => 'https://kotupanovclima.eu',
-            default => 'https://kotupanovklima.bg',
-        };
+        return 'https://kotupanovclima.eu';
     }
 
     private function catalogPage(string $category): void

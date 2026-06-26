@@ -4,12 +4,7 @@ $isAdmin = starts_with($currentPath ?? '/', '/admin');
 $metaTitle = $metaTitle ?? ($pageTitle ?? 'Котупановклима');
 $metaDescription = $metaDescription ?? 'Климатици, термопомпи, монтаж и консултация за Перник и региона.';
 $canonicalPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$requestHost = strtolower((string) ($_SERVER['HTTP_HOST'] ?? 'kotupanovklima.bg'));
-$requestHost = preg_replace('/:\d+$/', '', $requestHost) ?? $requestHost;
-$seoBaseUrl = match ($requestHost) {
-    'kotupanovclima.eu', 'www.kotupanovclima.eu' => 'https://kotupanovclima.eu',
-    default => 'https://kotupanovklima.bg',
-};
+$seoBaseUrl = 'https://kotupanovclima.eu';
 $canonicalUrl = !$isAdmin ? $seoBaseUrl . ($canonicalPath ?: '/') : null;
 $absoluteSiteUrl = static function (?string $value) use ($seoBaseUrl): ?string {
     if ($value === null || trim($value) === '') {

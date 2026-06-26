@@ -90,3 +90,9 @@ It complements Git commits with short human-readable context about what changed 
 - Added static host-specific sitemap and robots files mapped by `.htaccess` to make Search Console fetches independent from PHP sessions.
 - Made public page canonical and Open Graph URLs same-domain for `.bg` and `.eu`.
 - Added an explicit homepage-only 301 redirect from `kotupanovklima.bg` to `https://kotupanovclima.eu/`.
+
+### EU canonical domain migration
+
+- Made `kotupanovclima.eu` the canonical SEO base for public pages, Open Graph URLs, dynamic `robots.txt`, and dynamic `sitemap.xml`.
+- Changed `.htaccess` so all `kotupanovklima.bg` requests redirect with 301 to the same path on `https://kotupanovclima.eu`.
+- Updated static sitemap and robots files so no SEO file advertises `kotupanovklima.bg` as canonical.

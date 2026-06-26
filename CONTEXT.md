@@ -40,15 +40,17 @@ It should be updated whenever architecture, deployment assumptions, security beh
 - Because requests are hitting the container directly, Apache currently sees the Docker-side peer IP such as `172.21.0.1`
 - No reverse proxy is currently injecting trusted `X-Forwarded-For`
 - Result: admin allowlist checks must allow the container-visible IP or a matching CIDR
-- Live domains `kotupanovklima.bg` and `kotupanovclima.eu` have trusted HTTPS certificates and `public/.htaccess` forces HTTP requests for both domains to HTTPS.
+- Live domains `kotupanovclima.eu` and `kotupanovklima.bg` have trusted HTTPS certificates.
+- `kotupanovclima.eu` is the canonical public domain.
+- `kotupanovklima.bg` is a secondary domain and redirects all public requests to the same path on `https://kotupanovclima.eu`.
 
 ## Current SEO behavior
 
-- The `kotupanovklima.bg` homepage redirects with 301 to `https://kotupanovclima.eu/`.
-- Other public pages render same-domain canonical tags for `kotupanovklima.bg` and `kotupanovclima.eu`.
+- Public pages render canonical and Open Graph URLs on `https://kotupanovclima.eu`.
+- `kotupanovklima.bg` redirects with 301 to the matching path on `https://kotupanovclima.eu`.
 - Admin pages render `noindex, nofollow`.
-- `robots.txt` and `sitemap.xml` are served dynamically by `src/App.php` as a fallback.
-- Static host-specific `robots.txt` and `sitemap.xml` files are mapped through `.htaccess` for `kotupanovklima.bg` and `kotupanovclima.eu`.
+- `robots.txt` and `sitemap.xml` point to `https://kotupanovclima.eu`.
+- Static `robots.txt` and `sitemap.xml` files are mapped through `.htaccess` for `kotupanovclima.eu`.
 - Public pages render Open Graph and Twitter Card tags; product pages use their product image as the social preview image when available.
 
 ## Current allowlist behavior
@@ -74,6 +76,7 @@ It should be updated whenever architecture, deployment assumptions, security beh
 
 ## Open follow-up options
 
+- In SuperHosting, ensure `kotupanovklima.bg` is configured as an Alias/Parked domain for the same document root or as a panel-level redirect to `https://kotupanovclima.eu`; if it shows `/cgi-sys/defaultwebpage.cgi`, the project `.htaccess` cannot run for `.bg`.
 - Keep the current direct Docker exposure and allow container-visible IP/CIDR in admin settings
 - Add a reverse proxy in front of the container and set `TRUSTED_PROXY_RANGES` before relying on forwarded client IP headers
 - Add a small troubleshooting page or admin diagnostics block if repeated IP confusion continues
