@@ -1,5 +1,6 @@
 <section class="section-block">
-    <div class="section-surface">
+    <div class="section-surface section-surface--decor">
+        <img class="surface-mark surface-mark--service" src="/images/service-mark.svg" alt="" aria-hidden="true">
         <div class="section-heading">
             <span class="section-heading__eyebrow">Сервиз</span>
             <h1 class="section-heading__title">Ремонт и профилактика на климатична техника</h1>
@@ -58,7 +59,8 @@
 </section>
 
 <section class="section-block">
-    <div class="contact-banner">
+    <div class="contact-banner contact-banner--decor">
+        <img class="surface-mark surface-mark--contact" src="/images/contact-mark.svg" alt="" aria-hidden="true">
         <div>
             <span class="section-heading__eyebrow">Запитване</span>
             <h2 class="section-heading__title">Опиши проблема и ще насочим какъв тип посещение е най-подходящо</h2>

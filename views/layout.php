@@ -23,7 +23,7 @@ $absoluteSiteUrl = static function (?string $value) use ($seoBaseUrl): ?string {
 $ogTitle = $ogTitle ?? $metaTitle;
 $ogDescription = $ogDescription ?? $metaDescription;
 $ogType = $ogType ?? 'website';
-$ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/brands/gree-pular-bg.jpg');
+$ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/site-og-image.png');
 ?>
 <!doctype html>
 <html lang="bg">
@@ -54,6 +54,8 @@ $ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/brands/gree-pular-bg.jpg');
         <?php endif; ?>
     <?php endif; ?>
     <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" sizes="512x512" href="/images/site-icon.png">
+    <link rel="apple-touch-icon" href="/images/site-icon.png">
     <link rel="stylesheet" href="/assets/site.css">
     <script src="/assets/site.js" defer></script>
 </head>
@@ -63,5 +65,6 @@ $ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/brands/gree-pular-bg.jpg');
     <?= $content ?>
 </main>
 <?php $this->partial('partials/site-footer', ['company' => $company, 'isAdmin' => $isAdmin]); ?>
+<?php $this->partial('partials/cookie-consent', ['isAdmin' => $isAdmin]); ?>
 </body>
 </html>

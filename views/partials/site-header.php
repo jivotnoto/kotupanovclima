@@ -14,26 +14,35 @@ $adminLinks = [
     '/admin/promotions' => 'Промоции',
     '/admin/settings' => 'Настройки',
 ];
+
+$brandName = $company['companyName'] ?? 'Котупановклима ЕООД';
 ?>
 <header class="topbar">
     <div class="topbar__inner">
         <div class="topbar__nav-row">
-            <nav class="pill-nav pill-nav--mobile">
-                <?php foreach (($isAdmin ? $adminLinks : $publicLinks) as $href => $label): ?>
-                    <a class="pill-nav__link<?= ($currentPath === $href || starts_with((string) $currentPath, $href . '/')) ? ' is-active' : '' ?>" href="<?= e($href) ?>">
-                        <?= e($label) ?>
-                    </a>
-                <?php endforeach; ?>
-            </nav>
+            <details class="mobile-menu">
+                <summary class="mobile-menu__button">
+                    <span>Меню</span>
+                    <span class="mobile-menu__icon" aria-hidden="true"></span>
+                </summary>
+                <nav class="mobile-menu__panel" aria-label="Основно меню">
+                    <?php foreach (($isAdmin ? $adminLinks : $publicLinks) as $href => $label): ?>
+                        <a class="mobile-menu__link<?= ($currentPath === $href || starts_with((string) $currentPath, $href . '/')) ? ' is-active' : '' ?>" href="<?= e($href) ?>">
+                            <?= e($label) ?>
+                        </a>
+                    <?php endforeach; ?>
+                </nav>
+            </details>
         </div>
 
         <div class="topbar__brand-row">
-            <a class="brand" href="<?= $isAdmin ? '/admin' : '/' ?>">
-                <span class="brand__badge">KK</span>
-                <span class="brand__meta">
-                    <span class="brand__title"><?= e($company['companyName'] ?? 'Котупановклима ЕООД') ?></span>
-                    <span class="brand__subtitle"><?= $isAdmin ? 'Администрация на сайта' : 'Климатизация и термопомпи' ?></span>
+            <a class="brand brand--site-logo" href="<?= $isAdmin ? '/admin' : '/' ?>" aria-label="<?= e($isAdmin ? $brandName . ' - администрация' : $brandName) ?>">
+                <span class="brand__logo-shell">
+                    <img class="brand__logo" src="/images/kotupanovclima-logo-transparent.png" alt="">
                 </span>
+                <?php if ($isAdmin): ?>
+                    <span class="brand__admin-label">Администрация</span>
+                <?php endif; ?>
             </a>
 
             <?php if (!$isAdmin): ?>

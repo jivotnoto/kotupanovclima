@@ -1,5 +1,32 @@
-<section class="hero">
-    <div class="hero__content">
+<?php
+$brandCategoryTargets = [
+    'LG' => '/produkti/termopompi',
+];
+?>
+
+<section class="brand-logo-strip" aria-label="Официални марки">
+    <div class="brand-logo-strip__viewport">
+        <div class="brand-logo-strip__track">
+            <?php for ($loop = 0; $loop < 2; $loop++): ?>
+                <div class="brand-logo-strip__group"<?= $loop === 1 ? ' aria-hidden="true"' : '' ?>>
+                    <?php foreach ($brandShowcase as $brand): ?>
+                        <?php
+                        $categoryPath = $brandCategoryTargets[$brand['name']] ?? '/produkti/klimatici';
+                        $brandHref = $categoryPath . '?' . http_build_query(['brand' => $brand['name']]);
+                        ?>
+                        <a class="brand-logo-strip__item" href="<?= e($brandHref) ?>" aria-label="Виж продукти <?= e($brand['name']) ?>"<?= $loop === 1 ? ' tabindex="-1"' : '' ?>>
+                            <img src="<?= e($brand['logoPath']) ?>" alt="<?= e($brand['name']) ?>">
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endfor; ?>
+        </div>
+    </div>
+</section>
+
+<section class="hero hero--home">
+    <div class="hero__content hero__main-card">
+        <img class="hero__visual-mark" src="/images/air-conditioner-mark.svg" alt="" aria-hidden="true">
         <a class="hero__eyebrow hero__eyebrow--link" href="/promocii"><?= e($settings['promo']['title'] ?? 'Промоции') ?></a>
         <h1 class="hero__title hero__title--compact">Климатична техника, подбрана да изглежда добре и да работи правилно.</h1>
         <p class="hero__lead"><?= e($settings['promo']['subtitle'] ?? '') ?></p>
@@ -12,23 +39,6 @@
             <div class="feature-card">Официални марки и подбрани серии</div>
             <div class="feature-card">Стандартен монтаж до 3 м тръбен път</div>
             <div class="feature-card">Консултация според помещението и бюджета</div>
-        </div>
-    </div>
-    <div class="hero__sidebar">
-        <div class="stack-card stack-card--brands">
-            <h2>Официални марки</h2>
-            <p>Подбрани производители за дома, офиса и по-сериозни отоплителни решения.</p>
-            <div class="brand-grid">
-                <?php foreach ($brandShowcase as $brand): ?>
-                    <a class="brand-card" href="/produkti/klimatici">
-                        <img src="<?= e($brand['logoPath']) ?>" alt="<?= e($brand['name']) ?>">
-                        <div>
-                            <strong><?= e($brand['name']) ?></strong>
-                            <span><?= e($brand['note']) ?></span>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
         </div>
     </div>
 </section>

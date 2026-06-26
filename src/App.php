@@ -92,13 +92,28 @@ final class App
             return;
         }
 
-        if ($path === '/kontakti') {
+        if ($path === '/kontakti' && $method === 'GET') {
             $this->contactsPage();
+            return;
+        }
+
+        if ($path === '/kontakti' && $method === 'POST') {
+            $this->contactSubmit();
             return;
         }
 
         if ($path === '/remont-i-profilaktika') {
             $this->serviceRepairPage();
+            return;
+        }
+
+        if ($path === '/obshti-usloviya') {
+            $this->termsPage();
+            return;
+        }
+
+        if ($path === '/politika-za-poveritelnost') {
+            $this->privacyPage();
             return;
         }
 
@@ -232,7 +247,7 @@ final class App
             'pageTitle' => 'Котупановклима ЕООД',
             'metaTitle' => 'Котупановклима ЕООД | Климатици и термопомпи в Перник',
             'metaDescription' => 'Продажба, монтаж, ремонт и профилактика на климатици и термопомпи за Перник и региона.',
-            'ogImage' => '/images/brands/gree-pular-bg.jpg',
+            'ogImage' => '/images/site-og-image.png',
             'company' => $this->catalog->getCompany(),
             'settings' => $this->catalog->getSettings(),
             'promotions' => array_slice($this->catalog->getPromotions(true), 0, 4),
@@ -261,7 +276,110 @@ final class App
             'metaDescription' => 'Свържи се с Котупановклима ЕООД за оферта, монтаж, ремонт или профилактика на климатична техника.',
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/kontakti',
+            'flash' => flash_get('contact'),
+            'csrfToken' => $this->auth->csrfToken(),
+            'contactTopics' => $this->contactTopics(),
         ]);
+    }
+
+    private function contactSubmit(): void
+    {
+        if (!$this->auth->verifyCsrf($_POST['_csrf'] ?? null)) {
+            $this->logger->security('contact_form_csrf_failed', $this->requestContext(), 'warn');
+            flash_set('contact', 'Формата не е валидна. Опитай отново.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        if (trim((string) ($_POST['website'] ?? '')) !== '') {
+            $this->logger->security('contact_form_honeypot_triggered', $this->requestContext(), 'warn');
+            flash_set('contact', 'Благодарим, запитването е прието.', 'success');
+            redirect_to('/kontakti');
+        }
+
+        $lastSentAt = isset($_SESSION['contact_last_sent_at']) ? (int) $_SESSION['contact_last_sent_at'] : 0;
+        if ($lastSentAt > 0 && time() - $lastSentAt < 45) {
+            flash_set('contact', 'Изчакай малко преди да изпратиш ново запитване.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        $name = $this->limitText($_POST['name'] ?? '', 100);
+        $email = $this->limitText($_POST['email'] ?? '', 160);
+        $phone = $this->limitText($_POST['phone'] ?? '', 70);
+        $message = $this->limitText($_POST['message'] ?? '', 2200);
+        $topicKey = trim((string) ($_POST['topic'] ?? 'general'));
+        $topics = $this->contactTopics();
+        $topic = $topics[$topicKey] ?? $topics['general'];
+        $consent = isset($_POST['privacyConsent']);
+
+        if ($name === '' || $message === '' || mb_strlen($message, 'UTF-8') < 10) {
+            flash_set('contact', 'Попълни име и малко повече информация за запитването.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        if ($email === '' && $phone === '') {
+            flash_set('contact', 'Остави телефон или имейл, за да можем да върнем отговор.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            flash_set('contact', 'Имейл адресът не изглежда валиден.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        if (!$consent) {
+            flash_set('contact', 'Потвърди, че си съгласен да обработим данните за отговор на запитването.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        $company = $this->catalog->getCompany();
+        $recipient = $this->contactRecipient($company);
+        if ($recipient === null) {
+            $this->logger->application('contact_form_recipient_missing', $this->requestContext(), 'error');
+            flash_set('contact', 'Формата още няма настроен получател. Моля, използвай телефона за контакт.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        $subject = $this->encodedMailSubject('Запитване от сайта: ' . $topic);
+        $host = parse_url($this->currentSeoBaseUrl(), PHP_URL_HOST) ?: 'kotupanovclima.eu';
+        $body = implode("\n", [
+            'Ново запитване от kotupanovclima.eu',
+            '',
+            'Тема: ' . $topic,
+            'Име: ' . $name,
+            'Имейл: ' . ($email !== '' ? $email : 'не е оставен'),
+            'Телефон: ' . ($phone !== '' ? $phone : 'не е оставен'),
+            '',
+            'Съобщение:',
+            $message,
+            '',
+            'IP: ' . (detect_client_ip() ?? 'unknown'),
+            'Дата: ' . date('Y-m-d H:i:s'),
+        ]);
+        $headers = [
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=UTF-8',
+            'From: Kotupanovclima Website <no-reply@' . $host . '>',
+        ];
+
+        if ($email !== '') {
+            $headers[] = 'Reply-To: ' . $email;
+        }
+
+        $sent = @mail($recipient, $subject, $body, implode("\r\n", $headers));
+        if (!$sent) {
+            $this->logger->application('contact_form_mail_failed', $this->requestContext([
+                'recipientDomain' => substr(strrchr($recipient, '@') ?: '', 1),
+            ]), 'error');
+            flash_set('contact', 'Не успяхме да изпратим формата. Моля, обади се директно по телефона.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        $_SESSION['contact_last_sent_at'] = time();
+        $this->logger->application('contact_form_sent', $this->requestContext([
+            'topic' => $topicKey,
+        ]));
+        flash_set('contact', 'Благодарим, запитването е изпратено успешно.', 'success');
+        redirect_to('/kontakti');
     }
 
     private function serviceRepairPage(): void
@@ -272,6 +390,28 @@ final class App
             'metaDescription' => 'Ремонт, профилактика, почистване и диагностика на климатична техника за Перник и региона.',
             'company' => $this->catalog->getCompany(),
             'currentPath' => '/remont-i-profilaktika',
+        ]);
+    }
+
+    private function termsPage(): void
+    {
+        echo $this->view->render('public/terms', [
+            'pageTitle' => 'Общи условия',
+            'metaTitle' => 'Общи условия | Котупановклима ЕООД',
+            'metaDescription' => 'Общи условия за използване на сайта kotupanovclima.eu и информация за оферти, услуги и контакт.',
+            'company' => $this->catalog->getCompany(),
+            'currentPath' => '/obshti-usloviya',
+        ]);
+    }
+
+    private function privacyPage(): void
+    {
+        echo $this->view->render('public/privacy', [
+            'pageTitle' => 'Политика за поверителност',
+            'metaTitle' => 'Политика за поверителност | Котупановклима ЕООД',
+            'metaDescription' => 'Информация за обработването на лични данни, контактната форма и използването на бисквитки в kotupanovclima.eu.',
+            'company' => $this->catalog->getCompany(),
+            'currentPath' => '/politika-za-poveritelnost',
         ]);
     }
 
@@ -301,6 +441,8 @@ final class App
             ['loc' => $baseUrl . '/produkti/klimatici', 'priority' => '0.8', 'lastmod' => $lastmod],
             ['loc' => $baseUrl . '/produkti/termopompi', 'priority' => '0.8', 'lastmod' => $lastmod],
             ['loc' => $baseUrl . '/kontakti', 'priority' => '0.7', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/obshti-usloviya', 'priority' => '0.3', 'lastmod' => $lastmod],
+            ['loc' => $baseUrl . '/politika-za-poveritelnost', 'priority' => '0.3', 'lastmod' => $lastmod],
         ];
 
         foreach (['airConditioners' => 'klimatici', 'heatPumps' => 'termopompi'] as $category => $path) {
@@ -806,6 +948,41 @@ final class App
 
         flash_set('settings', 'Настройките са записани.', 'success');
         redirect_to('/admin/settings');
+    }
+
+    private function contactTopics(): array
+    {
+        return [
+            'general' => 'Общо запитване',
+            'offer' => 'Оферта за климатик или термопомпа',
+            'installation' => 'Монтаж или подмяна',
+            'repair' => 'Ремонт и профилактика',
+            'promotion' => 'Промоция',
+        ];
+    }
+
+    private function contactRecipient(array $company): ?string
+    {
+        $recipient = getenv('CONTACT_FORM_TO');
+        if (!is_string($recipient) || trim($recipient) === '') {
+            $recipient = $company['email'] ?? null;
+        }
+
+        $recipient = is_string($recipient) ? trim($recipient) : '';
+
+        return filter_var($recipient, FILTER_VALIDATE_EMAIL) !== false ? $recipient : null;
+    }
+
+    private function limitText(mixed $value, int $length): string
+    {
+        $value = trim(normalize_newlines(strip_tags((string) ($value ?? ''))));
+
+        return mb_substr($value, 0, $length, 'UTF-8');
+    }
+
+    private function encodedMailSubject(string $subject): string
+    {
+        return '=?UTF-8?B?' . base64_encode($subject) . '?=';
     }
 
     private function nullableText(mixed $value): ?string

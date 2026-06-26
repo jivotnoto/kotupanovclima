@@ -35,6 +35,14 @@ It should be updated whenever architecture, deployment assumptions, security beh
 
 - Catalog product images link to their product detail pages.
 - Product detail images open in a lightweight overlay controlled by `public/assets/site.js`.
+- Fujitsu catalog entries are normalized as `Fujitsu Airstage` / `KJCA` and use the official KJ Series 2025 specs for ASEH07/09/12/14KJCAL.
+- When changing Fujitsu or other product specs, fetch the live `storage/data/seed-products.json` first and preserve live prices/admin-entered values unless the user explicitly asks to replace them.
+
+## Current branding behavior
+
+- The public and admin headers use `public/images/kotupanovclima-logo-transparent.png` as the main site logo, so it sits directly on the header panel without an inner card.
+- Browser icons use `public/images/site-icon.png`.
+- The default Open Graph/Twitter preview image uses `public/images/site-og-image.png`; product pages can still override it with the product image.
 
 ## Current networking behavior
 

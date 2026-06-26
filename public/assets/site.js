@@ -27,6 +27,29 @@
         update();
     });
 
+    const cookieConsent = document.querySelector('[data-cookie-consent]');
+    const cookieAccept = document.querySelector('[data-cookie-consent-accept]');
+    if (cookieConsent instanceof HTMLElement && cookieAccept instanceof HTMLButtonElement) {
+        const consentKey = 'kotupanovclima_cookie_consent';
+        if (localStorage.getItem(consentKey) !== 'accepted') {
+            cookieConsent.hidden = false;
+        }
+
+        cookieAccept.addEventListener('click', () => {
+            localStorage.setItem(consentKey, 'accepted');
+            cookieConsent.hidden = true;
+        });
+    }
+
+    document.querySelectorAll('.mobile-menu__link').forEach((link) => {
+        link.addEventListener('click', () => {
+            const menu = link.closest('details');
+            if (menu instanceof HTMLDetailsElement) {
+                menu.open = false;
+            }
+        });
+    });
+
     const imageViewer = document.querySelector('[data-image-viewer]');
     if (!imageViewer) {
         return;

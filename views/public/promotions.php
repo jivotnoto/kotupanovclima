@@ -1,5 +1,6 @@
 <section class="section-block">
-    <div class="section-surface">
+    <div class="section-surface section-surface--decor">
+        <img class="surface-mark surface-mark--promo" src="/images/promo-mark.svg" alt="" aria-hidden="true">
         <div class="section-heading">
             <span class="section-heading__eyebrow">Промоции</span>
             <h1 class="section-heading__title">Горещи оферти и цени, които няма как да подминеш</h1>

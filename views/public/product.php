@@ -1,4 +1,7 @@
-<?php $categoryPath = $product['category'] === 'heatPumps' ? 'termopompi' : 'klimatici'; ?>
+<?php
+$categoryPath = $product['category'] === 'heatPumps' ? 'termopompi' : 'klimatici';
+$productMark = $product['category'] === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/images/air-conditioner-mark.svg';
+?>
 <section class="section-block">
     <a class="back-link" href="/produkti/<?= e($categoryPath) ?>">Назад към каталога</a>
     <div class="detail-grid">
@@ -38,7 +41,8 @@
             </div>
         </article>
 
-        <aside class="detail-side-card">
+        <aside class="detail-side-card detail-side-card--decor">
+            <img class="surface-mark surface-mark--product" src="<?= e($productMark) ?>" alt="" aria-hidden="true">
             <h2>Ключови акценти</h2>
             <ul class="bullet-list">
                 <?php foreach ($product['features'] as $feature): ?>

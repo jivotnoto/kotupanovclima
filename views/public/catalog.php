@@ -18,9 +18,11 @@ $brands = array_values(array_unique(array_map(static fn (array $product): string
 sort($brands);
 $powers = array_values(array_unique(array_filter(array_map(static fn (array $product): ?int => $product['btu'], $products))));
 sort($powers);
+$catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/images/catalog-mark.svg';
 ?>
 <section class="section-block">
-    <div class="section-surface">
+    <div class="section-surface section-surface--decor">
+        <img class="surface-mark surface-mark--catalog" src="<?= e($catalogMark) ?>" alt="" aria-hidden="true">
         <div class="section-heading">
             <span class="section-heading__eyebrow"><?= e($pageTitle) ?></span>
             <h1 class="section-heading__title"><?= e($title) ?></h1>

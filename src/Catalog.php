@@ -11,7 +11,7 @@ final class Catalog
         'Crystal::Quartz' => ['/images/products/crystal-quartz.jpg', 'https://crystalbgr.com/en/product/invertoren-klimatik-crystal-quartz-24h-ka-visokostene/'],
         'Daikin::Perfera' => ['/images/products/daikin-perfera.jpg', 'https://www.daikin.eu/en_us/product-group/air-to-air-heat-pumps/perfera.html'],
         'Daikin::Ururu Sarara' => ['/images/products/daikin-ururu-sarara.jpg', 'https://www.daikin.eu/en_us/product-group/air-to-air-heat-pumps/ururu-sarara.html'],
-        'Fujitsu General::K6TE' => ['/images/products/fujitsu-kmcf.png', 'https://www.fujitsu-general.com/eu/products/split/wall/kmcf/index.html'],
+        'Fujitsu Airstage::KJCA' => ['/images/products/fujitsu-airstage-kjca.png', 'https://www.generalww.com/shared/pdf-feu-ctlg-kj-series-2025-01.pdf'],
         'Mitsubishi Heavy::Standard' => ['/images/products/mitsubishi-premium.jpg', 'https://www.mhi.com/'],
         'Mitsubishi Heavy::Premium' => ['/images/products/mitsubishi-premium.jpg', 'https://www.mhi.com/'],
         'Mitsubishi Heavy::Diamant' => ['/images/products/mitsubishi-diamond.jpg', 'https://www.mhi.com/'],
@@ -25,7 +25,7 @@ final class Catalog
         'Crystal' => '/images/brands/crystal-logo.svg',
         'Daikin' => '/images/brands/daikin-logo.png',
         'LG' => '/images/brands/lg-logo.svg',
-        'Fujitsu General' => '/images/brands/fujitsu-general-logo.png',
+        'Fujitsu Airstage' => '/images/brands/fujitsu-airstage-logo.svg',
         'Mitsubishi Heavy' => '/images/brands/mitsubishi-heavy-logo.svg',
     ];
 
@@ -109,7 +109,7 @@ final class Catalog
             ['name' => 'Crystal', 'logoPath' => '/images/brands/crystal-logo.svg', 'note' => 'Климатици и термопомпи'],
             ['name' => 'Daikin', 'logoPath' => '/images/brands/daikin-logo.png', 'note' => 'Премиум климатизация'],
             ['name' => 'LG', 'logoPath' => '/images/brands/lg-logo.svg', 'note' => 'Въздух-вода системи'],
-            ['name' => 'Fujitsu General', 'logoPath' => '/images/brands/fujitsu-general-logo.png', 'note' => 'Надеждни домашни серии'],
+            ['name' => 'Fujitsu Airstage', 'logoPath' => '/images/brands/fujitsu-airstage-logo.svg', 'note' => 'KJ серия с отопление до -20 C'],
             ['name' => 'Mitsubishi Heavy', 'logoPath' => '/images/brands/mitsubishi-heavy-logo.svg', 'note' => 'Висок клас стенни модели'],
         ];
     }
@@ -120,7 +120,7 @@ final class Catalog
             ['name' => 'Gree', 'url' => 'https://global.gree.com/'],
             ['name' => 'Crystal', 'url' => 'https://crystalbgr.com/en/'],
             ['name' => 'Daikin', 'url' => 'https://www.daikin.com/'],
-            ['name' => 'Fujitsu General', 'url' => 'https://www.fujitsu-general.com/'],
+            ['name' => 'Fujitsu Airstage', 'url' => 'https://www.fujitsu-general.com/eu/products/split/wall/'],
             ['name' => 'Mitsubishi Heavy', 'url' => 'https://www.mhi.com/'],
             ['name' => 'LG', 'url' => 'https://www.lg.com/global/business/'],
         ];
@@ -302,8 +302,10 @@ final class Catalog
             'Daikin::Ururu Sarara::9000' => 5599.0,
             'Daikin::Ururu Sarara::12000' => 6199.0,
             'Daikin::Ururu Sarara::18000' => 7299.0,
-            'Fujitsu General::K6TE::9000' => 1999.0,
-            'Fujitsu General::K6TE::12000' => 2199.0,
+            'Fujitsu Airstage::KJCA::7000' => 2403.72,
+            'Fujitsu Airstage::KJCA::9000' => 2501.51,
+            'Fujitsu Airstage::KJCA::12000' => 2834.0,
+            'Fujitsu Airstage::KJCA::14000' => 3186.05,
             'Mitsubishi Heavy::Standard::9000' => 1699.0,
             'Mitsubishi Heavy::Standard::12000' => 1899.0,
             'Mitsubishi Heavy::Standard::18000' => 2599.0,

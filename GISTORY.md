@@ -102,3 +102,36 @@ It complements Git commits with short human-readable context about what changed 
 ### Catalog data protection rule
 
 - Added a standing project rule: do not overwrite configured product, model, and price data from stale local files; fetch current live catalog files first and migrate/update those contents when changes are needed.
+
+### Homepage brand logo strip
+
+- Moved the official brands card directly under the top site header card and changed it into a logo-only strip with each logo linking to the relevant product category.
+- Added continuous logo strip motion and a small decorative air-conditioner mark inside the main homepage hero card.
+
+### Decorative page marks
+
+- Added lightweight decorative SVG marks for catalog, heat pump, promotions, contacts, and repair/service pages.
+- Applied the marks to public page hero/surface cards and product detail side cards without touching catalog product/model/price data.
+
+### Friend-recommended site essentials
+
+- Added original draft pages for Общи условия and Политика за поверителност, plus sitemap/footer links.
+- Added cookie consent banner, responsive hamburger menu, richer footer, and a public contact form with CSRF, honeypot, basic rate limiting, and mail delivery via `CONTACT_FORM_TO` or the configured company email.
+- Reworked the legal pages into a fuller numbered format inspired by the reviewed reference text, but adapted to this site as an inquiry/service website rather than an online checkout store.
+
+### Local phone testing port
+
+- Added Docker compose port `9090:80` for local LAN testing from a phone. Windows already has a portproxy for `0.0.0.0:9090` to the current WSL IP, while `3001` remains loopback-only on the Windows side without elevated portproxy setup.
+
+### Site logo branding
+
+- Added cropped local logo assets from the provided Kotupanov Clima image: full header logo, standalone mark, favicon icon, and social preview image.
+- Replaced the old `KK` header badge with the new logo and switched the default Open Graph image to the branded preview.
+- Added a transparent header logo variant and removed the inner logo card styling so the logo sits directly on the main header panel.
+
+### Fujitsu Airstage catalog cleanup
+
+- Fetched the current live `seed-products.json` before editing and confirmed it matched local data.
+- Replaced stale Fujitsu General/K6TE/KETE references with Fujitsu Airstage KJCA mappings.
+- Filled ASEH07/09/12/14KJCAL specs from the official Fujitsu Airstage KJ Series 2025 catalog while preserving existing live prices.
+- Added Fujitsu Airstage brand logo and KJCA product image mapping for catalog cards, product pages, Open Graph images, and the homepage brand slider.
