@@ -79,19 +79,20 @@ $existingImage = $product['customImagePath'] ?? null;
 
         <div class="form-section-title">Изображение и източник</div>
         <div class="form-grid">
-            <div class="field"><label>Качи изображение</label><input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.webp"></div>
-            <div class="field"><label>Път до изображение</label><input type="text" name="customImagePath" value="<?= e($product['customImagePath'] ?? '') ?>" placeholder="/images/products/..."></div>
+            <div class="field"><label>Качи изображение</label><input type="file" name="imageFile" accept=".jpg,.jpeg,.png,.webp" data-product-image-file></div>
+            <div class="field"><label>Път до изображение</label><input type="text" name="customImagePath" value="<?= e($product['customImagePath'] ?? '') ?>" placeholder="/images/products/..." data-product-image-path></div>
             <div class="field"><label>Източник на снимка</label><input type="text" name="customImageSource" value="<?= e($product['customImageSource'] ?? '') ?>" placeholder="Официален сайт на производителя"></div>
             <div class="field"><label>Заглавие на източника</label><input type="text" name="sourceTitle" value="<?= e($product['sourceTitle'] ?? '') ?>" placeholder="Техническа страница"></div>
             <div class="field field--span-2"><label>Линк към източника</label><input type="text" name="sourceUrl" value="<?= e($product['sourceUrl'] ?? '') ?>" placeholder="https://..."></div>
         </div>
 
-        <?php if (!empty($existingImage)): ?>
-            <div class="image-preview-card">
-                <span class="image-preview-card__label">Текущо изображение</span>
-                <img src="<?= e($existingImage) ?>" alt="<?= e($product['modelLabel'] ?? 'Продукт') ?>">
-            </div>
-        <?php endif; ?>
+        <div class="image-preview-card" data-product-image-preview<?= empty($existingImage) ? ' hidden' : '' ?>>
+            <span class="image-preview-card__label" data-product-image-preview-label><?= !empty($existingImage) ? 'Текущо изображение' : 'Преглед на изображение' ?></span>
+            <img src="<?= e($existingImage ?? '') ?>" alt="<?= e($product['modelLabel'] ?? 'Продукт') ?>" data-product-image-preview-img>
+            <p class="image-preview-card__hint" data-product-image-preview-hint>
+                <?= !empty($existingImage) ? 'Можеш да качиш нов файл или да смениш пътя, за да обновиш прегледа.' : 'Избери файл или въведи път, за да видиш преглед преди запис.' ?>
+            </p>
+        </div>
 
         <div class="form-section-title">Бележки и публикуване</div>
         <div class="field">

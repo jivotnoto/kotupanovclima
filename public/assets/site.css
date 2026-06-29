@@ -1389,6 +1389,12 @@ button {
     object-fit: contain;
 }
 
+.image-preview-card__hint {
+    margin: 0.75rem 0 0;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+}
+
 .table-wrap {
     overflow-x: auto;
 }

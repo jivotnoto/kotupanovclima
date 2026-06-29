@@ -50,6 +50,70 @@
         });
     });
 
+    const productImageFile = document.querySelector('[data-product-image-file]');
+    const productImagePath = document.querySelector('[data-product-image-path]');
+    const productImagePreview = document.querySelector('[data-product-image-preview]');
+    const productImagePreviewImg = document.querySelector('[data-product-image-preview-img]');
+    const productImagePreviewLabel = document.querySelector('[data-product-image-preview-label]');
+    const productImagePreviewHint = document.querySelector('[data-product-image-preview-hint]');
+    let productImageObjectUrl = null;
+
+    if (
+        productImagePreview instanceof HTMLElement
+        && productImagePreviewImg instanceof HTMLImageElement
+    ) {
+        const setPreview = (src, label, hint) => {
+            if (!src) {
+                productImagePreview.hidden = true;
+                productImagePreviewImg.removeAttribute('src');
+                return;
+            }
+
+            productImagePreviewImg.src = src;
+            if (productImagePreviewLabel) {
+                productImagePreviewLabel.textContent = label;
+            }
+            if (productImagePreviewHint) {
+                productImagePreviewHint.textContent = hint;
+            }
+            productImagePreview.hidden = false;
+        };
+
+        const clearObjectUrl = () => {
+            if (productImageObjectUrl) {
+                URL.revokeObjectURL(productImageObjectUrl);
+                productImageObjectUrl = null;
+            }
+        };
+
+        if (productImageFile instanceof HTMLInputElement) {
+            productImageFile.addEventListener('change', () => {
+                clearObjectUrl();
+
+                const file = productImageFile.files ? productImageFile.files[0] : null;
+                if (!file) {
+                    const fallbackPath = productImagePath instanceof HTMLInputElement ? productImagePath.value.trim() : '';
+                    setPreview(fallbackPath, 'Преглед от въведения път', 'Снимката ще се използва от този път, ако не качиш нов файл.');
+                    return;
+                }
+
+                productImageObjectUrl = URL.createObjectURL(file);
+                setPreview(productImageObjectUrl, 'Нова избрана снимка', 'Това е локален преглед. Файлът ще бъде качен след натискане на "Запиши продукта".');
+            });
+        }
+
+        if (productImagePath instanceof HTMLInputElement) {
+            productImagePath.addEventListener('input', () => {
+                if (productImageFile instanceof HTMLInputElement && productImageFile.files && productImageFile.files.length > 0) {
+                    return;
+                }
+
+                const path = productImagePath.value.trim();
+                setPreview(path, 'Преглед от въведения път', 'Снимката ще се използва от този път, ако не качиш нов файл.');
+            });
+        }
+    }
+
     const imageViewer = document.querySelector('[data-image-viewer]');
     if (!imageViewer) {
         return;
