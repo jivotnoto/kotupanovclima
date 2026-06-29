@@ -1164,7 +1164,7 @@ final class App
         }
 
         $fileName = slugify($brand . '-' . $series . '-' . $modelLabel) . '-' . time() . $extensions[$mimeType];
-        $targetDirectory = $this->basePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads';
+        $targetDirectory = $this->publicUploadsDirectory();
 
         if (!is_dir($targetDirectory)) {
             mkdir($targetDirectory, 0775, true);
@@ -1177,6 +1177,16 @@ final class App
         }
 
         return '/uploads/' . $fileName;
+    }
+
+    private function publicUploadsDirectory(): string
+    {
+        $documentRoot = $_SERVER['DOCUMENT_ROOT'] ?? null;
+        if (is_string($documentRoot) && trim($documentRoot) !== '') {
+            return rtrim($documentRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'uploads';
+        }
+
+        return $this->basePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads';
     }
 
     private function requestContext(array $extra = []): array
