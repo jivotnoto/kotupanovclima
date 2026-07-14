@@ -178,3 +178,9 @@ It complements Git commits with short human-readable context about what changed 
 
 - Applied the same responsive containment fix to product cards on the air-conditioner and heat-pump catalog pages.
 - Verified all 52 air-conditioner cards and all 3 heat-pump cards at 320, 360, 390, 430, and 1280 px.
+
+### Promotion card CSS refinement
+
+- Added the suggested 250 px promotion-image cap without removing responsive stage containment.
+- Centered promotion CTA buttons with 10 px bottom spacing while preserving automatic top spacing.
+- Rejected a proposed global `margin: auto` rule because it removed intentional spacing from product details and affected unrelated decorated layouts.
