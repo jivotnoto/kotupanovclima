@@ -191,3 +191,8 @@ It complements Git commits with short human-readable context about what changed 
 - Preserved search, brand, technology, power, and EUR price filters across page links; submitting new filters resets to page 1.
 - Added an accessible current-page state, previous/next controls, compact page links, and direct `#modeli` navigation.
 - Verified 5 air-conditioner pages, one-page heat-pump behavior, invalid page handling, filter persistence, and layouts at 320 and 1280 px.
+
+### Cross-platform Git line endings
+
+- Added `.gitattributes` to normalize source files to LF and explicitly classify binary assets.
+- Aligned the shared repository's local `core.autocrlf` setting to `input` so Windows Git and WSL Git no longer disagree about unchanged files.

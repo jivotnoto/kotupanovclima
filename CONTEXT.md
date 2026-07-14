@@ -22,6 +22,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Docker runtime files were removed from the repo.
 - `.cpanel.yml` contains copy-only deployment tasks for panels that support cPanel-style Git deploys.
 - Deployment guide: `DEPLOY_SUPERHOSTING.md`.
+- `.gitattributes` enforces LF for source/text files and binary handling for images/documents so Windows Git and WSL Git report the same status.
 
 ## Production Layout
 
