@@ -108,6 +108,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - The homepage brand strip uses duplicated fixed-width groups for continuous motion and shows at least three brands on narrow screens.
 - The homepage includes three original service images for air conditioners, heat pumps, and repair/maintenance.
 - Promotion images are bounded inside their responsive image stages so square and portrait assets are not clipped on mobile.
+- Catalog product-card images use the same bounded containment on both air-conditioner and heat-pump listing pages.
 - Public prices are displayed in EUR only; BGN values remain stored internally for admin compatibility.
 - The contact page is single-column and supports `/kontakti?topic=repair#barzo-zapitvane`.
 - A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.

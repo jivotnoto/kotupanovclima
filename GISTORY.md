@@ -173,3 +173,8 @@ It complements Git commits with short human-readable context about what changed 
 
 - Fixed square and portrait promotion images being clipped by the fixed-ratio card stage on mobile.
 - Verified every homepage and promotions-page image at 320, 360, 390, 430, and 1280 px, including the full LG Therma V image.
+
+### Mobile catalog image containment
+
+- Applied the same responsive containment fix to product cards on the air-conditioner and heat-pump catalog pages.
+- Verified all 52 air-conditioner cards and all 3 heat-pump cards at 320, 360, 390, 430, and 1280 px.
