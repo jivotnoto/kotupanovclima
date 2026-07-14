@@ -107,6 +107,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Mobile header uses a hamburger menu with the phone as its final item.
 - The homepage brand strip uses duplicated fixed-width groups for continuous motion and shows at least three brands on narrow screens.
 - The homepage includes three original service images for air conditioners, heat pumps, and repair/maintenance.
+- Promotion images are bounded inside their responsive image stages so square and portrait assets are not clipped on mobile.
 - Public prices are displayed in EUR only; BGN values remain stored internally for admin compatibility.
 - The contact page is single-column and supports `/kontakti?topic=repair#barzo-zapitvane`.
 - A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.

@@ -168,3 +168,8 @@ It complements Git commits with short human-readable context about what changed 
 - Downloaded a read-only live snapshot to `backups/pre-ux-live-20260714-124240`; live product data and uploads matched local by SHA-256.
 - Passed PHP 8.3 lint, JSON/JavaScript/CSS checks, 67 responsive browser assertions, and isolated admin tests for IP allowlisting, login, CSRF, product save, image upload, XSS escaping, and reordering.
 - Kept all testing local and did not upload or deploy these changes to the live site.
+
+### Mobile promotion image containment
+
+- Fixed square and portrait promotion images being clipped by the fixed-ratio card stage on mobile.
+- Verified every homepage and promotions-page image at 320, 360, 390, 430, and 1280 px, including the full LG Therma V image.
