@@ -9,8 +9,18 @@
             <div class="contact-list">
                 <div><strong>Телефони</strong><span><?= e(implode(' / ', $company['phones'] ?? [])) ?></span></div>
                 <div><strong>Адрес</strong><span><?= e($company['address'] ?? '') ?></span></div>
-                <div><strong>Имейл</strong><span><?= e($company['email'] ?? 'Ще бъде добавен в следващата стъпка') ?></span></div>
+                <?php if (!empty($company['email'])): ?>
+                    <div><strong>Имейл</strong><span><a href="mailto:<?= e($company['email']) ?>"><?= e($company['email']) ?></a></span></div>
+                <?php endif; ?>
                 <div><strong>Работно време</strong><span><?= e($company['workingHours'] ?? 'По уговорка') ?></span></div>
+            </div>
+            <div class="nap-block">
+                <address>
+                    <strong><?= e($company['companyName'] ?? 'Котупановклима ЕООД') ?></strong><br>
+                    ул. Китка 3, гр. Перник 2300<br>
+                    тел. <?= e($company['phones'][0] ?? '') ?>
+                </address>
+                <a class="button" href="https://www.google.com/maps/search/?api=1&amp;query=<?= e(rawurlencode('Котупановклима, ул. Китка 3, Перник')) ?>" target="_blank" rel="noopener noreferrer">Виж на Google Карти</a>
             </div>
         </article>
         <article class="section-surface section-surface--cool">

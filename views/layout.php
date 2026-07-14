@@ -32,6 +32,9 @@ $ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/site-og-image.png');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($metaTitle) ?></title>
     <meta name="description" content="<?= e($metaDescription) ?>">
+    <?php if (!$isAdmin && !empty($metaKeywords)): ?>
+        <meta name="keywords" content="<?= e($metaKeywords) ?>">
+    <?php endif; ?>
     <?php if ($isAdmin): ?>
         <meta name="robots" content="noindex, nofollow">
     <?php elseif ($canonicalUrl !== null): ?>
@@ -52,6 +55,12 @@ $ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/site-og-image.png');
         <?php if ($ogImageUrl !== null): ?>
             <meta name="twitter:image" content="<?= e($ogImageUrl) ?>">
         <?php endif; ?>
+        <?php foreach (($jsonLd ?? []) as $schema): ?>
+            <?php $schemaJson = json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG); ?>
+            <?php if ($schemaJson !== false): ?>
+                <script type="application/ld+json"><?= $schemaJson ?></script>
+            <?php endif; ?>
+        <?php endforeach; ?>
     <?php endif; ?>
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/png" sizes="512x512" href="/images/site-icon.png">

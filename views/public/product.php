@@ -9,7 +9,7 @@ $productMark = $product['category'] === 'heatPumps' ? '/images/heat-pump-mark.sv
             <div class="detail-card__hero">
                 <?php if (!empty($product['imagePath'])): ?>
                     <button class="detail-card__image-button" type="button" data-image-viewer-open data-image-src="<?= e($product['imagePath']) ?>" data-image-alt="<?= e($product['title']) ?>" aria-label="Покажи снимката по-голяма">
-                        <img src="<?= e($product['imagePath']) ?>" alt="<?= e($product['title']) ?>">
+                        <img src="<?= e($product['imagePath']) ?>" alt="<?= e($product['typeLabel'] . ' ' . $product['title'] . ' — Перник') ?>" decoding="async">
                     </button>
                 <?php endif; ?>
             </div>

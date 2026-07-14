@@ -28,7 +28,8 @@ $brandCategoryTargets = [
     <div class="hero__content hero__main-card">
         <img class="hero__visual-mark" src="/images/air-conditioner-mark.svg" alt="" aria-hidden="true">
         <a class="hero__eyebrow hero__eyebrow--link" href="/promocii"><?= e($settings['promo']['title'] ?? 'Промоции') ?></a>
-        <h1 class="hero__title hero__title--compact">Климатична техника, подбрана да изглежда добре и да работи правилно.</h1>
+        <h1 class="hero__title hero__title--compact">Климатици и термопомпи в Перник — продажба, монтаж и сервиз</h1>
+        <p class="hero__subtitle">Климатична техника, подбрана да изглежда добре и да работи правилно.</p>
         <p class="hero__lead"><?= e($settings['promo']['subtitle'] ?? '') ?></p>
         <div class="button-row">
             <a class="button button--primary" href="/produkti/klimatici">Разгледай климатици</a>
@@ -77,6 +78,39 @@ $brandCategoryTargets = [
                 <?php endif; ?>
             </article>
         <?php endforeach; ?>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="section-surface">
+        <div class="section-heading">
+            <span class="section-heading__eyebrow">Защо да изберете нас</span>
+            <h2 class="section-heading__title">Климатици и термопомпи с монтаж и сервиз в Перник и региона</h2>
+            <p>Предлагаме продажба, монтаж, ремонт и профилактика на <a href="/produkti/klimatici">климатици</a> и <a href="/produkti/termopompi">термопомпи</a> за домове и офиси в Перник, Радомир, Батановци и околните населени места. Работим само с официални марки, даваме гаранция и ясна консултация според помещението и бюджета.</p>
+        </div>
+        <div class="mini-grid">
+            <div class="feature-card">Официални марки и подбрани серии с реални технически данни.</div>
+            <div class="feature-card">Стандартен монтаж до 3 м тръбен път, включен в цената на много модели.</div>
+            <div class="feature-card">Сервиз, диагностика и сезонна профилактика за надеждна работа.</div>
+            <div class="feature-card">Консултация за точния модел според квадратура, изложение и нужди.</div>
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="section-surface">
+        <div class="section-heading">
+            <span class="section-heading__eyebrow">Често задавани въпроси</span>
+            <h2 class="section-heading__title">Отговори за монтаж, профилактика и избор</h2>
+        </div>
+        <div class="faq-list">
+            <?php foreach (($faq ?? []) as $item): ?>
+                <details class="faq-item">
+                    <summary><?= e($item['question']) ?></summary>
+                    <p><?= e($item['answer']) ?></p>
+                </details>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>
 

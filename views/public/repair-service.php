@@ -3,8 +3,8 @@
         <img class="surface-mark surface-mark--service" src="/images/service-mark.svg" alt="" aria-hidden="true">
         <div class="section-heading">
             <span class="section-heading__eyebrow">Сервиз</span>
-            <h1 class="section-heading__title">Ремонт и профилактика на климатична техника</h1>
-            <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Работим с фокус върху реалната причина, а не върху временни решения.</p>
+            <h1 class="section-heading__title">Ремонт и профилактика на климатична техника в Перник</h1>
+            <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Обслужваме Перник и региона с фокус върху реалната причина, а не върху временни решения.</p>
         </div>
     </div>
 </section>
@@ -54,6 +54,39 @@
             <div class="feature-card">Практична препоръка дали е достатъчна профилактика или е нужен реален ремонт.</div>
             <div class="feature-card">Фокус върху надеждна работа в сезона, не само върху моментно „тръгване“ на машината.</div>
             <div class="feature-card">Подходящо както за домашни климатици, така и за по-натоварени системи в офиси и обекти.</div>
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="section-surface">
+        <div class="section-heading">
+            <span class="section-heading__eyebrow">Пакети услуги</span>
+            <h2 class="section-heading__title">Профилактика и ремонт с ясен обхват</h2>
+            <p>Цената зависи от модела, типа система и състоянието ѝ. Свържете се за конкретна оферта — след кратко описание на симптомите даваме ориентировъчна цена предварително.</p>
+        </div>
+        <div class="mini-grid">
+            <div class="feature-card"><strong>Сезонна профилактика</strong> — почистване на филтри и топлообменници, проверка на дренаж и работни режими. Цена според модела.</div>
+            <div class="feature-card"><strong>Диагностика на проблем</strong> — установяване на причината при слабо охлаждане/отопление, шум, теч или грешка на дисплея.</div>
+            <div class="feature-card"><strong>Ремонт</strong> — отстраняване на конкретната повреда след диагностика и съгласуване с клиента.</div>
+            <div class="feature-card"><strong>Зареждане с фреон</strong> — проверка за теч и допълване на хладилен агент при нужда.</div>
+        </div>
+    </div>
+</section>
+
+<section class="section-block">
+    <div class="section-surface">
+        <div class="section-heading">
+            <span class="section-heading__eyebrow">Често задавани въпроси</span>
+            <h2 class="section-heading__title">Отговори за сервиз и профилактика</h2>
+        </div>
+        <div class="faq-list">
+            <?php foreach (($faq ?? []) as $item): ?>
+                <details class="faq-item">
+                    <summary><?= e($item['question']) ?></summary>
+                    <p><?= e($item['answer']) ?></p>
+                </details>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>

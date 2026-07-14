@@ -1635,3 +1635,75 @@ button {
         min-width: 680px;
     }
 }
+
+/* SEO content additions: hero subtitle, FAQ, NAP block */
+.hero__subtitle {
+    margin: 0.35rem 0 0;
+    font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+    font-weight: 600;
+    color: var(--text);
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.faq-item {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface-strong);
+    padding: 0.35rem 1.1rem;
+}
+
+.faq-item > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.75rem 0;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.faq-item > summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item > summary::after {
+    content: "+";
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--accent-strong);
+    transition: transform 0.2s ease;
+}
+
+.faq-item[open] > summary::after {
+    content: "–";
+}
+
+.faq-item > p {
+    margin: 0 0 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+}
+
+.nap-block {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    align-items: flex-start;
+}
+
+.nap-block address {
+    font-style: normal;
+    line-height: 1.55;
+    color: var(--text);
+}

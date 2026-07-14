@@ -243,16 +243,25 @@ final class App
 
     private function home(): void
     {
+        $company = $this->catalog->getCompany();
+        $faq = $this->faqEntries();
+
         echo $this->view->render('public/home', [
             'pageTitle' => 'Котупановклима ЕООД',
             'metaTitle' => 'Котупановклима ЕООД | Климатици и термопомпи в Перник',
-            'metaDescription' => 'Продажба, монтаж, ремонт и профилактика на климатици и термопомпи за Перник и региона.',
+            'metaDescription' => 'Продажба, монтаж, ремонт и профилактика на климатици и термопомпи в Перник и региона. Официални марки, гаранция и професионална консултация. Обади се!',
+            'metaKeywords' => 'климатици Перник, термопомпи Перник, монтаж на климатици Перник, ремонт на климатици Перник, инверторни климатици, термопомпа въздух-вода, климатици цени Перник, Котупановклима',
             'ogImage' => '/images/site-og-image.png',
-            'company' => $this->catalog->getCompany(),
+            'company' => $company,
             'settings' => $this->catalog->getSettings(),
             'promotions' => array_slice($this->catalog->getPromotions(true), 0, 4),
             'brandShowcase' => $this->catalog->getBrandShowcase(),
+            'faq' => $faq,
             'currentPath' => '/',
+            'jsonLd' => [
+                $this->businessSchema($company, true),
+                $this->faqSchema($faq),
+            ],
         ]);
     }
 
@@ -260,25 +269,42 @@ final class App
     {
         echo $this->view->render('public/promotions', [
             'pageTitle' => 'Промоции',
-            'metaTitle' => 'Промоции за климатици и термопомпи | Котупановклима',
-            'metaDescription' => 'Актуални промоции за климатици и термопомпи с цени в евро и лева, монтаж и консултация.',
+            'metaTitle' => 'Промоции за климатици и термопомпи в Перник | Котупановклима',
+            'metaDescription' => 'Актуални промоции за климатици и термопомпи с цени в евро и лева, монтаж и консултация в Перник и региона.',
+            'metaKeywords' => 'промоции климатици Перник, климатици на промоция, промоции термопомпи, климатици цени Перник, оферти климатици',
             'company' => $this->catalog->getCompany(),
             'promotions' => $this->catalog->getPromotions(true),
             'currentPath' => '/promocii',
+            'jsonLd' => [
+                $this->breadcrumbSchema([
+                    ['name' => 'Начало', 'path' => '/'],
+                    ['name' => 'Промоции', 'path' => '/promocii'],
+                ]),
+            ],
         ]);
     }
 
     private function contactsPage(): void
     {
+        $company = $this->catalog->getCompany();
+
         echo $this->view->render('public/contacts', [
             'pageTitle' => 'Контакти',
             'metaTitle' => 'Контакти | Котупановклима ЕООД',
-            'metaDescription' => 'Свържи се с Котупановклима ЕООД за оферта, монтаж, ремонт или профилактика на климатична техника.',
-            'company' => $this->catalog->getCompany(),
+            'metaDescription' => 'Свържи се с Котупановклима ЕООД за оферта, монтаж, ремонт или профилактика на климатична техника в Перник и региона.',
+            'metaKeywords' => 'контакти Котупановклима, климатици Перник контакти, оферта климатик Перник, телефон климатици Перник',
+            'company' => $company,
             'currentPath' => '/kontakti',
             'flash' => flash_get('contact'),
             'csrfToken' => $this->auth->csrfToken(),
             'contactTopics' => $this->contactTopics(),
+            'jsonLd' => [
+                $this->businessSchema($company, true),
+                $this->breadcrumbSchema([
+                    ['name' => 'Начало', 'path' => '/'],
+                    ['name' => 'Контакти', 'path' => '/kontakti'],
+                ]),
+            ],
         ]);
     }
 
@@ -384,12 +410,32 @@ final class App
 
     private function serviceRepairPage(): void
     {
+        $company = $this->catalog->getCompany();
+        $faq = $this->faqEntries();
+
         echo $this->view->render('public/repair-service', [
             'pageTitle' => 'Ремонт и профилактика',
-            'metaTitle' => 'Ремонт и профилактика на климатици | Котупановклима',
-            'metaDescription' => 'Ремонт, профилактика, почистване и диагностика на климатична техника за Перник и региона.',
-            'company' => $this->catalog->getCompany(),
+            'metaTitle' => 'Ремонт и профилактика на климатици в Перник | Котупановклима',
+            'metaDescription' => 'Ремонт, профилактика, почистване и диагностика на климатична техника за Перник и региона. Ясни пакети и бърза реакция.',
+            'metaKeywords' => 'ремонт на климатици Перник, профилактика на климатици Перник, сервиз климатици Перник, зареждане на климатик с фреон, почистване на климатик',
+            'company' => $company,
             'currentPath' => '/remont-i-profilaktika',
+            'faq' => $faq,
+            'jsonLd' => [
+                [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Service',
+                    'serviceType' => 'Ремонт и профилактика на климатици и термопомпи',
+                    'provider' => $this->businessSchema($company),
+                    'areaServed' => ['@type' => 'City', 'name' => 'Перник'],
+                    'description' => 'Диагностика, ремонт, почистване и сезонна профилактика на климатична техника за Перник и региона.',
+                ],
+                $this->breadcrumbSchema([
+                    ['name' => 'Начало', 'path' => '/'],
+                    ['name' => 'Ремонт и профилактика', 'path' => '/remont-i-profilaktika'],
+                ]),
+                $this->faqSchema($faq),
+            ],
         ]);
     }
 
@@ -481,19 +527,23 @@ final class App
     {
         $path = $category === 'heatPumps' ? '/produkti/termopompi' : '/produkti/klimatici';
         $products = $this->catalog->getProductsByCategory($category);
+        $company = $this->catalog->getCompany();
         $title = $category === 'heatPumps'
-            ? 'Подбрани въздух-вода решения за модерни инсталации'
-            : 'Намери своя идеален модел: Филтрирай бързо по марка, серия и бюджет.';
+            ? 'Термопомпи за отопление и охлаждане — доставка и монтаж в Перник'
+            : 'Климатици за дома и офиса — над 50 модела с цени и монтаж';
 
         echo $this->view->render('public/catalog', [
             'pageTitle' => $category === 'heatPumps' ? 'Термопомпи' : 'Климатици',
             'metaTitle' => $category === 'heatPumps'
-                ? 'Термопомпи въздух-вода | Котупановклима'
-                : 'Климатици за дома и офиса | Котупановклима',
+                ? 'Термопомпи въздух-вода в Перник | Котупановклима'
+                : 'Климатици за дома и офиса в Перник | Котупановклима',
             'metaDescription' => $category === 'heatPumps'
-                ? 'Каталог с подбрани термопомпи въздух-вода, мощности, цени и технически параметри.'
-                : 'Каталог с подбрани климатици, марки, мощности, цени и технически параметри.',
-            'company' => $this->catalog->getCompany(),
+                ? 'Каталог с подбрани термопомпи въздух-вода за Перник и региона — мощности, цени, технически параметри и монтаж.'
+                : 'Каталог с подбрани климатици за Перник и региона — марки, мощности, цени, технически параметри и монтаж.',
+            'metaKeywords' => $category === 'heatPumps'
+                ? 'термопомпи Перник, термопомпа въздух-вода, отопление с термопомпа, монтаж на термопомпа Перник, LG Therma V, Crystal термопомпа, термопомпа цена'
+                : 'климатици Перник, климатици цени Перник, инверторни климатици, монтаж на климатици Перник, климатик за апартамент, Gree, Daikin, Crystal, Fujitsu Airstage, Mitsubishi Heavy',
+            'company' => $company,
             'currentPath' => $path,
             'products' => $products,
             'category' => $category,
@@ -502,6 +552,13 @@ final class App
                 ? 'Структурата е подготвена за по-ясно сравнение между серии, мощности и типове системи.'
                 : 'Намери точния модел за секунди: Селекция, филтрирана по мощност, технология и бюджет.',
             'officialLinks' => $this->catalog->getOfficialBrandLinks(),
+            'jsonLd' => [
+                $this->businessSchema($company),
+                $this->breadcrumbSchema([
+                    ['name' => 'Начало', 'path' => '/'],
+                    ['name' => $category === 'heatPumps' ? 'Термопомпи' : 'Климатици', 'path' => $path],
+                ]),
+            ],
         ]);
     }
 
@@ -520,15 +577,39 @@ final class App
             return;
         }
 
+        $company = $this->catalog->getCompany();
+        $categoryLabel = $category === 'heatPumps' ? 'Термопомпи' : 'Климатици';
+        $categoryPath = $category === 'heatPumps' ? '/produkti/termopompi' : '/produkti/klimatici';
+        $categoryTerm = $category === 'heatPumps' ? 'термопомпа' : 'климатик';
+        $categoryTermPlural = $category === 'heatPumps' ? 'термопомпи' : 'климатици';
+        $productKeywords = array_values(array_unique(array_filter([
+            $product['title'],
+            $product['brand'] . ' ' . $categoryTerm,
+            $product['brand'] . ' Перник',
+            $categoryTerm . ' ' . $product['brand'] . ' цена',
+            $product['series'] !== '' ? $product['brand'] . ' ' . $product['series'] : null,
+            $categoryTermPlural . ' Перник',
+            $categoryTerm . ' Перник цена',
+        ])));
+
         echo $this->view->render('public/product', [
             'pageTitle' => $product['title'],
             'metaTitle' => $product['title'] . ' | Котупановклима',
             'metaDescription' => $product['description'] ?: $product['title'] . ' с цена ' . format_price_bgn($product['priceBgn']) . ' и технически параметри.',
+            'metaKeywords' => implode(', ', $productKeywords),
             'ogType' => 'product',
             'ogImage' => $product['imagePath'] ?? null,
-            'company' => $this->catalog->getCompany(),
+            'company' => $company,
             'currentPath' => request_path(),
             'product' => $product,
+            'jsonLd' => [
+                $this->productSchema($product, $company),
+                $this->breadcrumbSchema([
+                    ['name' => 'Начало', 'path' => '/'],
+                    ['name' => $categoryLabel, 'path' => $categoryPath],
+                    ['name' => $product['title'], 'path' => $categoryPath . '/' . $product['slug']],
+                ]),
+            ],
         ]);
     }
 
@@ -1187,6 +1268,175 @@ final class App
         }
 
         return $this->basePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads';
+    }
+
+    /**
+     * Base https://schema.org/HVACBusiness node for the company, reused across pages.
+     */
+    private function businessSchema(array $company, bool $detailed = false): array
+    {
+        $baseUrl = $this->currentSeoBaseUrl();
+        $phones = array_values(array_filter($company['phones'] ?? [], static fn ($phone) => is_string($phone) && $phone !== ''));
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'HVACBusiness',
+            'name' => $company['companyName'] ?? 'Котупановклима ЕООД',
+            'url' => $baseUrl . '/',
+            'image' => $baseUrl . '/images/site-og-image.png',
+            'logo' => $baseUrl . '/images/kotupanovclima-logo.png',
+            'priceRange' => '$$',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => 'ул. Китка 3',
+                'addressLocality' => 'Перник',
+                'postalCode' => '2300',
+                'addressCountry' => 'BG',
+            ],
+            'areaServed' => ['@type' => 'City', 'name' => 'Перник'],
+        ];
+
+        if ($phones !== []) {
+            $schema['telephone'] = $phones[0];
+        }
+
+        if (!empty($company['email'])) {
+            $schema['email'] = $company['email'];
+        }
+
+        if (!empty($company['vatNumber'])) {
+            $schema['vatID'] = $company['vatNumber'];
+        }
+
+        if ($detailed) {
+            $schema['geo'] = [
+                '@type' => 'GeoCoordinates',
+                'latitude' => '42.6050',
+                'longitude' => '23.0378',
+            ];
+            $schema['openingHoursSpecification'] = [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                'opens' => '09:00',
+                'closes' => '18:00',
+            ];
+        }
+
+        return $schema;
+    }
+
+    /**
+     * @param array<int, array{name: string, path: string}> $trail
+     */
+    private function breadcrumbSchema(array $trail): array
+    {
+        $baseUrl = $this->currentSeoBaseUrl();
+        $items = [];
+        $position = 1;
+
+        foreach ($trail as $crumb) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => $position++,
+                'name' => $crumb['name'],
+                'item' => $baseUrl . $crumb['path'],
+            ];
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $items,
+        ];
+    }
+
+    /**
+     * @param array<int, array{question: string, answer: string}> $entries
+     */
+    private function faqSchema(array $entries): array
+    {
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => array_map(static fn (array $entry) => [
+                '@type' => 'Question',
+                'name' => $entry['question'],
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $entry['answer'],
+                ],
+            ], $entries),
+        ];
+    }
+
+    private function productSchema(array $product, array $company): array
+    {
+        $baseUrl = $this->currentSeoBaseUrl();
+        $categoryPath = $product['category'] === 'heatPumps' ? 'termopompi' : 'klimatici';
+        $productUrl = $baseUrl . '/produkti/' . $categoryPath . '/' . $product['slug'];
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Product',
+            'name' => $product['title'],
+            'brand' => ['@type' => 'Brand', 'name' => $product['brand']],
+            'category' => $product['category'] === 'heatPumps' ? 'Термопомпи' : 'Климатици',
+            'url' => $productUrl,
+        ];
+
+        if (!empty($product['description'])) {
+            $schema['description'] = $product['description'];
+        }
+
+        if (!empty($product['imagePath'])) {
+            $schema['image'] = str_starts_with((string) $product['imagePath'], 'http')
+                ? $product['imagePath']
+                : $baseUrl . $product['imagePath'];
+        }
+
+        if (!empty($product['officialModelCode'])) {
+            $schema['mpn'] = $product['officialModelCode'];
+        }
+
+        if (!empty($product['priceEur'])) {
+            $schema['offers'] = [
+                '@type' => 'Offer',
+                'priceCurrency' => 'EUR',
+                'price' => number_format((float) $product['priceEur'], 2, '.', ''),
+                'availability' => 'https://schema.org/InStock',
+                'url' => $productUrl,
+                'seller' => ['@type' => 'Organization', 'name' => $company['companyName'] ?? 'Котупановклима ЕООД'],
+            ];
+        }
+
+        return $schema;
+    }
+
+    /**
+     * Shared FAQ used on the home page and repair page (also emitted as FAQPage schema).
+     *
+     * @return array<int, array{question: string, answer: string}>
+     */
+    private function faqEntries(): array
+    {
+        return [
+            [
+                'question' => 'Колко струва монтаж на климатик в Перник?',
+                'answer' => 'Стандартният монтаж включва до 3 метра тръбен път. Точната цена зависи от модела и мястото на монтаж — свържете се за оферта.',
+            ],
+            [
+                'question' => 'На колко време се прави профилактика на климатик?',
+                'answer' => 'Препоръчва се профилактика поне веднъж годишно, най-добре преди активния сезон, за по-тиха работа и по-нисък разход.',
+            ],
+            [
+                'question' => 'Каква мощност климатик ми трябва според квадратурата?',
+                'answer' => 'За стандартна стая до 20 кв.м обикновено е достатъчен модел 9000 BTU, за 20–35 кв.м — 12000 BTU, а над 35 кв.м — 18000 BTU и нагоре. Височината, изложението и остъкляването също влияят, затова уточняваме избора при консултация.',
+            ],
+            [
+                'question' => 'Работите ли с термопомпи въздух-вода за отопление?',
+                'answer' => 'Да. Предлагаме доставка и монтаж на термопомпи въздух-вода за отопление и охлаждане в Перник и региона, с подбор според дома и нуждите.',
+            ],
+        ];
     }
 
     private function requestContext(array $extra = []): array
