@@ -1,6 +1,7 @@
 <?php
 $categoryPath = $category === 'heatPumps' ? 'termopompi' : 'klimatici';
-$query = mb_strtolower(trim((string) ($_GET['q'] ?? '')), 'UTF-8');
+$searchValue = trim((string) ($_GET['q'] ?? ''));
+$query = mb_strtolower($searchValue, 'UTF-8');
 $brandFilter = trim((string) ($_GET['brand'] ?? ''));
 $technologyFilter = trim((string) ($_GET['technology'] ?? ''));
 $powerFilter = trim((string) ($_GET['power'] ?? ''));
@@ -25,6 +26,45 @@ $filtered = array_values(array_filter($products, static function (array $product
 
     return $matchesQuery && $matchesBrand && $matchesTechnology && $matchesPower && $matchesMinimumPrice && $matchesMaximumPrice;
 }));
+
+$itemsPerPage = 12;
+$pageValue = trim((string) ($_GET['page'] ?? '1'));
+$currentPage = ctype_digit($pageValue) && (int) $pageValue > 0 ? (int) $pageValue : 1;
+$filteredCount = count($filtered);
+$totalPages = max(1, (int) ceil($filteredCount / $itemsPerPage));
+$currentPage = min($currentPage, $totalPages);
+$pageOffset = ($currentPage - 1) * $itemsPerPage;
+$pageProducts = array_slice($filtered, $pageOffset, $itemsPerPage);
+$pageStart = $filteredCount > 0 ? $pageOffset + 1 : 0;
+$pageEnd = min($pageOffset + count($pageProducts), $filteredCount);
+
+$paginationParams = array_filter([
+    'q' => $searchValue,
+    'brand' => $brandFilter,
+    'technology' => $technologyFilter,
+    'power' => $powerFilter,
+    'minPrice' => $minPrice,
+    'maxPrice' => $maxPrice,
+], static fn (mixed $value): bool => $value !== null && $value !== '');
+$pageHref = static function (int $page) use ($categoryPath, $paginationParams): string {
+    $params = $paginationParams;
+    if ($page > 1) {
+        $params['page'] = $page;
+    }
+
+    $queryString = http_build_query($params);
+
+    return '/produkti/' . $categoryPath . ($queryString !== '' ? '?' . $queryString : '') . '#modeli';
+};
+
+$pageNumbers = [1, $totalPages];
+for ($page = $currentPage - 2; $page <= $currentPage + 2; $page++) {
+    if ($page >= 1 && $page <= $totalPages) {
+        $pageNumbers[] = $page;
+    }
+}
+$pageNumbers = array_values(array_unique($pageNumbers));
+sort($pageNumbers);
 
 $brands = array_values(array_unique(array_map(static fn (array $product): string => $product['brand'], $products)));
 sort($brands);
@@ -81,7 +121,7 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
     <form class="filters" method="get" action="">
         <div class="field">
             <label for="search-field">Търсене</label>
-            <input id="search-field" type="search" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Търси по марка, серия или модел">
+            <input id="search-field" type="search" name="q" value="<?= e($searchValue) ?>" placeholder="Търси по марка, серия или модел">
         </div>
         <div class="field">
             <label for="brand-field">Марка</label>
@@ -124,10 +164,16 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
         </div>
     </form>
 
-    <p class="results-count">Показани модели: <strong><?= e((string) count($filtered)) ?></strong> от <?= e((string) count($products)) ?></p>
+    <p id="modeli" class="results-count" tabindex="-1">
+        <?php if ($filteredCount > 0): ?>
+            Показани модели <strong><?= e((string) $pageStart) ?>–<?= e((string) $pageEnd) ?></strong> от <?= e((string) $filteredCount) ?> намерени
+        <?php else: ?>
+            Няма намерени модели по избраните критерии
+        <?php endif; ?>
+    </p>
 
     <div class="product-grid">
-        <?php foreach ($filtered as $product): ?>
+        <?php foreach ($pageProducts as $product): ?>
             <?php $productHref = '/produkti/' . $categoryPath . '/' . $product['slug']; ?>
             <article class="product-card">
                 <a class="product-card__image product-card__image--link" href="<?= e($productHref) ?>" aria-label="Виж <?= e($product['title']) ?>">
@@ -185,4 +231,29 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
             </article>
         <?php endforeach; ?>
     </div>
+
+    <?php if ($totalPages > 1): ?>
+        <nav class="catalog-pagination" aria-label="Страници на каталога">
+            <?php if ($currentPage > 1): ?>
+                <a class="catalog-pagination__link catalog-pagination__link--wide" href="<?= e($pageHref($currentPage - 1)) ?>" rel="prev">Назад</a>
+            <?php endif; ?>
+
+            <?php $previousPageNumber = 0; ?>
+            <?php foreach ($pageNumbers as $pageNumber): ?>
+                <?php if ($previousPageNumber > 0 && $pageNumber - $previousPageNumber > 1): ?>
+                    <span class="catalog-pagination__ellipsis" aria-hidden="true">…</span>
+                <?php endif; ?>
+                <?php if ($pageNumber === $currentPage): ?>
+                    <span class="catalog-pagination__current" aria-current="page" aria-label="Страница <?= e((string) $pageNumber) ?>"><?= e((string) $pageNumber) ?></span>
+                <?php else: ?>
+                    <a class="catalog-pagination__link" href="<?= e($pageHref($pageNumber)) ?>" aria-label="Страница <?= e((string) $pageNumber) ?>"><?= e((string) $pageNumber) ?></a>
+                <?php endif; ?>
+                <?php $previousPageNumber = $pageNumber; ?>
+            <?php endforeach; ?>
+
+            <?php if ($currentPage < $totalPages): ?>
+                <a class="catalog-pagination__link catalog-pagination__link--wide" href="<?= e($pageHref($currentPage + 1)) ?>" rel="next">Напред</a>
+            <?php endif; ?>
+        </nav>
+    <?php endif; ?>
 </section>

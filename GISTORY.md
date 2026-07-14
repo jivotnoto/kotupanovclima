@@ -184,3 +184,10 @@ It complements Git commits with short human-readable context about what changed 
 - Added the suggested 250 px promotion-image cap without removing responsive stage containment.
 - Centered promotion CTA buttons with 10 px bottom spacing while preserving automatic top spacing.
 - Rejected a proposed global `margin: auto` rule because it removed intentional spacing from product details and affected unrelated decorated layouts.
+
+### Catalog pagination
+
+- Added server-rendered pagination with 12 products per page to the shared air-conditioner and heat-pump catalog template.
+- Preserved search, brand, technology, power, and EUR price filters across page links; submitting new filters resets to page 1.
+- Added an accessible current-page state, previous/next controls, compact page links, and direct `#modeli` navigation.
+- Verified 5 air-conditioner pages, one-page heat-pump behavior, invalid page handling, filter persistence, and layouts at 320 and 1280 px.

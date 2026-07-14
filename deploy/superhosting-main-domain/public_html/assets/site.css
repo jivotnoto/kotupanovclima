@@ -964,6 +964,64 @@ button {
     color: var(--text-soft);
 }
 
+.catalog-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+}
+
+.catalog-pagination__link,
+.catalog-pagination__current,
+.catalog-pagination__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.65rem;
+    min-height: 2.65rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.catalog-pagination__link {
+    border: 1px solid var(--line);
+    background: var(--surface-strong);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.catalog-pagination__link:hover,
+.catalog-pagination__link:focus-visible {
+    transform: translateY(-1px);
+    border-color: #eebc80;
+    background: var(--accent-soft);
+}
+
+.catalog-pagination__current {
+    border: 1px solid rgba(161, 97, 25, 0.3);
+    background: linear-gradient(180deg, #f2b35f 0%, #db8731 100%);
+    color: #1f1409;
+}
+
+.catalog-pagination__ellipsis {
+    min-width: auto;
+    padding-inline: 0.15rem;
+    color: var(--text-soft);
+}
+
+.catalog-pagination__link--wide {
+    min-width: 5.6rem;
+}
+
 .strike-price {
     text-decoration: line-through;
     text-decoration-thickness: 1px;

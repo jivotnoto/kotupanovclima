@@ -68,6 +68,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Product detail images open in a lightweight overlay controlled by `public/assets/site.js`.
 - Admin product upload writes images to the public document root `uploads/` folder.
 - Public product lists support combined brand, technology, size/power, and EUR price filters.
+- Catalog results are paginated at 12 products per page; pagination preserves active filters and links directly to `#modeli`.
 - Product descriptions are clamped to three lines with an accessible expand/collapse control when content overflows.
 - Product badges are generated only from confirmed installation, warranty, and operating-temperature fields.
 - Optional admin fields `installationMode` and `warrantyYears` remain unset for existing products until confirmed.
