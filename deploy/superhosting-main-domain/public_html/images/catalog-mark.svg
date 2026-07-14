@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 150" role="img" aria-label="Climate catalog">
+  <defs>
+    <linearGradient id="panel" x1="38" y1="22" x2="190" y2="122" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#edf6fb"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="54" y1="108" x2="168" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d88936"/>
+      <stop offset="1" stop-color="#f2b35f"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="0" y="0" width="220" height="150" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <g filter="url(#soft-shadow)">
+    <rect x="28" y="28" width="158" height="92" rx="28" fill="url(#panel)" stroke="#d9e4eb" stroke-width="3"/>
+    <path d="M58 62h62M58 78h92M58 94h54" fill="none" stroke="#95a3b3" stroke-width="6" stroke-linecap="round" opacity="0.42"/>
+    <circle cx="153" cy="63" r="17" fill="url(#gold)" opacity="0.92"/>
+    <path d="M153 49v28M139 63h28" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <path d="M44 126c14-10 31-10 45 0M119 126c15-10 33-10 48 0" fill="none" stroke="#8fb8ce" stroke-width="6" stroke-linecap="round" opacity="0.32"/>
+</svg>

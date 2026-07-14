@@ -1,5 +1,14 @@
 # Gistory
 
+## 2026-07-14 - GitHub/SuperHosting Deployment Source
+
+- Synced live SuperHosting app files, public files, `storage/data`, and `public_html/uploads` back into the local repo before committing.
+- Removed Docker-only runtime files from the GitHub project: `.dockerignore`, `Dockerfile`, `docker-compose.yml`, and `docker/`.
+- Added `.cpanel.yml` with copy-only SuperHosting/cPanel-style deployment tasks.
+- Rewrote `DEPLOY_SUPERHOSTING.md` as the easy auto-deploy guide.
+- Updated `README.md` and `CONTEXT.md` so the repo is documented as the SuperHosting deployment source, not a Docker local runtime.
+- Important: `storage/data` is committed, so future deploys must first sync live admin edits back into Git if products, prices, promotions, admin settings, or image paths changed on the live site.
+
 This file is a lightweight project history log for local development.
 It complements Git commits with short human-readable context about what changed and why.
 

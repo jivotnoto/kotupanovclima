@@ -1,23 +1,23 @@
 {
-  "companyName": "Котупановклима ЕООД",
-  "contactPerson": "Николай Борисов Котупанов",
-  "phones": [
-    "+359898417342",
-    "+359894303344"
-  ],
-  "email": null,
-  "website": null,
-  "address": "гр. Перник (2300), Китка 3",
-  "city": "Перник",
-  "bulstat": "208429733",
-  "vatNumber": "BG208429733",
-  "workingHours": "09:00 - 18:00",
-  "serviceAreas": [],
-  "verificationStatus": {
-    "phones": "provided_by_client",
-    "companyRegistryData": "verified_from_public_registry_index",
-    "source": "https://papagal.bg/eik/208429733/9626",
-    "verifiedAt": "2026-05-05"
-  },
-  "lastReviewed": "2026-06-03"
+    "companyName": "Котупановклима ЕООД",
+    "contactPerson": "Николай Борисов Котупанов",
+    "phones": [
+        "+359898417342",
+        "+359894303344"
+    ],
+    "email": null,
+    "website": null,
+    "address": "гр. Перник (2300), Китка 3",
+    "city": "Перник",
+    "bulstat": "208429733",
+    "vatNumber": "BG208429733",
+    "workingHours": "09:00 - 18:00",
+    "serviceAreas": [],
+    "verificationStatus": {
+        "phones": "provided_by_client",
+        "companyRegistryData": "verified_from_public_registry_index",
+        "source": "https://papagal.bg/eik/208429733/9626",
+        "verifiedAt": "2026-05-05"
+    },
+    "lastReviewed": "2026-06-03"
 }

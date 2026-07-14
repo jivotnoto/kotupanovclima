@@ -1,103 +1,106 @@
 # Context
 
 This file is the current working memory for the project.
-It should be updated whenever architecture, deployment assumptions, security behavior, or unfinished work changes.
+Update it whenever architecture, deployment assumptions, security behavior, or unfinished work changes.
 
-## Project overview
+## Project Overview
 
-- Stack: plain PHP application without a framework
-- Web server: Apache in Docker
-- Runtime: PHP 8.3 Apache image
-- Storage: JSON files in `storage/data`
-- Admin auth: code-based login plus optional IP allowlist mode
-- Theme: forced light/white UI palette
+- Stack: plain PHP application without a framework.
+- Production host: SuperHosting shared hosting.
+- Canonical domain: `https://kotupanovclima.eu`.
+- Secondary domain: `kotupanovklima.bg`, redirected to the matching `.eu` URL.
+- Storage: JSON files in `storage/data`.
+- Admin auth: code-based login plus optional IP allowlist mode.
+- Theme: forced light/white UI palette.
 
-## Key paths
+## Current GitHub/Deployment Model
 
-- Public entry: [public/index.php](public/index.php)
-- Main app/router: [src/App.php](src/App.php)
-- Auth and allowlist logic: [src/Auth.php](src/Auth.php)
-- IP detection helpers: [src/helpers.php](src/helpers.php)
-- Docker Apache vhost: [docker/apache/vhost.conf](docker/apache/vhost.conf)
-- Admin settings view: [views/admin/settings.php](views/admin/settings.php)
-- Admin product ordering UI: [views/admin/products-list.php](views/admin/products-list.php)
+- GitHub remote: `git@github.com:jivotnoto/kotupanovclima.git`.
+- Branch: `main`.
+- The repo is now the deployment source for SuperHosting.
+- Docker runtime files were removed from the repo.
+- `.cpanel.yml` contains copy-only deployment tasks for panels that support cPanel-style Git deploys.
+- Deployment guide: `DEPLOY_SUPERHOSTING.md`.
 
-## Current admin catalog behavior
+## Production Layout
+
+```text
+/home/kotupano/
+  public_html/
+    index.php
+    .htaccess
+    assets/
+    images/
+    uploads/
+  kotupanovklima-app/
+    bootstrap.php
+    src/
+    views/
+    storage/
+      data/
+      logs/
+```
+
+## Key Paths
+
+- Production public entry/template: `public/index.php`.
+- Main app/router: `src/App.php`.
+- Auth and allowlist logic: `src/Auth.php`.
+- IP detection helpers: `src/helpers.php`.
+- Admin settings view: `views/admin/settings.php`.
+- Admin product ordering UI: `views/admin/products-list.php`.
+- Live JSON data in repo: `storage/data/`.
+- Uploaded product images in repo: `public/uploads/`.
+
+## Protected Data Rule
 
 - Products are stored in `storage/data/seed-products.json`.
-- The live server catalog/pricing file is the source of truth for configured air conditioners, heat pumps, models, prices, and admin edits.
-- Do not overwrite product/model/price files from stale local copies. Before changing catalog schema, product data, pricing, or generated catalog-derived files, fetch the current live files from the server and migrate/update those live contents.
-- Admin product lists for `Климатици` and `Термопомпи` include `Нагоре` and `Надолу` controls per entry.
-- The reorder action is handled by `POST /admin/products/reorder` with CSRF validation.
-- Reordering preserves the visible product order even when a move crosses series boundaries.
+- Promotions are stored in `storage/data/promotions.json`.
+- Admin settings are stored in `storage/data/admin-settings.json`.
+- The live server catalog/pricing/admin data is the source of truth when the admin panel has been used.
+- Before deploying after admin panel edits, fetch current live `storage/data/` and `public_html/uploads/`, commit them, then deploy.
+- Do not overwrite product/model/price files from stale local copies.
 
-## Current product UI behavior
+## Current Product UI Behavior
 
 - Catalog product images link to their product detail pages.
 - Product detail images open in a lightweight overlay controlled by `public/assets/site.js`.
+- Admin product upload writes images to the public document root `uploads/` folder.
 - Fujitsu catalog entries are normalized as `Fujitsu Airstage` / `KJCA` and use the official KJ Series 2025 specs for ASEH07/09/12/14KJCAL.
-- When changing Fujitsu or other product specs, fetch the live `storage/data/seed-products.json` first and preserve live prices/admin-entered values unless the user explicitly asks to replace them.
 
-## Current branding behavior
+## Current Branding Behavior
 
-- The public and admin headers use `public/images/kotupanovclima-logo-transparent.png` as the main site logo, so it sits directly on the header panel without an inner card.
+- The public and admin headers use `public/images/kotupanovclima-logo-transparent.png`.
 - Browser icons use `public/images/site-icon.png`.
-- The default Open Graph/Twitter preview image uses `public/images/site-og-image.png`; product pages can still override it with the product image.
+- The default Open Graph/Twitter preview image uses `public/images/site-og-image.png`.
 
-## Current networking behavior
-
-- Local access is currently through Docker port mapping: `localhost:3001 -> container:80`
-- Because requests are hitting the container directly, Apache currently sees the Docker-side peer IP such as `172.21.0.1`
-- No reverse proxy is currently injecting trusted `X-Forwarded-For`
-- Result: admin allowlist checks must allow the container-visible IP or a matching CIDR
-- Live domains `kotupanovclima.eu` and `kotupanovklima.bg` have trusted HTTPS certificates.
-- `kotupanovclima.eu` is the canonical public domain.
-- `kotupanovklima.bg` is a secondary domain and redirects all public requests to the same path on `https://kotupanovclima.eu`.
-
-## Current SEO behavior
+## Current SEO Behavior
 
 - Public pages render canonical and Open Graph URLs on `https://kotupanovclima.eu`.
 - `kotupanovklima.bg` redirects with 301 to the matching path on `https://kotupanovclima.eu`.
 - Admin pages render `noindex, nofollow`.
 - `robots.txt` and `sitemap.xml` are served dynamically through PHP and point to `https://kotupanovclima.eu`.
-- Static host-specific `robots-*` and `sitemap-*` files remain in `public/` only as deployment fallbacks; `.htaccess` routes public crawler requests to PHP so catalog changes are reflected automatically.
-- Public pages render Open Graph and Twitter Card tags; product pages use their product image as the social preview image when available.
+- Static host-specific `robots-*` and `sitemap-*` files remain in `public/` as deployment fallbacks.
 
-## Current allowlist behavior
+## Current Allowlist Behavior
 
-- Access modes:
-  - `open`
-  - `allowlist_only`
-- Allowed entries support:
-  - exact IPs like `192.168.1.50`
-  - CIDR ranges like `192.168.1.0/24`
-- Client IP resolution prefers proxy headers only when `REMOTE_ADDR` is treated as a trusted proxy
-- Trusted proxies are recognized only from the optional `TRUSTED_PROXY_RANGES` environment variable
-- Private Docker/proxy IPs are not trusted for `X-Forwarded-For` by default, so spoofed forwarded headers cannot bypass the admin allowlist
+- Access modes: `open`, `allowlist_only`.
+- Allowed entries support exact IPs and CIDR ranges.
+- Client IP resolution prefers proxy headers only when `REMOTE_ADDR` is treated as a trusted proxy.
+- Trusted proxies are recognized only from optional `TRUSTED_PROXY_RANGES`.
 
-## Current logging behavior
+## Current Logging Behavior
 
-- App access logs include request and IP context
-- Security logs include admin login and allowlist denial events
-- Apache access logs are configured to include:
-  - `X-Forwarded-For`
-  - `X-Real-IP`
-- Note: Apache config changes require container rebuild/restart to take effect
+- App access logs include request and IP context.
+- Security logs include admin login and allowlist denial events.
+- Runtime logs live under `storage/logs/` on the server and are not committed.
 
-## Open follow-up options
+## Session Guidance For Future Work
 
-- In SuperHosting, ensure `kotupanovklima.bg` is configured as an Alias/Parked domain for the same document root or as a panel-level redirect to `https://kotupanovclima.eu`; if it shows `/cgi-sys/defaultwebpage.cgi`, the project `.htaccess` cannot run for `.bg`.
-- Keep the current direct Docker exposure and allow container-visible IP/CIDR in admin settings
-- Add a reverse proxy in front of the container and set `TRUSTED_PROXY_RANGES` before relying on forwarded client IP headers
-- Add a small troubleshooting page or admin diagnostics block if repeated IP confusion continues
-
-## Session guidance for future work
-
-- Read this file and `GISTORY.md` before continuing project work
-- Treat live catalog data as protected customer/admin content: fetch it from the server before any edits involving products, models, prices, sitemap generation from products, or storage format migrations.
-- Check recent lines in:
-  - `storage/logs/access.log`
-  - `storage/logs/security.log`
-  - `storage/logs/apache-access.log`
-- If admin access fails in local Docker, verify the detected IP shown on `/admin/settings` after login
-- If Apache header logging seems missing, rebuild the container image before debugging further
+- Read this file and `GISTORY.md` before continuing project work.
+- Treat live catalog data and uploads as protected customer/admin content.
+- For live sync use SFTP only; shell access on the hosting account is disabled.
+- When syncing live data into GitHub, fetch:
+  - `/home/kotupano/kotupanovklima-app/storage/data/`
+  - `/home/kotupano/public_html/uploads/`
+- Keep deployment changes copy-only unless the user explicitly approves deleting live files.

@@ -1,19 +1,17 @@
 {
-  "accessMode": "allowlist_only",
-  "allowedIps": [
-    "192.168.1.99",
-    "192.168.1.50",
-    "172.16.0.0/12",
-    "213.91.167.89"
-  ],
-  "promo": {
-    "title": "Промоции",
-    "subtitle": "Избрани климатици и термопомпи с промоционални цени, сезонни оферти и включен стандартен монтаж за избрани модели."
-  },
-  "adminSecurity": {
-    "codeHash": "99ed1c87ed6e6b128416c0c7c82ebdb5401b390b0812d8c3d66b1f5b8dae5e91",
-    "cookieName": "kotupanovklima-admin",
-    "sessionVersion": 1
-  },
-  "updatedAt": "2026-06-03"
+    "accessMode": "allowlist_only",
+    "allowedIps": [
+        "213.91.167.89",
+        "82.118.250.154"
+    ],
+    "promo": {
+        "title": "Промоции - Времето се мени, комфортът остава! ☀️❄️",
+        "subtitle": "Подбрани климатици и термопомпи на промо цени + включен стандартен монтаж за избрани модели. Спестете си главоболията, ние сме на ход!"
+    },
+    "adminSecurity": {
+        "codeHash": "8f5e81f1c593ebd35ca3eac2df2d6e95af0a0434f87b993b40cb967f596cdea5",
+        "cookieName": "kotupanovklima-admin",
+        "sessionVersion": 3
+    },
+    "updatedAt": "2026-06-25"
 }

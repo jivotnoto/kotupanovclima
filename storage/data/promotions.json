@@ -1,73 +1,73 @@
 {
-  "updatedAt": "2026-05-05",
-  "items": [
-    {
-      "id": "gree-pular-promo",
-      "title": "Gree Pular 9",
-      "subtitle": "Инверторен климатик за бърз старт на сезона с включен стандартен монтаж.",
-      "category": "airConditioners",
-      "badge": "Промоция",
-      "promoPriceBgn": 1199,
-      "oldPriceBgn": 1299,
-      "highlight": "Включен стандартен монтаж до 3 метра тръбен път",
-      "ctaLabel": "Виж продукта",
-      "ctaHref": "/produkti/klimatici/gree-pular-pular-9",
-      "notes": [
-        "Подходящ за спалня, кабинет и компактна дневна."
-      ],
-      "isActive": true,
-      "sortOrder": 1
-    },
-    {
-      "id": "crystal-emerald-promo",
-      "title": "Crystal Emerald 12",
-      "subtitle": "Елегантен домашен модел с акцент върху тиха работа и стилен вътрешен модул.",
-      "category": "airConditioners",
-      "badge": "Специална оферта",
-      "promoPriceBgn": 1499,
-      "oldPriceBgn": 1599,
-      "highlight": "Включен стандартен монтаж до 3 метра тръбен път",
-      "ctaLabel": "Виж продукта",
-      "ctaHref": "/produkti/klimatici/crystal-emerald-emerald-12",
-      "notes": [
-        "Подходящ за всекидневни и работни помещения."
-      ],
-      "isActive": true,
-      "sortOrder": 2
-    },
-    {
-      "id": "daikin-perfera-promo",
-      "title": "Daikin Perfera 9",
-      "subtitle": "Премиум предложение с много висока сезонна ефективност и Wi-Fi управление.",
-      "category": "airConditioners",
-      "badge": "Премиум оферта",
-      "promoPriceBgn": 2799,
-      "oldPriceBgn": 2899,
-      "highlight": "Включен стандартен монтаж до 3 метра тръбен път",
-      "ctaLabel": "Виж продукта",
-      "ctaHref": "/produkti/klimatici/daikin-perfera-perfera-9",
-      "notes": [
-        "Подходящ за клиенти, които търсят по-висок клас комфорт."
-      ],
-      "isActive": true,
-      "sortOrder": 3
-    },
-    {
-      "id": "lg-therma-v-promo",
-      "title": "LG Therma V",
-      "subtitle": "Въздух-вода термопомпа за модерни инсталации с smart control и R32 платформа.",
-      "category": "heatPumps",
-      "badge": "Термопомпа",
-      "promoPriceBgn": 13499,
-      "oldPriceBgn": 13999,
-      "highlight": "Консултация и базова оферта според обекта",
-      "ctaLabel": "Виж продукта",
-      "ctaHref": "/produkti/termopompi/lg-therma-v-therma-v",
-      "notes": [
-        "Подходяща за ново строителство и реновации."
-      ],
-      "isActive": true,
-      "sortOrder": 4
-    }
-  ]
+    "updatedAt": "2026-06-27",
+    "items": [
+        {
+            "id": "gree-pular-promo",
+            "title": "Gree Pular 9",
+            "subtitle": "Инверторен климатик за бърз старт на сезона с включен стандартен монтаж.",
+            "category": "airConditioners",
+            "badge": "Промоция",
+            "promoPriceBgn": 1369.079999999999927240423858165740966796875,
+            "oldPriceBgn": 1447.30999999999994543031789362430572509765625,
+            "highlight": "Включен стандартен монтаж до 3 метра тръбен път",
+            "ctaLabel": "Виж продукта",
+            "ctaHref": "/produkti/klimatici/gree-pular-pular-9",
+            "notes": [
+                "Подходящ за спалня, кабинет и компактна дневна."
+            ],
+            "isActive": true,
+            "sortOrder": 1
+        },
+        {
+            "id": "crystal-emerald-promo",
+            "title": "Crystal Emerald 12",
+            "subtitle": "Елегантен домашен модел с акцент върху тиха работа и стилен вътрешен модул.",
+            "category": "airConditioners",
+            "badge": "Специална оферта",
+            "promoPriceBgn": 1173.5,
+            "oldPriceBgn": 1271.2899999999999636202119290828704833984375,
+            "highlight": "Включен стандартен монтаж до 3 метра тръбен път",
+            "ctaLabel": "Виж продукта",
+            "ctaHref": "/produkti/klimatici/crystal-emerald-emerald-12",
+            "notes": [
+                "Подходящ за всекидневни и работни помещения."
+            ],
+            "isActive": true,
+            "sortOrder": 2
+        },
+        {
+            "id": "daikin-perfera-promo",
+            "title": "Daikin Perfera 9",
+            "subtitle": "Премиум предложение с много висока сезонна ефективност и Wi-Fi управление.",
+            "category": "airConditioners",
+            "badge": "Премиум оферта",
+            "promoPriceBgn": 2799.010000000000218278728425502777099609375,
+            "oldPriceBgn": 2899.010000000000218278728425502777099609375,
+            "highlight": "Включен стандартен монтаж до 3 метра тръбен път",
+            "ctaLabel": "Виж продукта",
+            "ctaHref": "/produkti/klimatici/daikin-perfera-perfera-9",
+            "notes": [
+                "Подходящ за клиенти, които търсят по-висок клас комфорт."
+            ],
+            "isActive": true,
+            "sortOrder": 3
+        },
+        {
+            "id": "lg-therma-v-promo",
+            "title": "LG Therma V",
+            "subtitle": "Въздух-вода термопомпа за модерни инсталации с smart control и R32 платформа.",
+            "category": "heatPumps",
+            "badge": "Термопомпа",
+            "promoPriceBgn": 13899.989999999999781721271574497222900390625,
+            "oldPriceBgn": 13999.010000000000218278728425502777099609375,
+            "highlight": "Консултация и базова оферта според обекта",
+            "ctaLabel": "Виж продукта",
+            "ctaHref": "/produkti/termopompi/lg-therma-v-therma-v",
+            "notes": [
+                "Подходяща за ново строителство и реновации."
+            ],
+            "isActive": true,
+            "sortOrder": 4
+        }
+    ]
 }

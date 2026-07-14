@@ -1,19 +1,45 @@
-# SuperHosting Deployment
+# SuperHosting Auto Deploy Guide
 
-This project can be deployed to SuperHosting shared hosting in two ways:
+This repo is prepared so SuperHosting can deploy the live site from GitHub.
 
-- addon domain with document root pointed to this repo's `public/` directory
-- main domain with fixed document root `public_html`
+## 1. GitHub Repo
 
-This guide covers the **main domain** case for:
+Use:
 
-- canonical domain: `kotupanovclima.eu`
-- secondary redirect domain: `kotupanovklima.bg`
-- document root: `/home/kotupano/public_html`
+```text
+git@github.com:jivotnoto/kotupanovclima.git
+```
 
-## Recommended production layout
+Branch:
 
-Use this structure in the hosting account:
+```text
+main
+```
+
+## 2. Recommended Panel Setup
+
+In the SuperHosting management panel, create or connect a Git deployment for this repository.
+
+Use a non-public checkout directory if the panel asks where to clone the repo, for example:
+
+```text
+/home/kotupano/repositories/kotupanovclima
+```
+
+Do not use `/home/kotupano/public_html` as the Git checkout directory.
+
+## 3. Auto Deploy Tasks
+
+The repo includes `.cpanel.yml`.
+
+If the panel supports cPanel-style deployment tasks, it will copy:
+
+- app files to `/home/kotupano/kotupanovklima-app`
+- public files to `/home/kotupano/public_html`
+
+The deployment tasks are intentionally copy-only and do not delete files.
+
+## 4. Expected Live Layout
 
 ```text
 /home/kotupano/
@@ -28,87 +54,57 @@ Use this structure in the hosting account:
     src/
     views/
     storage/
+      data/
+      logs/
 ```
 
-## Domain setup
+## 5. After Deploy Checks
 
-`kotupanovclima.eu` should be the primary/canonical domain for the hosting account.
+Open these URLs:
 
-`kotupanovklima.bg` must be configured in the hosting control panel as an Alias/Parked domain for the same document root, or as a panel-level permanent redirect to `https://kotupanovclima.eu`. If `http://kotupanovklima.bg/` shows `/cgi-sys/defaultwebpage.cgi`, Apache is not routing that domain to this account yet and the project `.htaccess` redirect cannot run.
-
-When `kotupanovklima.bg` reaches this project document root, `public/.htaccess` redirects all `.bg` requests with 301 to the matching path on `https://kotupanovclima.eu`.
-
-## What goes where
-
-### In `/home/kotupano/public_html/`
-
-Copy:
-
-- `deploy/superhosting-main-domain/public_html/index.php`
-- `deploy/superhosting-main-domain/public_html/.htaccess`
-- everything from local `public/assets/`
-- everything from local `public/images/`
-- `public/uploads/` directory
-
-### In `/home/kotupano/kotupanovklima-app/`
-
-Copy:
-
-- `bootstrap.php`
-- `src/`
-- `views/`
-- `storage/`
-
-## Important path note
-
-The production entrypoint at `public_html/index.php` expects the app code here:
-
-```php
-$appBasePath = dirname(__DIR__) . '/kotupanovklima-app';
+```text
+https://kotupanovclima.eu/
+https://kotupanovclima.eu/admin/login
+https://kotupanovclima.eu/sitemap.xml
+https://kotupanovclima.eu/uploads/gree-amber-amber-9-1782746359.jpg
 ```
 
-If you choose another folder name, edit only that one line in:
+Expected result: all return `200`, except secondary `.bg` URLs should redirect to `.eu`.
 
-- `public_html/index.php`
+## 6. Very Important Data Rule
 
-## Required writable directories
+`storage/data/` is committed to this repo because the live products, prices, promotions, admin settings, and image paths are part of the deployment package.
 
-Make sure these directories exist and are writable by PHP:
+Before deploying after admin panel edits:
 
-- `/home/kotupano/public_html/uploads`
-- `/home/kotupano/kotupanovklima-app/storage/logs`
-- `/home/kotupano/kotupanovklima-app/storage/data`
+1. Download current live files from `/home/kotupano/kotupanovklima-app/storage/data/`.
+2. Download current live uploads from `/home/kotupano/public_html/uploads/`.
+3. Commit those changes to GitHub.
+4. Deploy from the panel.
 
-## PHP version
+If you skip this, an auto deploy can overwrite newer admin panel changes with older GitHub data.
 
-Use PHP `8.3`.
+## 7. PHP Settings
 
-## Suggested PHP settings
+Use PHP 8.3 with:
 
-- `memory_limit = 256M`
-- `upload_max_filesize = 8M`
-- `post_max_size = 16M`
-- `max_execution_time = 60`
-- `max_input_time = 180`
-- `max_input_vars = 2000`
-- `display_errors = Off`
+```text
+memory_limit = 256M
+upload_max_filesize = 8M
+post_max_size = 16M
+max_execution_time = 60
+max_input_time = 180
+max_input_vars = 2000
+display_errors = Off
+allow_url_fopen = On
+allow_url_include = Off
+```
 
-## Deploy checklist
+## 8. Manual Fallback
 
-1. Upload the `public_html` files.
-2. Upload the `kotupanovklima-app` files above `public_html`.
-3. Confirm `storage/data/admin-settings.json` and the other JSON files are present.
-4. Open `https://kotupanovclima.eu/`.
-5. Open `https://kotupanovclima.eu/admin/login`.
-6. Confirm `https://kotupanovklima.bg/` redirects to `https://kotupanovclima.eu/`.
-6. Test image loading and admin login.
+If auto deploy tasks are not available, copy manually:
 
-## Admin allowlist note
+- `bootstrap.php`, `src/`, `views/`, `storage/data/` into `/home/kotupano/kotupanovklima-app/`
+- contents of `public/` into `/home/kotupano/public_html/`
 
-On SuperHosting the visible client IP will likely be your real remote IP, not the local Docker bridge IP.
-
-After deployment:
-
-- review `storage/data/admin-settings.json`
-- replace local Docker allowlist entries if needed
-- keep only the real IPs or CIDR ranges you want
+Do not upload `storage/logs/` from local backups.

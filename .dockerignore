@@ -1,6 +1,0 @@
-.git
-.gitignore
-storage/logs/*.log
-public/uploads/*
-node_modules
-npm-debug.log

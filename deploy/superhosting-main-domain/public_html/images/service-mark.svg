@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 150" role="img" aria-label="Service">
+  <defs>
+    <linearGradient id="tool" x1="51" y1="23" x2="168" y2="127" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#edf6fb"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="80" y1="108" x2="155" y2="37" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d88936"/>
+      <stop offset="1" stop-color="#f2b35f"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="220" height="150" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <circle cx="112" cy="75" r="54" fill="url(#tool)" stroke="#d9e4eb" stroke-width="3"/>
+    <path d="M139 44c-9-4-20-3-28 5-8 8-10 19-6 29l-39 39c-5 5-5 13 0 18s13 5 18 0l39-39c10 4 21 2 29-6 8-8 10-19 5-28l-20 20-18-18 20-20Z" fill="url(#gold)"/>
+    <circle cx="76" cy="125" r="6" fill="#ffffff" opacity="0.85"/>
+  </g>
+  <path d="M44 41c10-8 23-8 34 0M155 123c10-8 23-8 34 0" fill="none" stroke="#8fb8ce" stroke-width="6" stroke-linecap="round" opacity="0.34"/>
+</svg>
