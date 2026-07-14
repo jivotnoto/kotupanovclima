@@ -18,9 +18,19 @@ $productMark = $product['category'] === 'heatPumps' ? '/images/heat-pump-mark.sv
             <p class="detail-card__series">Серия: <?= e($product['series']) ?></p>
             <div class="detail-card__price">
                 <strong><?= e(format_price_eur($product['priceEur'])) ?></strong>
-                <span><?= e(format_price_bgn($product['priceBgn'])) ?></span>
             </div>
-            <p class="detail-card__mounting">Цената включва стандартен монтаж до 3 метра тръбен път.</p>
+            <?php if (!empty($product['badges'])): ?>
+                <div class="product-badge-row product-badge-row--detail" aria-label="Акценти за продукта">
+                    <?php foreach ($product['badges'] as $badge): ?>
+                        <span class="product-badge"><?= e($badge) ?></span>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            <?php if (($product['installationMode'] ?? null) === 'included'): ?>
+                <p class="detail-card__mounting">Цената включва монтаж.</p>
+            <?php elseif (($product['installationMode'] ?? null) === 'excluded'): ?>
+                <p class="detail-card__mounting">Цената е без монтаж.</p>
+            <?php endif; ?>
             <?php if (!empty($product['description'])): ?>
                 <p class="detail-card__description"><?= e($product['description']) ?></p>
             <?php endif; ?>
@@ -48,7 +58,6 @@ $productMark = $product['category'] === 'heatPumps' ? '/images/heat-pump-mark.sv
                 <?php foreach ($product['features'] as $feature): ?>
                     <li><?= e($feature) ?></li>
                 <?php endforeach; ?>
-                <li>Стандартен монтаж до 3 метра тръбен път е включен в цената.</li>
             </ul>
             <p class="detail-meta">Статус: <?= e($product['status']) ?></p>
             <?php $sourceUrl = safe_href($product['sourceUrl'] ?? null); ?>

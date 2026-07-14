@@ -144,3 +144,27 @@ It complements Git commits with short human-readable context about what changed 
 - Replaced stale Fujitsu General/K6TE/KETE references with Fujitsu Airstage KJCA mappings.
 - Filled ASEH07/09/12/14KJCAL specs from the official Fujitsu Airstage KJ Series 2025 catalog while preserving existing live prices.
 - Added Fujitsu Airstage brand logo and KJCA product image mapping for catalog cards, product pages, Open Graph images, and the homepage brand slider.
+
+## 2026-07-14
+
+### Responsive UX and catalog optimization
+
+- Rebuilt the desktop/mobile header, hamburger navigation, phone placement, continuous brand slider, and mobile scroll-to-top control.
+- Added three original optimized WebP service visuals and linked homepage cards for climate systems, heat pumps, and repair/maintenance.
+- Added product images to promotion cards, a distinct promotion CTA style, and EUR-only public pricing.
+- Added three-line product descriptions with accessible expansion, confirmed-data badges, and combined EUR price filtering.
+- Added optional admin fields for installation mode and warranty years without changing existing product values.
+- Streamlined the contact page, added the repair deep link/topic selection, and updated the repair CTA.
+- Added the company logo to the footer and reduced its bottom row to copyright plus the two legal links.
+
+### Friend SEO changes integrated
+
+- Fast-forwarded and preserved the GitHub commits for SEO content, structured data, local symlink cleanup, and the company email update.
+- Kept HVAC business, product, breadcrumb, and FAQ JSON-LD plus the new SEO copy, NAP block, image alt text, and lazy loading.
+- Reconciled the SEO copy with the UX rules by keeping public prices in EUR and avoiding blanket installation or warranty promises.
+
+### Local verification and data safety
+
+- Downloaded a read-only live snapshot to `backups/pre-ux-live-20260714-124240`; live product data and uploads matched local by SHA-256.
+- Passed PHP 8.3 lint, JSON/JavaScript/CSS checks, 67 responsive browser assertions, and isolated admin tests for IP allowlisting, login, CSRF, product save, image upload, XSS escaping, and reordering.
+- Kept all testing local and did not upload or deploy these changes to the live site.

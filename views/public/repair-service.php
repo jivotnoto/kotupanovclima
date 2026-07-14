@@ -2,7 +2,6 @@
     <div class="section-surface section-surface--decor">
         <img class="surface-mark surface-mark--service" src="/images/service-mark.svg" alt="" aria-hidden="true">
         <div class="section-heading">
-            <span class="section-heading__eyebrow">Сервиз</span>
             <h1 class="section-heading__title">Ремонт и профилактика на климатична техника в Перник</h1>
             <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Обслужваме Перник и региона с фокус върху реалната причина, а не върху временни решения.</p>
         </div>
@@ -101,7 +100,7 @@
         </div>
         <div class="button-row button-row--stacked">
             <a class="button button--primary" href="tel:<?= e($company['phones'][0] ?? '') ?>">Обади се</a>
-            <a class="button" href="/kontakti">Пълни контакти</a>
+            <a class="button" href="/kontakti?topic=repair#barzo-zapitvane">Направете запитване</a>
         </div>
     </div>
 </section>

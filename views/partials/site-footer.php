@@ -2,6 +2,9 @@
 <footer class="site-footer">
     <div class="site-footer__inner">
         <div class="site-footer__brand">
+            <a class="site-footer__logo-link" href="/" aria-label="<?= e($company['companyName'] ?? 'Котупановклима ЕООД') ?>">
+                <img class="site-footer__logo" src="/images/kotupanovclima-logo-transparent.png" alt="">
+            </a>
             <h3><?= e($company['companyName'] ?? '') ?></h3>
             <p>Продажба, консултация, монтаж и подбор на климатични системи за дома и бизнеса.</p>
         </div>
@@ -33,7 +36,6 @@
             <span>© <?= e(date('Y')) ?> <?= e($company['companyName'] ?? 'Котупановклима ЕООД') ?></span>
             <a href="/obshti-usloviya">Общи условия</a>
             <a href="/politika-za-poveritelnost">Политика за поверителност</a>
-            <a href="/kontakti">Контакти</a>
         </div>
     </div>
 </footer>

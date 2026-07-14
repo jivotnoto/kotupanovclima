@@ -37,6 +37,15 @@ $existingImage = $product['customImagePath'] ?? null;
             <div class="field"><label>BTU</label><input type="number" name="btu" value="<?= e((string) ($product['btu'] ?? '')) ?>"></div>
             <div class="field"><label>Мощност (kW)</label><input type="number" step="0.1" name="powerKw" value="<?= e((string) ($product['powerKw'] ?? '')) ?>"></div>
             <div class="field">
+                <label>Монтаж</label>
+                <select name="installationMode">
+                    <option value="">Неуточнен</option>
+                    <option value="included"<?= (($product['installationMode'] ?? null) === 'included') ? ' selected' : '' ?>>Включен монтаж</option>
+                    <option value="excluded"<?= (($product['installationMode'] ?? null) === 'excluded') ? ' selected' : '' ?>>Без монтаж</option>
+                </select>
+            </div>
+            <div class="field"><label>Гаранция (години)</label><input type="number" min="1" step="1" name="warrantyYears" value="<?= e((string) ($product['warrantyYears'] ?? '')) ?>" placeholder="Неуточнена"></div>
+            <div class="field">
                 <label>Технология</label>
                 <select name="technology">
                     <?php foreach (['inverter', 'hyperinverter', 'pending'] as $option): ?>

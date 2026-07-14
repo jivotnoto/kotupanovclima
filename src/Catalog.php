@@ -55,7 +55,7 @@ final class Catalog
             $items = array_values(array_filter($items, static fn (array $item) => (bool) ($item['isActive'] ?? false)));
         }
 
-        return $items;
+        return $this->addPromotionProductImages($items);
     }
 
     public function getProductsByCategory(string $category): array
@@ -201,6 +201,9 @@ final class Catalog
                     'wifi' => (bool) ($model['wifi'] ?? false),
                     'heatingOperatingRange' => $model['heatingOperatingRange'] ?? null,
                     'coolingOperatingRange' => $model['coolingOperatingRange'] ?? null,
+                    'installationMode' => in_array($model['installationMode'] ?? null, ['included', 'excluded'], true) ? $model['installationMode'] : null,
+                    'warrantyYears' => isset($model['warrantyYears']) && is_numeric($model['warrantyYears']) && (int) $model['warrantyYears'] > 0 ? (int) $model['warrantyYears'] : null,
+                    'badges' => $this->buildProductBadges($model),
                     'sourceTitle' => $model['sourceTitle'] ?? null,
                     'sourceUrl' => $model['sourceUrl'] ?? null,
                     'notes' => array_values(array_filter($model['notes'] ?? [], static fn ($value) => is_string($value) && $value !== '')),
@@ -210,6 +213,78 @@ final class Catalog
         }
 
         return $products;
+    }
+
+    private function addPromotionProductImages(array $promotions): array
+    {
+        $productIndex = [];
+        foreach (['airConditioners' => 'klimatici', 'heatPumps' => 'termopompi'] as $category => $path) {
+            foreach ($this->getProductsByCategory($category) as $product) {
+                $productIndex['/produkti/' . $path . '/' . $product['slug']] = $product;
+            }
+        }
+
+        foreach ($promotions as &$promotion) {
+            $ctaPath = parse_url((string) ($promotion['ctaHref'] ?? ''), PHP_URL_PATH);
+            $product = is_string($ctaPath) ? ($productIndex[$ctaPath] ?? null) : null;
+            $promotion['imagePath'] = is_array($product) ? ($product['imagePath'] ?? null) : null;
+            $promotion['imageAlt'] = is_array($product) ? ($product['title'] ?? $promotion['title'] ?? 'Промоционален продукт') : ($promotion['title'] ?? 'Промоционален продукт');
+        }
+        unset($promotion);
+
+        return $promotions;
+    }
+
+    private function buildProductBadges(array $model): array
+    {
+        $badges = [];
+        $installationMode = $model['installationMode'] ?? null;
+        if ($installationMode === 'included') {
+            $badges[] = 'Включен монтаж';
+        } elseif ($installationMode === 'excluded') {
+            $badges[] = 'Без монтаж';
+        }
+
+        $warrantyYears = isset($model['warrantyYears']) && is_numeric($model['warrantyYears']) ? (int) $model['warrantyYears'] : null;
+        if ($warrantyYears !== null && $warrantyYears > 0) {
+            $badges[] = $warrantyYears . ' ' . ($warrantyYears === 1 ? 'година гаранция' : 'години гаранция');
+        }
+
+        $heatingMinimum = $this->operatingRangeBoundary($model['heatingOperatingRange'] ?? null, 'min');
+        if ($heatingMinimum !== null) {
+            $badges[] = 'Отопление до ' . $this->formatTemperature($heatingMinimum) . '°C';
+        }
+
+        $coolingMaximum = $this->operatingRangeBoundary($model['coolingOperatingRange'] ?? null, 'max');
+        if ($coolingMaximum !== null) {
+            $badges[] = 'Охлаждане до ' . $this->formatTemperature($coolingMaximum, true) . '°C';
+        }
+
+        return $badges;
+    }
+
+    private function operatingRangeBoundary(mixed $range, string $boundary): ?float
+    {
+        if (!is_string($range) || trim($range) === '') {
+            return null;
+        }
+
+        preg_match_all('/[+-]?\d+(?:[.,]\d+)?/u', $range, $matches);
+        $values = array_map(static fn (string $value): float => (float) str_replace(',', '.', $value), $matches[0] ?? []);
+        if (count($values) < 2) {
+            return null;
+        }
+
+        return $boundary === 'max' ? max($values) : min($values);
+    }
+
+    private function formatTemperature(float $temperature, bool $showPositiveSign = false): string
+    {
+        $formatted = abs($temperature - round($temperature)) < 0.001
+            ? (string) (int) round($temperature)
+            : rtrim(rtrim(number_format($temperature, 1, '.', ''), '0'), '.');
+
+        return $showPositiveSign && $temperature > 0 ? '+' . $formatted : $formatted;
     }
 
     private function resolveImage(string $brand, string $seriesName, array $model): array

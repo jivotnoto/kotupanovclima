@@ -270,7 +270,7 @@ final class App
         echo $this->view->render('public/promotions', [
             'pageTitle' => 'Промоции',
             'metaTitle' => 'Промоции за климатици и термопомпи в Перник | Котупановклима',
-            'metaDescription' => 'Актуални промоции за климатици и термопомпи с цени в евро и лева, монтаж и консултация в Перник и региона.',
+            'metaDescription' => 'Актуални промоции за климатици и термопомпи с цени в евро, монтаж и консултация в Перник и региона.',
             'metaKeywords' => 'промоции климатици Перник, климатици на промоция, промоции термопомпи, климатици цени Перник, оферти климатици',
             'company' => $this->catalog->getCompany(),
             'promotions' => $this->catalog->getPromotions(true),
@@ -287,6 +287,9 @@ final class App
     private function contactsPage(): void
     {
         $company = $this->catalog->getCompany();
+        $topics = $this->contactTopics();
+        $requestedTopic = trim((string) ($_GET['topic'] ?? 'general'));
+        $selectedTopic = array_key_exists($requestedTopic, $topics) ? $requestedTopic : 'general';
 
         echo $this->view->render('public/contacts', [
             'pageTitle' => 'Контакти',
@@ -297,7 +300,8 @@ final class App
             'currentPath' => '/kontakti',
             'flash' => flash_get('contact'),
             'csrfToken' => $this->auth->csrfToken(),
-            'contactTopics' => $this->contactTopics(),
+            'contactTopics' => $topics,
+            'selectedTopic' => $selectedTopic,
             'jsonLd' => [
                 $this->businessSchema($company, true),
                 $this->breadcrumbSchema([
@@ -595,7 +599,7 @@ final class App
         echo $this->view->render('public/product', [
             'pageTitle' => $product['title'],
             'metaTitle' => $product['title'] . ' | Котупановклима',
-            'metaDescription' => $product['description'] ?: $product['title'] . ' с цена ' . format_price_bgn($product['priceBgn']) . ' и технически параметри.',
+            'metaDescription' => $product['description'] ?: $product['title'] . ' с цена ' . format_price_eur($product['priceEur']) . ' и технически параметри.',
             'metaKeywords' => implode(', ', $productKeywords),
             'ogType' => 'product',
             'ogImage' => $product['imagePath'] ?? null,
@@ -734,6 +738,9 @@ final class App
         $seed[$key] = $this->removeProductFromSeries($seed[$key] ?? [], $oldSlug);
 
         $uploadedImage = $this->handleProductUpload($brand, $series, $modelLabel);
+        $installationMode = in_array($_POST['installationMode'] ?? null, ['included', 'excluded'], true) ? $_POST['installationMode'] : null;
+        $warrantyYears = $this->nullableInt($_POST['warrantyYears'] ?? null);
+        $warrantyYears = $warrantyYears !== null && $warrantyYears > 0 ? $warrantyYears : null;
 
         $model = [
             'modelLabel' => $modelLabel,
@@ -769,6 +776,8 @@ final class App
             'wifi' => isset($_POST['wifi']),
             'heatingOperatingRange' => $this->nullableText($_POST['heatingOperatingRange'] ?? null),
             'coolingOperatingRange' => $this->nullableText($_POST['coolingOperatingRange'] ?? null),
+            'installationMode' => $installationMode,
+            'warrantyYears' => $warrantyYears,
             'sourceTitle' => $this->nullableText($_POST['sourceTitle'] ?? null),
             'sourceUrl' => $this->nullableText($_POST['sourceUrl'] ?? null),
             'notes' => $this->splitTextarea($_POST['notes'] ?? ''),
@@ -1422,7 +1431,7 @@ final class App
         return [
             [
                 'question' => 'Колко струва монтаж на климатик в Перник?',
-                'answer' => 'Стандартният монтаж включва до 3 метра тръбен път. Точната цена зависи от модела и мястото на монтаж — свържете се за оферта.',
+                'answer' => 'Обхватът и цената на монтажа зависят от модела, дължината на трасето и особеностите на обекта. Свържете се за точна оферта.',
             ],
             [
                 'question' => 'На колко време се прави профилактика на климатик?',

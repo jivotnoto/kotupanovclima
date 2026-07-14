@@ -75,5 +75,8 @@ $ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/site-og-image.png');
 </main>
 <?php $this->partial('partials/site-footer', ['company' => $company, 'isAdmin' => $isAdmin]); ?>
 <?php $this->partial('partials/cookie-consent', ['isAdmin' => $isAdmin]); ?>
+<?php if (!$isAdmin): ?>
+    <button class="scroll-to-top" type="button" data-scroll-to-top aria-label="Върни се най-отгоре" hidden>↑</button>
+<?php endif; ?>
 </body>
 </html>

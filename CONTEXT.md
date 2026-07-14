@@ -16,6 +16,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 ## Current GitHub/Deployment Model
 
 - GitHub remote: `git@github.com:jivotnoto/kotupanovclima.git`.
+- Gitea remote: `ssh://git@gitea.localdomain:3333/madh/kotupanovclima.git`.
 - Branch: `main`.
 - The repo is now the deployment source for SuperHosting.
 - Docker runtime files were removed from the repo.
@@ -66,6 +67,10 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Catalog product images link to their product detail pages.
 - Product detail images open in a lightweight overlay controlled by `public/assets/site.js`.
 - Admin product upload writes images to the public document root `uploads/` folder.
+- Public product lists support combined brand, technology, size/power, and EUR price filters.
+- Product descriptions are clamped to three lines with an accessible expand/collapse control when content overflows.
+- Product badges are generated only from confirmed installation, warranty, and operating-temperature fields.
+- Optional admin fields `installationMode` and `warrantyYears` remain unset for existing products until confirmed.
 - Fujitsu catalog entries are normalized as `Fujitsu Airstage` / `KJCA` and use the official KJ Series 2025 specs for ASEH07/09/12/14KJCAL.
 
 ## Current Branding Behavior
@@ -77,6 +82,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 ## Current SEO Behavior
 
 - Public pages render canonical and Open Graph URLs on `https://kotupanovclima.eu`.
+- Public pages include page-specific meta descriptions, Open Graph/Twitter metadata, and JSON-LD for the HVAC business, products, breadcrumbs, and FAQs where applicable.
 - `kotupanovklima.bg` redirects with 301 to the matching path on `https://kotupanovclima.eu`.
 - Admin pages render `noindex, nofollow`.
 - `robots.txt` and `sitemap.xml` are served dynamically through PHP and point to `https://kotupanovclima.eu`.
@@ -94,6 +100,23 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - App access logs include request and IP context.
 - Security logs include admin login and allowlist denial events.
 - Runtime logs live under `storage/logs/` on the server and are not committed.
+
+## Current UX Behavior
+
+- Desktop header keeps the logo, navigation, and phone on one row; the logo is capped at 70 px.
+- Mobile header uses a hamburger menu with the phone as its final item.
+- The homepage brand strip uses duplicated fixed-width groups for continuous motion and shows at least three brands on narrow screens.
+- The homepage includes three original service images for air conditioners, heat pumps, and repair/maintenance.
+- Public prices are displayed in EUR only; BGN values remain stored internally for admin compatibility.
+- The contact page is single-column and supports `/kontakti?topic=repair#barzo-zapitvane`.
+- A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.
+
+## Latest Local Verification
+
+- On 2026-07-14 the current live `storage/data` and `public_html/uploads` were downloaded to `backups/pre-ux-live-20260714-124240` and matched the local copies by SHA-256 before development.
+- The UX work includes and preserves the three newer GitHub commits ending at `c4790ee` (`SEO update`, symlink cleanup, and company email update).
+- PHP 8.3 lint, JSON validation, JavaScript syntax, 67 responsive browser checks, and isolated admin regression tests passed locally.
+- No live upload or production deployment was performed for this UX work. Deploy only after an explicit user request and a fresh live backup/sync.
 
 ## Session Guidance For Future Work
 

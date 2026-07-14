@@ -38,44 +38,80 @@ $brandCategoryTargets = [
         </div>
         <div class="feature-grid">
             <div class="feature-card">Официални марки и подбрани серии</div>
-            <div class="feature-card">Стандартен монтаж до 3 м тръбен път</div>
+            <div class="feature-card">Ясни условия за монтаж според модела и обекта</div>
             <div class="feature-card">Консултация според помещението и бюджета</div>
         </div>
     </div>
 </section>
 
 <section class="section-block">
+    <div class="service-card-grid">
+        <article class="service-card">
+            <img class="service-card__image" src="/images/services/air-conditioners.webp" alt="Модерен стенен климатик в светъл интериор">
+            <div class="service-card__body">
+                <h2>Климатици</h2>
+                <p>Подбрани модели за надеждно охлаждане и отопление у дома или в офиса.</p>
+                <a class="button button--primary" href="/produkti/klimatici">Разгледай</a>
+            </div>
+        </article>
+        <article class="service-card">
+            <img class="service-card__image" src="/images/services/heat-pumps.webp" alt="Термопомпа въздух-вода до съвременен дом">
+            <div class="service-card__body">
+                <h2>Термопомпи</h2>
+                <p>Ефективни системи за целогодишен комфорт и по-разумен разход на енергия.</p>
+                <a class="button button--primary" href="/produkti/termopompi">Разгледай</a>
+            </div>
+        </article>
+        <article class="service-card">
+            <img class="service-card__image" src="/images/services/repair-maintenance.webp" alt="Професионална профилактика на стенен климатик">
+            <div class="service-card__body">
+                <h2>Ремонт и профилактика</h2>
+                <p>Диагностика, почистване и поддръжка за тиха и сигурна работа през сезона.</p>
+                <a class="button button--primary" href="/remont-i-profilaktika">Разгледай</a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="section-block">
     <div class="section-heading">
-        <span class="section-heading__eyebrow">Промоции</span>
         <h2 class="section-heading__title">Актуални оферти за клиента</h2>
     </div>
     <div class="promo-grid">
         <?php foreach ($promotions as $promotion): ?>
             <article class="promo-card">
-                <span class="promo-card__badge"><?= e($promotion['badge'] ?? 'Промоция') ?></span>
-                <h3><?= e($promotion['title']) ?></h3>
-                <p><?= e($promotion['subtitle'] ?? '') ?></p>
-                <div class="promo-card__price">
-                    <strong><?= e(format_price_eur(convert_bgn_to_eur(isset($promotion['promoPriceBgn']) ? (float) $promotion['promoPriceBgn'] : null))) ?></strong>
-                    <span><?= e(format_price_bgn(isset($promotion['promoPriceBgn']) ? (float) $promotion['promoPriceBgn'] : null)) ?></span>
+                <div class="promo-card__image">
+                    <?php if (!empty($promotion['imagePath'])): ?>
+                        <img src="<?= e($promotion['imagePath']) ?>" alt="<?= e($promotion['imageAlt'] ?? $promotion['title']) ?>">
+                    <?php else: ?>
+                        <img class="promo-card__image-placeholder" src="/images/promo-mark.svg" alt="">
+                    <?php endif; ?>
                 </div>
-                <?php if (!empty($promotion['oldPriceBgn'])): ?>
-                    <p class="strike-price">Стара цена: <?= e(format_price_bgn((float) $promotion['oldPriceBgn'])) ?></p>
-                <?php endif; ?>
-                <?php if (!empty($promotion['highlight'])): ?>
-                    <div class="promo-card__highlight"><?= e($promotion['highlight']) ?></div>
-                <?php endif; ?>
-                <?php if (!empty($promotion['notes'])): ?>
-                    <ul class="bullet-list bullet-list--compact">
-                        <?php foreach ($promotion['notes'] as $note): ?>
-                            <li><?= e($note) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-                <?php $ctaHref = safe_href($promotion['ctaHref'] ?? null); ?>
-                <?php if ($ctaHref !== null): ?>
-                    <a class="button" href="<?= e($ctaHref) ?>"><?= e($promotion['ctaLabel'] ?? 'Виж продукта') ?></a>
-                <?php endif; ?>
+                <div class="promo-card__body">
+                    <span class="promo-card__badge"><?= e($promotion['badge'] ?? 'Промоция') ?></span>
+                    <h3><?= e($promotion['title']) ?></h3>
+                    <p><?= e($promotion['subtitle'] ?? '') ?></p>
+                    <div class="promo-card__price">
+                        <strong><?= e(format_price_eur(convert_bgn_to_eur(isset($promotion['promoPriceBgn']) ? (float) $promotion['promoPriceBgn'] : null))) ?></strong>
+                    </div>
+                    <?php if (!empty($promotion['oldPriceBgn'])): ?>
+                        <p class="strike-price">Стара цена: <?= e(format_price_eur(convert_bgn_to_eur((float) $promotion['oldPriceBgn']))) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($promotion['highlight'])): ?>
+                        <div class="promo-card__highlight"><?= e($promotion['highlight']) ?></div>
+                    <?php endif; ?>
+                    <?php if (!empty($promotion['notes'])): ?>
+                        <ul class="bullet-list bullet-list--compact">
+                            <?php foreach ($promotion['notes'] as $note): ?>
+                                <li><?= e($note) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                    <?php $ctaHref = safe_href($promotion['ctaHref'] ?? null); ?>
+                    <?php if ($ctaHref !== null): ?>
+                        <a class="button button--promo" href="<?= e($ctaHref) ?>"><?= e($promotion['ctaLabel'] ?? 'Виж продукта') ?></a>
+                    <?php endif; ?>
+                </div>
             </article>
         <?php endforeach; ?>
     </div>
@@ -86,11 +122,11 @@ $brandCategoryTargets = [
         <div class="section-heading">
             <span class="section-heading__eyebrow">Защо да изберете нас</span>
             <h2 class="section-heading__title">Климатици и термопомпи с монтаж и сервиз в Перник и региона</h2>
-            <p>Предлагаме продажба, монтаж, ремонт и профилактика на <a href="/produkti/klimatici">климатици</a> и <a href="/produkti/termopompi">термопомпи</a> за домове и офиси в Перник, Радомир, Батановци и околните населени места. Работим само с официални марки, даваме гаранция и ясна консултация според помещението и бюджета.</p>
+            <p>Предлагаме продажба, монтаж, ремонт и профилактика на <a href="/produkti/klimatici">климатици</a> и <a href="/produkti/termopompi">термопомпи</a> за домове и офиси в Перник, Радомир, Батановци и околните населени места. Работим с официални марки, ясни гаранционни условия и консултация според помещението и бюджета.</p>
         </div>
         <div class="mini-grid">
             <div class="feature-card">Официални марки и подбрани серии с реални технически данни.</div>
-            <div class="feature-card">Стандартен монтаж до 3 м тръбен път, включен в цената на много модели.</div>
+            <div class="feature-card">Условията за монтаж се уточняват ясно според модела и конкретния обект.</div>
             <div class="feature-card">Сервиз, диагностика и сезонна профилактика за надеждна работа.</div>
             <div class="feature-card">Консултация за точния модел според квадратура, изложение и нужди.</div>
         </div>
@@ -110,20 +146,6 @@ $brandCategoryTargets = [
                     <p><?= e($item['answer']) ?></p>
                 </details>
             <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-
-<section class="section-block">
-    <div class="contact-banner">
-        <div>
-            <span class="section-heading__eyebrow">Контакти</span>
-            <h2 class="section-heading__title">Свържи се за оферта, монтаж или консултация по конкретен модел</h2>
-            <p><?= e(($company['companyName'] ?? '') . ', ' . ($company['address'] ?? '')) ?>. Телефони: <?= e(implode(' / ', $company['phones'] ?? [])) ?></p>
-        </div>
-        <div class="button-row button-row--stacked">
-            <a class="button button--primary" href="tel:<?= e($company['phones'][0] ?? '') ?>">Обади се</a>
-            <a class="button" href="/kontakti">Пълни контакти</a>
         </div>
     </div>
 </section>
