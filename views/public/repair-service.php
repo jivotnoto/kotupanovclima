@@ -3,12 +3,7 @@
         <img class="surface-mark surface-mark--service" src="/images/service-mark.svg" alt="" aria-hidden="true">
         <div class="section-heading">
             <h1 class="section-heading__title">Ремонт и профилактика на климатична техника в Перник</h1>
-            <div class="mobile-copy" data-mobile-copy>
-                <div class="mobile-copy__content" data-mobile-copy-content>
-                    <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Обслужваме Перник и региона с фокус върху реалната причина, а не върху временни решения.</p>
-                </div>
-                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
-            </div>
+            <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Обслужваме Перник и региона с фокус върху реалната причина, а не върху временни решения.</p>
         </div>
     </div>
 </section>
@@ -20,28 +15,38 @@
                 <span class="section-heading__eyebrow">Какво включва</span>
                 <h2 class="section-heading__title">Пълна диагностика, ремонт и сезонна поддръжка</h2>
             </div>
-            <ul class="bullet-list">
-                <li>Диагностика при липса на охлаждане или слабо отопление.</li>
-                <li>Проверка при теч от вътрешното тяло, проблем с дренажа или обледяване.</li>
-                <li>Оглед при шум, вибрации, нестабилна работа или често спиране.</li>
-                <li>Профилактика на филтри, топлообменници, вентилатори и кондензна система.</li>
-                <li>Почистване за по-добър въздушен поток, по-тиха работа и по-нисък разход.</li>
-                <li>Проверка на електрически връзки, работни режими и общо състояние на системата.</li>
-            </ul>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <ul class="bullet-list">
+                        <li>Диагностика при липса на охлаждане или слабо отопление.</li>
+                        <li>Проверка при теч от вътрешното тяло, проблем с дренажа или обледяване.</li>
+                        <li>Оглед при шум, вибрации, нестабилна работа или често спиране.</li>
+                        <li>Профилактика на филтри, топлообменници, вентилатори и кондензна система.</li>
+                        <li>Почистване за по-добър въздушен поток, по-тиха работа и по-нисък разход.</li>
+                        <li>Проверка на електрически връзки, работни режими и общо състояние на системата.</li>
+                    </ul>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </article>
         <article class="section-surface section-surface--cool">
             <div class="section-heading">
                 <span class="section-heading__eyebrow">Кога е време</span>
                 <h2 class="section-heading__title">Сигнали, че системата има нужда от намеса</h2>
             </div>
-            <ul class="bullet-list">
-                <li>Климатикът духа, но не постига желаната температура.</li>
-                <li>Появява се неприятна миризма при пускане.</li>
-                <li>Чува се нехарактерен шум, пукане или вибрация.</li>
-                <li>Има следи от вода, капене или влага около вътрешното тяло.</li>
-                <li>Машината тръгва трудно, изключва сама или работи неравномерно.</li>
-                <li>Разходът е осезаемо по-висок спрямо обичайното.</li>
-            </ul>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <ul class="bullet-list">
+                        <li>Климатикът духа, но не постига желаната температура.</li>
+                        <li>Появява се неприятна миризма при пускане.</li>
+                        <li>Чува се нехарактерен шум, пукане или вибрация.</li>
+                        <li>Има следи от вода, капене или влага около вътрешното тяло.</li>
+                        <li>Машината тръгва трудно, изключва сама или работи неравномерно.</li>
+                        <li>Разходът е осезаемо по-висок спрямо обичайното.</li>
+                    </ul>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </article>
     </div>
 </section>

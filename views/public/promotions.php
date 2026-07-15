@@ -30,11 +30,16 @@
                         <div class="promo-card__highlight"><?= e($promotion['highlight']) ?></div>
                     <?php endif; ?>
                     <?php if (!empty($promotion['notes'])): ?>
-                        <ul class="bullet-list bullet-list--compact">
-                            <?php foreach ($promotion['notes'] as $note): ?>
-                                <li><?= e($note) ?></li>
-                            <?php endforeach; ?>
-                        </ul>
+                        <div class="mobile-copy" data-mobile-copy>
+                            <div class="mobile-copy__content" data-mobile-copy-content>
+                                <ul class="bullet-list bullet-list--compact">
+                                    <?php foreach ($promotion['notes'] as $note): ?>
+                                        <li><?= e($note) ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                            <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+                        </div>
                     <?php endif; ?>
                     <?php $ctaHref = safe_href($promotion['ctaHref'] ?? null); ?>
                     <?php if ($ctaHref !== null): ?>

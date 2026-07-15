@@ -59,11 +59,16 @@ $productMark = $product['category'] === 'heatPumps' ? '/images/heat-pump-mark.sv
         <aside class="detail-side-card detail-side-card--decor">
             <img class="surface-mark surface-mark--product" src="<?= e($productMark) ?>" alt="" aria-hidden="true">
             <h2>Ключови акценти</h2>
-            <ul class="bullet-list">
-                <?php foreach ($product['features'] as $feature): ?>
-                    <li><?= e($feature) ?></li>
-                <?php endforeach; ?>
-            </ul>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <ul class="bullet-list">
+                        <?php foreach ($product['features'] as $feature): ?>
+                            <li><?= e($feature) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
             <p class="detail-meta">Статус: <?= e($product['status']) ?></p>
             <?php $sourceUrl = safe_href($product['sourceUrl'] ?? null); ?>
             <?php if ($sourceUrl !== null): ?>

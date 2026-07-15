@@ -210,3 +210,9 @@ It complements Git commits with short human-readable context about what changed 
 - Reused the same labels for product-card description disclosures and kept short text free from unnecessary buttons.
 - Collapsed catalog filters behind a funnel-icon button below 720 px, including an active-filter count and synchronized `aria-expanded` state.
 - Kept all long text and the full filter form visible on desktop, with no changes to product data or uploaded images.
+
+### Mobile disclosure scope refinement
+
+- Restored the catalog and repair-service H1 introductions as always-visible text without disclosure controls.
+- Extended mobile disclosures to secondary service lists, product highlights, promotion notes, and the contact-page helper list.
+- Kept buttons conditional on real overflow, so short secondary content remains visible without unnecessary controls.

@@ -88,12 +88,7 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
                 <span class="section-heading__eyebrow"><?= e($pageTitle) ?></span>
             <?php endif; ?>
             <h1 class="section-heading__title"><?= e($title) ?></h1>
-            <div class="mobile-copy" data-mobile-copy>
-                <div class="mobile-copy__content" data-mobile-copy-content>
-                    <p><?= e($description) ?></p>
-                </div>
-                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
-            </div>
+            <p><?= e($description) ?></p>
         </div>
     </div>
 

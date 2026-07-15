@@ -79,11 +79,16 @@
             <span class="section-heading__eyebrow">Полезно за оферта</span>
             <h2 class="section-heading__title">Какво да напишеш</h2>
         </div>
-        <ul class="bullet-list">
-            <li>Квадратура и тип помещение.</li>
-            <li>Дали търсиш охлаждане, отопление или и двете.</li>
-            <li>Предпочитана марка или ориентировъчен бюджет.</li>
-            <li>При ремонт: симптоми, шум, теч, грешка на дисплея или модел на машината.</li>
-        </ul>
+        <div class="mobile-copy" data-mobile-copy>
+            <div class="mobile-copy__content" data-mobile-copy-content>
+                <ul class="bullet-list">
+                    <li>Квадратура и тип помещение.</li>
+                    <li>Дали търсиш охлаждане, отопление или и двете.</li>
+                    <li>Предпочитана марка или ориентировъчен бюджет.</li>
+                    <li>При ремонт: симптоми, шум, теч, грешка на дисплея или модел на машината.</li>
+                </ul>
+            </div>
+            <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+        </div>
     </aside>
 </section>
