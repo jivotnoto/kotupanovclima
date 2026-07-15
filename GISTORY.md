@@ -183,7 +183,7 @@ It complements Git commits with short human-readable context about what changed 
 
 - Added the suggested 250 px promotion-image cap without removing responsive stage containment.
 - Centered promotion CTA buttons with 10 px bottom spacing while preserving automatic top spacing.
-- Rejected a proposed global `margin: auto` rule because it removed intentional spacing from product details and affected unrelated decorated layouts.
+- Initially deferred the proposed global `margin: auto` rule because it affects spacing in unrelated decorated layouts; it was later applied after an explicit user request.
 
 ### Catalog pagination
 
@@ -196,3 +196,10 @@ It complements Git commits with short human-readable context about what changed 
 
 - Added `.gitattributes` to normalize source files to LF and explicitly classify binary assets.
 - Aligned the shared repository's local `core.autocrlf` setting to `input` so Windows Git and WSL Git no longer disagree about unchanged files.
+
+### Requested card styling and homepage heading
+
+- Made promotion and product image stages transparent and moved the visual gradients into the card bodies.
+- Centered promotion CTAs with 10 px vertical spacing and styled product CTAs with the requested cream gradient, orange border, dark text, and soft shadow.
+- Applied the requested automatic margins to direct content children of decorated surfaces.
+- Added an explicit line break to keep the homepage H1 in the requested two-line desktop layout.

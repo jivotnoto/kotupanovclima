@@ -28,7 +28,7 @@ $brandCategoryTargets = [
     <div class="hero__content hero__main-card">
         <img class="hero__visual-mark" src="/images/air-conditioner-mark.svg" alt="" aria-hidden="true">
         <a class="hero__eyebrow hero__eyebrow--link" href="/promocii"><?= e($settings['promo']['title'] ?? 'Промоции') ?></a>
-        <h1 class="hero__title hero__title--compact">Климатици и термопомпи в Перник — продажба, монтаж и сервиз</h1>
+        <h1 class="hero__title hero__title--compact">Климатици и термопомпи в Перник — <br>продажба, монтаж и сервиз</h1>
         <p class="hero__subtitle">Климатична техника, подбрана да изглежда добре и да работи правилно.</p>
         <p class="hero__lead"><?= e($settings['promo']['subtitle'] ?? '') ?></p>
         <div class="button-row">

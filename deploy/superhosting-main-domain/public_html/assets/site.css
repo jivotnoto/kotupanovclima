@@ -769,6 +769,7 @@ button {
 .detail-side-card--decor > :not(.surface-mark) {
     position: relative;
     z-index: 1;
+    margin: auto;
 }
 
 .section-surface--decor .section-heading {
@@ -1052,7 +1053,7 @@ button {
     aspect-ratio: 5 / 3;
     padding: 1rem;
     overflow: hidden;
-    background: linear-gradient(180deg, #ffffff, var(--surface-muted));
+    background: transparent;
     border-bottom: 1px solid var(--line);
 }
 
@@ -1077,11 +1078,12 @@ button {
     flex: 1;
     flex-direction: column;
     padding: 1.2rem;
+    background: linear-gradient(180deg, #fff, var(--surface-muted));
 }
 
 .promo-card__body .button--promo {
     align-self: center;
-    margin: auto auto 10px;
+    margin: 10px auto 10px;
 }
 
 .promo-card__badge {
@@ -1114,7 +1116,7 @@ button {
 .product-card__image {
     position: relative;
     aspect-ratio: 5 / 3;
-    background: linear-gradient(180deg, var(--bg-alt), var(--surface-muted));
+    background: transparent;
     display: grid;
     place-items: center;
     padding: 1rem;
@@ -1161,10 +1163,16 @@ button {
     flex-direction: column;
     gap: 0.95rem;
     padding: 1.2rem;
+    background: linear-gradient(45deg, #fff, var(--surface-muted));
 }
 
 .product-card__body > .button {
     margin-top: auto;
+    background-image: linear-gradient(to bottom, #fef8ef, #fcf3e5, #fbeeda, #f9e8d0, #f8e3c6);
+    border-color: #eebc80;
+    color: #6f3d0e;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(168, 90, 13, 0.1);
 }
 
 .product-card__description-wrap {
