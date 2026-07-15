@@ -979,6 +979,14 @@ button {
     box-shadow: var(--shadow-card);
 }
 
+.filters[hidden] {
+    display: none;
+}
+
+.catalog-filter-toggle {
+    display: none;
+}
+
 .catalog-pagination__link,
 .catalog-pagination__current,
 .catalog-pagination__ellipsis {
@@ -1208,6 +1216,24 @@ button {
 .text-toggle:hover,
 .text-toggle:focus-visible {
     color: var(--text);
+}
+
+.mobile-copy {
+    width: 100%;
+    min-width: 0;
+}
+
+.mobile-copy__content--stacked {
+    display: grid;
+    gap: 1rem;
+}
+
+.mobile-copy__content--stacked > p {
+    margin: 0;
+}
+
+.mobile-copy > .text-toggle {
+    margin-top: 0.55rem;
 }
 
 .product-badge-row {
@@ -1866,6 +1892,61 @@ button {
 }
 
 @media (max-width: 719px) {
+    .catalog-filter-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        width: 100%;
+        min-height: 3.15rem;
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        border: 1px solid #eebc80;
+        border-radius: 18px;
+        background: linear-gradient(to bottom, #fef8ef, #fcf3e5, #fbeeda, #f9e8d0, #f8e3c6);
+        color: #6f3d0e;
+        font-weight: 800;
+        box-shadow: 0 8px 20px rgba(168, 90, 13, 0.1);
+    }
+
+    .catalog-filter-toggle[hidden] {
+        display: none;
+    }
+
+    .catalog-filter-toggle svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: currentColor;
+    }
+
+    .catalog-filter-toggle__count {
+        display: inline-grid;
+        place-items: center;
+        min-width: 1.55rem;
+        min-height: 1.55rem;
+        padding-inline: 0.35rem;
+        border-radius: 999px;
+        background: #6f3d0e;
+        color: #fff;
+        font-size: 0.78rem;
+        line-height: 1;
+    }
+
+    .catalog-filter-toggle + .filters {
+        margin-top: 0.75rem;
+    }
+
+    .mobile-copy__content {
+        max-height: calc(1.65em * 4);
+        overflow: hidden;
+        line-height: 1.65;
+    }
+
+    .mobile-copy.is-expanded .mobile-copy__content {
+        max-height: none;
+        overflow: visible;
+    }
+
     .topbar__inner {
         padding: 0.7rem 0.75rem 0.85rem;
         border-radius: 24px;

@@ -122,7 +122,12 @@ $brandCategoryTargets = [
         <div class="section-heading">
             <span class="section-heading__eyebrow">Защо да изберете нас</span>
             <h2 class="section-heading__title">Климатици и термопомпи с монтаж и сервиз в Перник и региона</h2>
-            <p>Предлагаме продажба, монтаж, ремонт и профилактика на <a href="/produkti/klimatici">климатици</a> и <a href="/produkti/termopompi">термопомпи</a> за домове и офиси в Перник, Радомир, Батановци и околните населени места. Работим с официални марки, ясни гаранционни условия и консултация според помещението и бюджета.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <p>Предлагаме продажба, монтаж, ремонт и профилактика на <a href="/produkti/klimatici">климатици</a> и <a href="/produkti/termopompi">термопомпи</a> за домове и офиси в Перник, Радомир, Батановци и околните населени места. Работим с официални марки, ясни гаранционни условия и консултация според помещението и бюджета.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </div>
         <div class="mini-grid">
             <div class="feature-card">Официални марки и подбрани серии с реални технически данни.</div>

@@ -15,6 +15,14 @@ $maxPrice = $parsePrice($_GET['maxPrice'] ?? null);
 if ($minPrice !== null && $maxPrice !== null && $minPrice > $maxPrice) {
     [$minPrice, $maxPrice] = [$maxPrice, $minPrice];
 }
+$activeFilterCount = count(array_filter([
+    $searchValue,
+    $brandFilter,
+    $technologyFilter,
+    $powerFilter,
+    $minPrice,
+    $maxPrice,
+], static fn (mixed $value): bool => $value !== null && $value !== ''));
 
 $filtered = array_values(array_filter($products, static function (array $product) use ($query, $brandFilter, $technologyFilter, $powerFilter, $minPrice, $maxPrice): bool {
     $matchesQuery = $query === '' || str_contains(mb_strtolower($product['title'] . ' ' . $product['series'] . ' ' . $product['brand'], 'UTF-8'), $query);
@@ -80,7 +88,12 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
                 <span class="section-heading__eyebrow"><?= e($pageTitle) ?></span>
             <?php endif; ?>
             <h1 class="section-heading__title"><?= e($title) ?></h1>
-            <p><?= e($description) ?></p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <p><?= e($description) ?></p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </div>
     </div>
 
@@ -90,17 +103,27 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
                 <span class="section-heading__eyebrow">Гид за избор</span>
                 <h2 class="section-heading__title">Как да изберете термопомпа за отопление и охлаждане</h2>
             </div>
-            <p>Термопомпите са сред най-икономичните решения за отопление, защото извличат енергия от въздуха и я пренасят в дома, вместо да я произвеждат директно. За жилища в Перник и региона най-често се използват два типа: <strong>въздух-вода</strong> (за отопление, охлаждане и топла вода през водна инсталация, радиатори или подово отопление) и <strong>въздух-въздух</strong> (класически климатик с висок капацитет за отопление).</p>
-            <p>При избора е важно мощността (kW) да е съобразена с квадратурата, изолацията и отоплителните нужди на дома, а не просто да е „по-голяма за всеки случай“. Обърнете внимание на коефициента <strong>SCOP</strong> (сезонна ефективност при отопление) — колкото по-висок, толкова по-нисък е разходът за ток. Проверете и работния температурен диапазон: качествените термопомпи поддържат отопление и при външни температури доста под нулата.</p>
-            <p>Ориентировъчно решенията въздух-вода за средно жилище започват от около 5 100–7 700 EUR в зависимост от мощността, марката и типа инсталация. За точна оферта е най-добре да направим консултация според конкретния дом. При покупка на нова термопомпа може да проверите и приложимите програми за енергийна ефективност.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content mobile-copy__content--stacked" data-mobile-copy-content>
+                    <p>Термопомпите са сред най-икономичните решения за отопление, защото извличат енергия от въздуха и я пренасят в дома, вместо да я произвеждат директно. За жилища в Перник и региона най-често се използват два типа: <strong>въздух-вода</strong> (за отопление, охлаждане и топла вода през водна инсталация, радиатори или подово отопление) и <strong>въздух-въздух</strong> (класически климатик с висок капацитет за отопление).</p>
+                    <p>При избора е важно мощността (kW) да е съобразена с квадратурата, изолацията и отоплителните нужди на дома, а не просто да е „по-голяма за всеки случай“. Обърнете внимание на коефициента <strong>SCOP</strong> (сезонна ефективност при отопление) — колкото по-висок, толкова по-нисък е разходът за ток. Проверете и работния температурен диапазон: качествените термопомпи поддържат отопление и при външни температури доста под нулата.</p>
+                    <p>Ориентировъчно решенията въздух-вода за средно жилище започват от около 5 100–7 700 EUR в зависимост от мощността, марката и типа инсталация. За точна оферта е най-добре да направим консултация според конкретния дом. При покупка на нова термопомпа може да проверите и приложимите програми за енергийна ефективност.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         <?php else: ?>
             <div class="section-heading">
                 <span class="section-heading__eyebrow">Гид за избор</span>
                 <h2 class="section-heading__title">Как да изберете климатик според квадратурата и нуждите</h2>
             </div>
-            <p>Първата стъпка при избора на климатик е мощността, измервана в <strong>BTU</strong>. За ориентир: модел <strong>9000 BTU</strong> е подходящ за стая до около 20 кв.м, <strong>12000 BTU</strong> — за 20–35 кв.м, а <strong>18000 BTU</strong> и нагоре — за по-големи помещения или пространства с високи тавани и голямо остъкляване. Изложението, изолацията и броят на прозорците също влияят, затова при съмнение е по-добре да се консултирате.</p>
-            <p>Вторият важен фактор е енергийната ефективност — класовете <strong>SEER</strong> (охлаждане) и <strong>SCOP</strong> (отопление). По-високите стойности означават по-нисък разход на ток при същия комфорт. <strong>Инверторните</strong> и <strong>хиперинверторните</strong> модели поддържат по-стабилна температура, работят по-тихо и харчат по-малко от старите неинверторни машини, а хиперинверторните запазват мощността си на отопление и при ниски външни температури.</p>
-            <p>Обърнете внимание и на нивото на шум (dB), наличието на Wi-Fi управление и вида на филтрите. Условията за монтаж зависят от избрания модел, дължината на трасето и особеностите на обекта, затова ги уточняваме предварително. Разгледайте моделите по-долу и филтрирайте по марка, технология и мощност, за да стесните избора си бързо.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content mobile-copy__content--stacked" data-mobile-copy-content>
+                    <p>Първата стъпка при избора на климатик е мощността, измервана в <strong>BTU</strong>. За ориентир: модел <strong>9000 BTU</strong> е подходящ за стая до около 20 кв.м, <strong>12000 BTU</strong> — за 20–35 кв.м, а <strong>18000 BTU</strong> и нагоре — за по-големи помещения или пространства с високи тавани и голямо остъкляване. Изложението, изолацията и броят на прозорците също влияят, затова при съмнение е по-добре да се консултирате.</p>
+                    <p>Вторият важен фактор е енергийната ефективност — класовете <strong>SEER</strong> (охлаждане) и <strong>SCOP</strong> (отопление). По-високите стойности означават по-нисък разход на ток при същия комфорт. <strong>Инверторните</strong> и <strong>хиперинверторните</strong> модели поддържат по-стабилна температура, работят по-тихо и харчат по-малко от старите неинверторни машини, а хиперинверторните запазват мощността си на отопление и при ниски външни температури.</p>
+                    <p>Обърнете внимание и на нивото на шум (dB), наличието на Wi-Fi управление и вида на филтрите. Условията за монтаж зависят от избрания модел, дължината на трасето и особеностите на обекта, затова ги уточняваме предварително. Разгледайте моделите по-долу и филтрирайте по марка, технология и мощност, за да стесните избора си бързо.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         <?php endif; ?>
     </div>
 
@@ -108,7 +131,12 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
         <div class="section-surface">
             <div class="section-heading">
                 <span class="section-heading__eyebrow">Официални сайтове</span>
-                <p>Ако искаш да свериш серията с производителя, официалните сайтове на марките са тук, а изборът и покупката остават в каталога по-долу.</p>
+                <div class="mobile-copy" data-mobile-copy>
+                    <div class="mobile-copy__content" data-mobile-copy-content>
+                        <p>Ако искаш да свериш серията с производителя, официалните сайтове на марките са тук, а изборът и покупката остават в каталога по-долу.</p>
+                    </div>
+                    <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+                </div>
             </div>
             <div class="button-row button-row--wrap">
                 <?php foreach ($officialLinks as $brand): ?>
@@ -118,7 +146,15 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
         </div>
     <?php endif; ?>
 
-    <form class="filters" method="get" action="">
+    <button class="catalog-filter-toggle" type="button" data-catalog-filter-toggle aria-controls="catalog-filters" aria-expanded="false" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h16l-6.2 7.1v5.2l-3.6 1.8v-7z"/></svg>
+        <span>Филтри</span>
+        <?php if ($activeFilterCount > 0): ?>
+            <span class="catalog-filter-toggle__count" aria-label="<?= e((string) $activeFilterCount) ?> активни филтъра"><?= e((string) $activeFilterCount) ?></span>
+        <?php endif; ?>
+    </button>
+
+    <form id="catalog-filters" class="filters" method="get" action="" data-catalog-filters>
         <div class="field">
             <label for="search-field">Търсене</label>
             <input id="search-field" type="search" name="q" value="<?= e($searchValue) ?>" placeholder="Търси по марка, серия или модел">
@@ -206,7 +242,7 @@ $catalogMark = $category === 'heatPumps' ? '/images/heat-pump-mark.svg' : '/imag
                     <?php if (!empty($product['description'])): ?>
                         <div class="product-card__description-wrap" data-description-disclosure>
                             <p class="product-card__description" data-description-text><?= e($product['description']) ?></p>
-                            <button class="text-toggle" type="button" data-description-toggle aria-expanded="false" hidden>Прочети всичко</button>
+                            <button class="text-toggle" type="button" data-description-toggle aria-expanded="false" hidden>Виж още</button>
                         </div>
                     <?php endif; ?>
 

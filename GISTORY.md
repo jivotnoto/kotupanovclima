@@ -203,3 +203,10 @@ It complements Git commits with short human-readable context about what changed 
 - Centered promotion CTAs with 10 px vertical spacing and styled product CTAs with the requested cream gradient, orange border, dark text, and soft shadow.
 - Applied the requested automatic margins to direct content children of decorated surfaces.
 - Added an explicit line break to keep the homepage H1 in the requested two-line desktop layout.
+
+### Mobile copy and catalog filters
+
+- Limited long catalog, homepage, repair-service, and product-detail copy to four lines on mobile with accessible `Виж още` / `Скрий` controls.
+- Reused the same labels for product-card description disclosures and kept short text free from unnecessary buttons.
+- Collapsed catalog filters behind a funnel-icon button below 720 px, including an active-filter count and synchronized `aria-expanded` state.
+- Kept all long text and the full filter form visible on desktop, with no changes to product data or uploaded images.

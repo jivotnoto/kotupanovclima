@@ -3,7 +3,12 @@
         <img class="surface-mark surface-mark--service" src="/images/service-mark.svg" alt="" aria-hidden="true">
         <div class="section-heading">
             <h1 class="section-heading__title">Ремонт и профилактика на климатична техника в Перник</h1>
-            <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Обслужваме Перник и региона с фокус върху реалната причина, а не върху временни решения.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <p>Когато климатикът не охлажда, не отоплява, шумен е или започне да мирише, най-важното е проблемът да се хване навреме. Обслужваме Перник и региона с фокус върху реалната причина, а не върху временни решения.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </div>
     </div>
 </section>
@@ -46,7 +51,12 @@
         <div class="section-heading">
             <span class="section-heading__eyebrow">Подход</span>
             <h2 class="section-heading__title">Първо намираме причината, после предлагаме смислено решение</h2>
-            <p>При сервизните дейности най-важното е да не се сменят части на сляпо. Затова започваме с преглед на симптомите, режимите на работа и състоянието на основните възли, след което даваме ясна насока какво има смисъл да се направи.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <p>При сервизните дейности най-важното е да не се сменят части на сляпо. Затова започваме с преглед на симптомите, режимите на работа и състоянието на основните възли, след което даваме ясна насока какво има смисъл да се направи.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </div>
         <div class="mini-grid">
             <div class="feature-card">Ясна оценка дали проблемът е в замърсяване, дренаж, управление или износен компонент.</div>
@@ -62,7 +72,12 @@
         <div class="section-heading">
             <span class="section-heading__eyebrow">Пакети услуги</span>
             <h2 class="section-heading__title">Профилактика и ремонт с ясен обхват</h2>
-            <p>Цената зависи от модела, типа система и състоянието ѝ. Свържете се за конкретна оферта — след кратко описание на симптомите даваме ориентировъчна цена предварително.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <p>Цената зависи от модела, типа система и състоянието ѝ. Свържете се за конкретна оферта — след кратко описание на симптомите даваме ориентировъчна цена предварително.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </div>
         <div class="mini-grid">
             <div class="feature-card"><strong>Сезонна профилактика</strong> — почистване на филтри и топлообменници, проверка на дренаж и работни режими. Цена според модела.</div>
@@ -96,7 +111,12 @@
         <div>
             <span class="section-heading__eyebrow">Запитване</span>
             <h2 class="section-heading__title">Опиши проблема и ще насочим какъв тип посещение е най-подходящо</h2>
-            <p>Полезно е да споделиш какъв е моделът, как се държи машината, кога се появява проблемът и дали има теч, шум, миризма или загуба на мощност. Това помага да дадем по-точна предварителна насока.</p>
+            <div class="mobile-copy" data-mobile-copy>
+                <div class="mobile-copy__content" data-mobile-copy-content>
+                    <p>Полезно е да споделиш какъв е моделът, как се държи машината, кога се появява проблемът и дали има теч, шум, миризма или загуба на мощност. Това помага да дадем по-точна предварителна насока.</p>
+                </div>
+                <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+            </div>
         </div>
         <div class="button-row button-row--stacked">
             <a class="button button--primary" href="tel:<?= e($company['phones'][0] ?? '') ?>">Обади се</a>

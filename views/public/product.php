@@ -32,7 +32,12 @@ $productMark = $product['category'] === 'heatPumps' ? '/images/heat-pump-mark.sv
                 <p class="detail-card__mounting">Цената е без монтаж.</p>
             <?php endif; ?>
             <?php if (!empty($product['description'])): ?>
-                <p class="detail-card__description"><?= e($product['description']) ?></p>
+                <div class="mobile-copy" data-mobile-copy>
+                    <div class="mobile-copy__content" data-mobile-copy-content>
+                        <p class="detail-card__description"><?= e($product['description']) ?></p>
+                    </div>
+                    <button class="text-toggle" type="button" data-mobile-copy-toggle aria-expanded="false" hidden>Виж още</button>
+                </div>
             <?php endif; ?>
 
             <div class="detail-spec-grid">

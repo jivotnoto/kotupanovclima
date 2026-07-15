@@ -118,6 +118,8 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Public prices are displayed in EUR only; BGN values remain stored internally for admin compatibility.
 - The contact page is single-column and supports `/kontakti?topic=repair#barzo-zapitvane`.
 - A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.
+- Long marketing and product-detail copy is limited to four lines on mobile, with `Виж още` / `Скрий` controls shown only when the content actually overflows.
+- Catalog filters collapse behind a funnel-icon button below 720 px and display the number of active filters; desktop filters remain fully visible.
 
 ## Latest Local Verification
 

@@ -86,6 +86,67 @@
         });
     });
 
+    const mobileView = window.matchMedia('(max-width: 719px)');
+
+    document.querySelectorAll('[data-catalog-filter-toggle]').forEach((toggle) => {
+        const panelId = toggle.getAttribute('aria-controls');
+        const panel = panelId ? document.getElementById(panelId) : null;
+        if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLFormElement)) {
+            return;
+        }
+
+        let expanded = false;
+        const updateFilters = () => {
+            const isMobile = mobileView.matches;
+            toggle.hidden = !isMobile;
+            panel.hidden = isMobile && !expanded;
+            toggle.setAttribute('aria-expanded', isMobile && expanded ? 'true' : 'false');
+        };
+
+        toggle.addEventListener('click', () => {
+            expanded = !expanded;
+            updateFilters();
+        });
+
+        mobileView.addEventListener('change', updateFilters);
+        updateFilters();
+    });
+
+    document.querySelectorAll('[data-mobile-copy]').forEach((disclosure) => {
+        const content = disclosure.querySelector('[data-mobile-copy-content]');
+        const toggle = disclosure.querySelector('[data-mobile-copy-toggle]');
+        if (!(disclosure instanceof HTMLElement) || !(content instanceof HTMLElement) || !(toggle instanceof HTMLButtonElement)) {
+            return;
+        }
+
+        const updateMobileCopy = () => {
+            if (!mobileView.matches) {
+                toggle.hidden = true;
+                return;
+            }
+
+            if (disclosure.classList.contains('is-expanded')) {
+                toggle.hidden = false;
+                return;
+            }
+
+            requestAnimationFrame(() => {
+                toggle.hidden = content.scrollHeight <= content.clientHeight + 1;
+            });
+        };
+
+        toggle.addEventListener('click', () => {
+            const expanded = disclosure.classList.toggle('is-expanded');
+            toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+            toggle.textContent = expanded ? 'Скрий' : 'Виж още';
+            updateMobileCopy();
+        });
+
+        mobileView.addEventListener('change', updateMobileCopy);
+        window.addEventListener('resize', updateMobileCopy);
+        updateMobileCopy();
+    });
+
     document.querySelectorAll('[data-description-disclosure]').forEach((disclosure) => {
         const text = disclosure.querySelector('[data-description-text]');
         const toggle = disclosure.querySelector('[data-description-toggle]');
@@ -104,7 +165,7 @@
         toggle.addEventListener('click', () => {
             const expanded = disclosure.classList.toggle('is-expanded');
             toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-            toggle.textContent = expanded ? 'Скрий' : 'Прочети всичко';
+            toggle.textContent = expanded ? 'Скрий' : 'Виж още';
         });
 
         requestAnimationFrame(updateOverflow);
