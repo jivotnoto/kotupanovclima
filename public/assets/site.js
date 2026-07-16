@@ -111,6 +111,17 @@
     });
 
     const mobileView = window.matchMedia('(max-width: 719px)');
+    const preserveTogglePosition = (toggle, previousTop) => {
+        requestAnimationFrame(() => {
+            const offset = toggle.getBoundingClientRect().top - previousTop;
+            if (Math.abs(offset) > 1) {
+                const previousBehavior = document.documentElement.style.scrollBehavior;
+                document.documentElement.style.scrollBehavior = 'auto';
+                window.scrollBy(0, offset);
+                document.documentElement.style.scrollBehavior = previousBehavior;
+            }
+        });
+    };
 
     document.querySelectorAll('[data-catalog-filter-toggle]').forEach((toggle) => {
         const panelId = toggle.getAttribute('aria-controls');
@@ -160,10 +171,15 @@
         };
 
         toggle.addEventListener('click', () => {
+            const wasExpanded = disclosure.classList.contains('is-expanded');
+            const previousTop = toggle.getBoundingClientRect().top;
             const expanded = disclosure.classList.toggle('is-expanded');
             toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             toggle.textContent = expanded ? 'Скрий' : 'Виж още';
             updateMobileCopy();
+            if (wasExpanded) {
+                preserveTogglePosition(toggle, previousTop);
+            }
         });
 
         mobileView.addEventListener('change', updateMobileCopy);
@@ -187,9 +203,14 @@
         };
 
         toggle.addEventListener('click', () => {
+            const wasExpanded = disclosure.classList.contains('is-expanded');
+            const previousTop = toggle.getBoundingClientRect().top;
             const expanded = disclosure.classList.toggle('is-expanded');
             toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             toggle.textContent = expanded ? 'Скрий' : 'Виж още';
+            if (wasExpanded) {
+                preserveTogglePosition(toggle, previousTop);
+            }
         });
 
         requestAnimationFrame(updateOverflow);

@@ -122,6 +122,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Turnstile CSP permissions are scoped to `/kontakti`; production keys belong in ignored `storage/config/turnstile.php`, never in Git or `public_html`.
 - A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.
 - Secondary long marketing copy, lists, and product details are limited to four lines on mobile, with `Виж още` / `Скрий` controls shown only when the content actually overflows.
+- Collapsing any `Виж още` disclosure compensates for the removed height so its toggle stays at the same viewport position.
 - Main introductory text directly below a page H1 always remains fully visible and never receives a disclosure button.
 - Catalog filters collapse behind a funnel-icon button below 720 px and display the number of active filters; desktop filters remain fully visible.
 - The header is sticky on mobile and desktop; after scrolling it expands to the full viewport width while preserving anchor clearance.

@@ -242,3 +242,8 @@ It complements Git commits with short human-readable context about what changed 
 - Removed the duplicated footer navigation column while retaining contact, company, and legal information.
 - Replaced the arithmetic fallback with a six-character server-generated graphical CAPTCHA using randomized noise and glyph rotation.
 - Limited graphical challenges to five minutes and one successful verification attempt; image refreshes redraw the challenge without exposing its answer.
+
+### Disclosure scroll stability
+
+- Kept both mobile-copy and product-description toggles at the same viewport position when expanded text is collapsed.
+- Compensated only the removed layout height, avoiding smooth-scroll animation and unexpected jumps to unrelated page sections.
