@@ -336,6 +336,12 @@ final class App
             redirect_to('/kontakti');
         }
 
+        if (!$this->contactRateLimitAllowsAttempt()) {
+            $this->logger->security('contact_form_rate_limited', $this->requestContext(), 'warn');
+            flash_set('contact', 'Има твърде много опити от тази връзка. Изчакай 15 минути и опитай отново.', 'error');
+            redirect_to('/kontakti');
+        }
+
         $lastSentAt = isset($_SESSION['contact_last_sent_at']) ? (int) $_SESSION['contact_last_sent_at'] : 0;
         if ($lastSentAt > 0 && time() - $lastSentAt < 45) {
             flash_set('contact', 'Изчакай малко преди да изпратиш ново запитване.', 'error');
@@ -1175,6 +1181,7 @@ final class App
         if (!is_array($challenge)
             || !isset($challenge['id'], $challenge['answer'], $challenge['issuedAt'])
             || time() - (int) $challenge['issuedAt'] > 300
+            || time() - (int) $challenge['issuedAt'] < 2
             || !hash_equals((string) $challenge['id'], trim($submittedId))
             || preg_match('/^[ACDFHKMPRT47]{6}$/', $normalizedAnswer) !== 1
         ) {
@@ -1182,6 +1189,69 @@ final class App
         }
 
         return hash_equals((string) $challenge['answer'], $normalizedAnswer);
+    }
+
+    private function contactRateLimitAllowsAttempt(): bool
+    {
+        $now = time();
+        $cutoff = $now - 900;
+        $clientIp = detect_client_ip();
+        if ($clientIp === null) {
+            return $this->contactSessionRateLimitAllowsAttempt($now, $cutoff);
+        }
+
+        $directory = $this->basePath . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'logs' . DIRECTORY_SEPARATOR . 'contact-rate-limits';
+        if (!is_dir($directory) && !@mkdir($directory, 0750, true) && !is_dir($directory)) {
+            return $this->contactSessionRateLimitAllowsAttempt($now, $cutoff);
+        }
+
+        $path = $directory . DIRECTORY_SEPARATOR . hash('sha256', 'contact-form|' . $clientIp) . '.json';
+        $handle = @fopen($path, 'c+');
+        if ($handle === false || !flock($handle, LOCK_EX)) {
+            if (is_resource($handle)) {
+                fclose($handle);
+            }
+            return $this->contactSessionRateLimitAllowsAttempt($now, $cutoff);
+        }
+        @chmod($path, 0640);
+
+        $contents = stream_get_contents($handle);
+        $decoded = is_string($contents) && $contents !== '' ? json_decode($contents, true) : [];
+        $attempts = is_array($decoded) ? array_values(array_filter(
+            array_map('intval', $decoded),
+            static fn (int $timestamp): bool => $timestamp >= $cutoff && $timestamp <= $now
+        )) : [];
+        $allowed = count($attempts) < 8;
+        if ($allowed) {
+            $attempts[] = $now;
+        }
+
+        rewind($handle);
+        ftruncate($handle, 0);
+        fwrite($handle, (string) json_encode($attempts));
+        fflush($handle);
+        flock($handle, LOCK_UN);
+        fclose($handle);
+
+        return $allowed;
+    }
+
+    private function contactSessionRateLimitAllowsAttempt(int $now, int $cutoff): bool
+    {
+        $stored = $_SESSION['contact_form_attempts'] ?? [];
+        $attempts = is_array($stored) ? array_values(array_filter(
+            array_map('intval', $stored),
+            static fn (int $timestamp): bool => $timestamp >= $cutoff && $timestamp <= $now
+        )) : [];
+        if (count($attempts) >= 8) {
+            $_SESSION['contact_form_attempts'] = $attempts;
+            return false;
+        }
+
+        $attempts[] = $now;
+        $_SESSION['contact_form_attempts'] = $attempts;
+
+        return true;
     }
 
     private function contactCaptchaImage(): void

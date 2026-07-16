@@ -97,6 +97,10 @@ button {
     padding: 0.75rem 0 0.35rem;
 }
 
+.topbar.is-scrolled {
+    padding-top: 0;
+}
+
 .topbar__inner {
     width: var(--header-container);
     margin: 0 auto;

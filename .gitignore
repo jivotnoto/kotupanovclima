@@ -1,5 +1,6 @@
 /storage/logs/*.log
 !/storage/logs/.gitkeep
+/storage/logs/contact-rate-limits/
 /storage/config/turnstile.php
 /backups/
 /.idea/

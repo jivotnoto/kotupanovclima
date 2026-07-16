@@ -55,5 +55,6 @@ Important: because `storage/data/` is committed, deploying this repo can overwri
 - Uploaded product images are stored in `public/uploads/` on GitHub and `/home/kotupano/public_html/uploads/` on live.
 - Admin pages are protected by code login and optional IP allowlist.
 - Logs live under `/home/kotupano/kotupanovklima-app/storage/logs/` and are not committed.
-- The contact form uses Cloudflare Turnstile when both keys are configured; otherwise it falls back to a one-time six-character graphical CAPTCHA.
+- The contact form uses Cloudflare Turnstile when both keys are configured; otherwise it falls back to a timed, one-time six-character graphical CAPTCHA.
+- Contact submissions are additionally limited per client IP to eight attempts per 15-minute window.
 - Keep production Turnstile keys in `storage/config/turnstile.php` outside Git. Start from `storage/config/turnstile.example.php`.

@@ -253,3 +253,9 @@ It complements Git commits with short human-readable context about what changed 
 - Replaced toggle pinning with restoration of the exact scroll position captured before each disclosure was expanded.
 - Kept the sticky header's vertical footprint constant while it changes width and corners.
 - Added separate activation and reset thresholds so tiny scroll changes cannot repeatedly toggle the header state.
+
+### CAPTCHA throttling and flush sticky header
+
+- Added a locked server-side per-IP contact-form limit of eight attempts per 15 minutes, with a session fallback if runtime storage is unavailable.
+- Rejected graphical CAPTCHA answers submitted in under two seconds while retaining the five-minute expiry and single-use behavior.
+- Removed the sticky header's top inset after scrolling so the expanded navigation bar sits directly against the viewport top.

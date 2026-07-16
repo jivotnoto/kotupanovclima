@@ -119,6 +119,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Public prices are displayed in EUR only; BGN values remain stored internally for admin compatibility.
 - The contact page is single-column and supports `/kontakti?topic=repair#barzo-zapitvane`.
 - The contact form uses server-verified Cloudflare Turnstile when both private keys are configured and a one-time, five-minute graphical CAPTCHA otherwise.
+- Contact POST requests have a server-side per-IP limit of eight attempts per 15 minutes, backed by locked runtime files outside the public web root.
 - Turnstile CSP permissions are scoped to `/kontakti`; production keys belong in ignored `storage/config/turnstile.php`, never in Git or `public_html`.
 - A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.
 - Secondary long marketing copy, lists, and product details are limited to four lines on mobile, with `Виж още` / `Скрий` controls shown only when the content actually overflows.
@@ -126,7 +127,8 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Main introductory text directly below a page H1 always remains fully visible and never receives a disclosure button.
 - Catalog filters collapse behind a funnel-icon button below 720 px and display the number of active filters; desktop filters remain fully visible.
 - The header is sticky on mobile and desktop; after scrolling it expands to the full viewport width while preserving anchor clearance.
-- The sticky header keeps a constant outer height and uses 24 px / 4 px activation hysteresis to prevent threshold vibration.
+- The scrolled header removes its initial top inset so the full-width bar sits flush against the viewport top.
+- The sticky header uses 24 px / 4 px activation hysteresis to prevent threshold vibration while its initial top inset collapses.
 - Public-page H1 headings use a smaller responsive size below 720 px for narrow phones.
 
 ## Latest Local Verification
