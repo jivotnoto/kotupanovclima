@@ -247,3 +247,9 @@ It complements Git commits with short human-readable context about what changed 
 
 - Kept both mobile-copy and product-description toggles at the same viewport position when expanded text is collapsed.
 - Compensated only the removed layout height, avoiding smooth-scroll animation and unexpected jumps to unrelated page sections.
+
+### Disclosure return position and stable sticky header
+
+- Replaced toggle pinning with restoration of the exact scroll position captured before each disclosure was expanded.
+- Kept the sticky header's vertical footprint constant while it changes width and corners.
+- Added separate activation and reset thresholds so tiny scroll changes cannot repeatedly toggle the header state.

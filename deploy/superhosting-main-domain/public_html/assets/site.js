@@ -33,8 +33,15 @@
     const topbar = document.querySelector('.topbar');
 
     const updateTopbar = () => {
-        if (topbar instanceof HTMLElement) {
-            topbar.classList.toggle('is-scrolled', window.scrollY > 12);
+        if (!(topbar instanceof HTMLElement)) {
+            return;
+        }
+
+        const isScrolled = topbar.classList.contains('is-scrolled');
+        if (!isScrolled && window.scrollY >= 24) {
+            topbar.classList.add('is-scrolled');
+        } else if (isScrolled && window.scrollY <= 4) {
+            topbar.classList.remove('is-scrolled');
         }
     };
 
@@ -111,15 +118,12 @@
     });
 
     const mobileView = window.matchMedia('(max-width: 719px)');
-    const preserveTogglePosition = (toggle, previousTop) => {
+    const restoreScrollPosition = (position) => {
         requestAnimationFrame(() => {
-            const offset = toggle.getBoundingClientRect().top - previousTop;
-            if (Math.abs(offset) > 1) {
-                const previousBehavior = document.documentElement.style.scrollBehavior;
-                document.documentElement.style.scrollBehavior = 'auto';
-                window.scrollBy(0, offset);
-                document.documentElement.style.scrollBehavior = previousBehavior;
-            }
+            const previousBehavior = document.documentElement.style.scrollBehavior;
+            document.documentElement.style.scrollBehavior = 'auto';
+            window.scrollTo(0, position);
+            document.documentElement.style.scrollBehavior = previousBehavior;
         });
     };
 
@@ -154,6 +158,7 @@
             return;
         }
 
+        let collapsedScrollPosition = null;
         const updateMobileCopy = () => {
             if (!mobileView.matches) {
                 toggle.hidden = true;
@@ -172,13 +177,15 @@
 
         toggle.addEventListener('click', () => {
             const wasExpanded = disclosure.classList.contains('is-expanded');
-            const previousTop = toggle.getBoundingClientRect().top;
+            if (!wasExpanded) {
+                collapsedScrollPosition = window.scrollY;
+            }
             const expanded = disclosure.classList.toggle('is-expanded');
             toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             toggle.textContent = expanded ? 'Скрий' : 'Виж още';
             updateMobileCopy();
-            if (wasExpanded) {
-                preserveTogglePosition(toggle, previousTop);
+            if (wasExpanded && collapsedScrollPosition !== null) {
+                restoreScrollPosition(collapsedScrollPosition);
             }
         });
 
@@ -194,6 +201,7 @@
             return;
         }
 
+        let collapsedScrollPosition = null;
         const updateOverflow = () => {
             if (disclosure.classList.contains('is-expanded')) {
                 return;
@@ -204,12 +212,14 @@
 
         toggle.addEventListener('click', () => {
             const wasExpanded = disclosure.classList.contains('is-expanded');
-            const previousTop = toggle.getBoundingClientRect().top;
+            if (!wasExpanded) {
+                collapsedScrollPosition = window.scrollY;
+            }
             const expanded = disclosure.classList.toggle('is-expanded');
             toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
             toggle.textContent = expanded ? 'Скрий' : 'Виж още';
-            if (wasExpanded) {
-                preserveTogglePosition(toggle, previousTop);
+            if (wasExpanded && collapsedScrollPosition !== null) {
+                restoreScrollPosition(collapsedScrollPosition);
             }
         });
 
