@@ -103,6 +103,11 @@ final class App
             return;
         }
 
+        if ($path === '/captcha/contact.svg' && $method === 'GET') {
+            $this->contactCaptchaImage();
+            return;
+        }
+
         if ($path === '/remont-i-profilaktika') {
             $this->serviceRepairPage();
             return;
@@ -292,7 +297,7 @@ final class App
         $requestedTopic = trim((string) ($_GET['topic'] ?? 'general'));
         $selectedTopic = array_key_exists($requestedTopic, $topics) ? $requestedTopic : 'general';
         $turnstile = $this->turnstileConfig();
-        $mathCaptcha = $turnstile['enabled'] ? null : $this->contactMathCaptcha();
+        $imageCaptcha = $turnstile['enabled'] ? null : $this->contactImageCaptcha();
 
         echo $this->view->render('public/contacts', [
             'pageTitle' => 'Контакти',
@@ -306,8 +311,7 @@ final class App
             'contactTopics' => $topics,
             'selectedTopic' => $selectedTopic,
             'turnstileSiteKey' => $turnstile['enabled'] ? $turnstile['siteKey'] : null,
-            'captchaQuestion' => $mathCaptcha['question'] ?? null,
-            'captchaId' => $mathCaptcha['id'] ?? null,
+            'captchaId' => $imageCaptcha['id'] ?? null,
             'jsonLd' => [
                 $this->businessSchema($company, true),
                 $this->breadcrumbSchema([
@@ -379,12 +383,12 @@ final class App
                 flash_set('contact', 'Потвърди, че не си робот, и опитай отново.', 'error');
                 redirect_to('/kontakti');
             }
-        } elseif (!$this->verifyContactMathCaptcha(
+        } elseif (!$this->verifyContactImageCaptcha(
             (string) ($_POST['captcha_id'] ?? ''),
             (string) ($_POST['captcha_answer'] ?? '')
         )) {
             $this->logger->security('contact_form_captcha_failed', $this->requestContext(), 'warn');
-            flash_set('contact', 'Отговорът на проверката не е правилен. Опитай отново.', 'error');
+            flash_set('contact', 'Кодът от изображението не е правилен или е изтекъл. Опитай отново.', 'error');
             redirect_to('/kontakti');
         }
 
@@ -1136,44 +1140,144 @@ final class App
         return null;
     }
 
-    private function contactMathCaptcha(): array
+    private function contactImageCaptcha(): array
     {
-        $challenge = $_SESSION['contact_math_captcha'] ?? null;
+        $challenge = $_SESSION['contact_image_captcha'] ?? null;
         if (is_array($challenge)
-            && isset($challenge['id'], $challenge['question'], $challenge['answer'], $challenge['issuedAt'])
-            && time() - (int) $challenge['issuedAt'] <= 600
+            && isset($challenge['id'], $challenge['answer'], $challenge['issuedAt'])
+            && time() - (int) $challenge['issuedAt'] <= 300
         ) {
-            return $challenge;
+            return ['id' => $challenge['id']];
         }
 
-        $left = random_int(2, 9);
-        $right = random_int(1, 9);
+        $alphabet = 'ACDFHKMPRT47';
+        $answer = '';
+        for ($index = 0; $index < 6; $index++) {
+            $answer .= $alphabet[random_int(0, strlen($alphabet) - 1)];
+        }
+
         $challenge = [
             'id' => bin2hex(random_bytes(16)),
-            'question' => $left . ' + ' . $right,
-            'answer' => $left + $right,
+            'answer' => $answer,
             'issuedAt' => time(),
         ];
-        $_SESSION['contact_math_captcha'] = $challenge;
+        $_SESSION['contact_image_captcha'] = $challenge;
 
-        return $challenge;
+        return ['id' => $challenge['id']];
     }
 
-    private function verifyContactMathCaptcha(string $submittedId, string $submittedAnswer): bool
+    private function verifyContactImageCaptcha(string $submittedId, string $submittedAnswer): bool
     {
-        $challenge = $_SESSION['contact_math_captcha'] ?? null;
-        unset($_SESSION['contact_math_captcha']);
+        $challenge = $_SESSION['contact_image_captcha'] ?? null;
+        unset($_SESSION['contact_image_captcha']);
+        $normalizedAnswer = strtoupper(trim($submittedAnswer));
 
         if (!is_array($challenge)
             || !isset($challenge['id'], $challenge['answer'], $challenge['issuedAt'])
-            || time() - (int) $challenge['issuedAt'] > 600
+            || time() - (int) $challenge['issuedAt'] > 300
             || !hash_equals((string) $challenge['id'], trim($submittedId))
-            || preg_match('/^\d{1,3}$/', trim($submittedAnswer)) !== 1
+            || preg_match('/^[ACDFHKMPRT47]{6}$/', $normalizedAnswer) !== 1
         ) {
             return false;
         }
 
-        return (int) trim($submittedAnswer) === (int) $challenge['answer'];
+        return hash_equals((string) $challenge['answer'], $normalizedAnswer);
+    }
+
+    private function contactCaptchaImage(): void
+    {
+        $challenge = $_SESSION['contact_image_captcha'] ?? null;
+        $submittedId = trim((string) ($_GET['id'] ?? ''));
+        if (!is_array($challenge)
+            || !isset($challenge['id'], $challenge['answer'], $challenge['issuedAt'])
+            || time() - (int) $challenge['issuedAt'] > 300
+            || !hash_equals((string) $challenge['id'], $submittedId)
+        ) {
+            http_response_code(404);
+            header('Content-Type: image/svg+xml; charset=UTF-8');
+            header('Cache-Control: no-store, max-age=0');
+            echo '<svg xmlns="http://www.w3.org/2000/svg" width="240" height="82" viewBox="0 0 240 82"><rect width="240" height="82" fill="#f8f3ea"/></svg>';
+            return;
+        }
+
+        header('Content-Type: image/svg+xml; charset=UTF-8');
+        header('Cache-Control: no-store, max-age=0');
+        header('Pragma: no-cache');
+        echo $this->renderCaptchaSvg((string) $challenge['answer']);
+    }
+
+    private function renderCaptchaSvg(string $answer): string
+    {
+        $glyphs = [
+            'A' => ['01110', '10001', '10001', '11111', '10001', '10001', '10001'],
+            'C' => ['01111', '10000', '10000', '10000', '10000', '10000', '01111'],
+            'D' => ['11110', '10001', '10001', '10001', '10001', '10001', '11110'],
+            'F' => ['11111', '10000', '10000', '11110', '10000', '10000', '10000'],
+            'H' => ['10001', '10001', '10001', '11111', '10001', '10001', '10001'],
+            'K' => ['10001', '10010', '10100', '11000', '10100', '10010', '10001'],
+            'M' => ['10001', '11011', '10101', '10101', '10001', '10001', '10001'],
+            'P' => ['11110', '10001', '10001', '11110', '10000', '10000', '10000'],
+            'R' => ['11110', '10001', '10001', '11110', '10100', '10010', '10001'],
+            'T' => ['11111', '00100', '00100', '00100', '00100', '00100', '00100'],
+            '4' => ['10010', '10010', '10010', '11111', '00010', '00010', '00010'],
+            '7' => ['11111', '00001', '00010', '00100', '01000', '01000', '01000'],
+        ];
+        $colors = ['#173f5f', '#9b4f12', '#275d50', '#6f3d0e'];
+        $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="240" height="82" viewBox="0 0 240 82" role="img" aria-label="Код за проверка">';
+        $svg .= '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffdf8"/><stop offset="1" stop-color="#f4eadb"/></linearGradient></defs>';
+        $svg .= '<rect width="240" height="82" rx="14" fill="url(#bg)"/>';
+
+        for ($index = 0; $index < 10; $index++) {
+            $svg .= sprintf(
+                '<path d="M%d %d Q%d %d %d %d" fill="none" stroke="%s" stroke-width="%s" opacity="0.22"/>',
+                random_int(0, 40),
+                random_int(0, 82),
+                random_int(80, 160),
+                random_int(0, 82),
+                random_int(200, 240),
+                random_int(0, 82),
+                $colors[random_int(0, count($colors) - 1)],
+                random_int(1, 3)
+            );
+        }
+
+        foreach (str_split($answer) as $characterIndex => $character) {
+            $originX = 18 + ($characterIndex * 35);
+            $originY = 25 + random_int(-4, 4);
+            $rotation = random_int(-7, 7);
+            $path = '';
+            foreach ($glyphs[$character] as $rowIndex => $row) {
+                foreach (str_split($row) as $columnIndex => $cell) {
+                    if ($cell === '1') {
+                        $x = $originX + ($columnIndex * 4);
+                        $y = $originY + ($rowIndex * 5);
+                        $path .= "M{$x} {$y}h4v5h-4z";
+                    }
+                }
+            }
+            $centerX = $originX + 10;
+            $centerY = $originY + 18;
+            $svg .= sprintf(
+                '<path d="%s" fill="%s" transform="rotate(%d %d %d)"/>',
+                $path,
+                $colors[random_int(0, count($colors) - 1)],
+                $rotation,
+                $centerX,
+                $centerY
+            );
+        }
+
+        for ($index = 0; $index < 55; $index++) {
+            $svg .= sprintf(
+                '<circle cx="%d" cy="%d" r="%s" fill="%s" opacity="0.25"/>',
+                random_int(4, 236),
+                random_int(4, 78),
+                random_int(1, 2),
+                $colors[random_int(0, count($colors) - 1)]
+            );
+        }
+
+        return $svg . '</svg>';
     }
 
     private function verifyTurnstileToken(string $token, array $config): array

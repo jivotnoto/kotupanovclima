@@ -8,14 +8,6 @@
             <h3><?= e($company['companyName'] ?? '') ?></h3>
             <p>Продажба, консултация, монтаж и подбор на климатични системи за дома и бизнеса.</p>
         </div>
-        <nav class="site-footer__column" aria-label="Бързи връзки">
-            <h4>Навигация</h4>
-            <a href="/">Начало</a>
-            <a href="/produkti/klimatici">Климатици</a>
-            <a href="/produkti/termopompi">Термопомпи</a>
-            <a href="/promocii">Промоции</a>
-            <a href="/remont-i-profilaktika">Ремонт и профилактика</a>
-        </nav>
         <div class="site-footer__column">
             <h4>Контакти</h4>
             <?php foreach (($company['phones'] ?? []) as $phone): ?>

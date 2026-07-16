@@ -76,10 +76,20 @@
                 </div>
             <?php else: ?>
                 <div class="field captcha-field field--span-2">
-                    <label for="captcha-answer-field">Проверка: Колко е <?= e($captchaQuestion ?? '') ?>? *</label>
+                    <label for="captcha-answer-field">Въведи кода от изображението *</label>
+                    <div class="captcha-field__challenge">
+                        <img
+                            src="/captcha/contact.svg?id=<?= e(rawurlencode((string) ($captchaId ?? ''))) ?>"
+                            width="240"
+                            height="82"
+                            alt="Шестсимволен код за проверка"
+                            data-captcha-image
+                        >
+                        <button class="button button--small" type="button" data-captcha-refresh>Обнови изображението</button>
+                    </div>
                     <input type="hidden" name="captcha_id" value="<?= e($captchaId ?? '') ?>">
-                    <input id="captcha-answer-field" type="text" name="captcha_answer" inputmode="numeric" pattern="[0-9]+" maxlength="3" required autocomplete="off">
-                    <small>Тази кратка проверка ограничава автоматичния спам.</small>
+                    <input id="captcha-answer-field" type="text" name="captcha_answer" inputmode="text" pattern="[A-Za-z0-9]{6}" minlength="6" maxlength="6" required autocomplete="off" autocapitalize="characters" spellcheck="false">
+                    <small>Кодът е валиден 5 минути и може да се използва само веднъж.</small>
                 </div>
             <?php endif; ?>
             <label class="checkbox field--span-2">

@@ -236,3 +236,9 @@ It complements Git commits with short human-readable context about what changed 
 - Added a one-time ten-minute arithmetic CAPTCHA fallback so local and unconfigured environments remain protected without external keys.
 - Kept CSRF, honeypot, consent, validation, rate limiting, and server-side CAPTCHA checks as independent protection layers.
 - Restored zero outer padding on promotion cards below 720 px after the shared mobile card rule, preserving the image/body spacing and rounded clipping.
+
+### Footer cleanup and stronger CAPTCHA fallback
+
+- Removed the duplicated footer navigation column while retaining contact, company, and legal information.
+- Replaced the arithmetic fallback with a six-character server-generated graphical CAPTCHA using randomized noise and glyph rotation.
+- Limited graphical challenges to five minutes and one successful verification attempt; image refreshes redraw the challenge without exposing its answer.

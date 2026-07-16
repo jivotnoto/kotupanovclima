@@ -118,7 +118,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - The homepage H1 has an explicit break after "Перник —" so the desktop heading stays on two lines.
 - Public prices are displayed in EUR only; BGN values remain stored internally for admin compatibility.
 - The contact page is single-column and supports `/kontakti?topic=repair#barzo-zapitvane`.
-- The contact form uses server-verified Cloudflare Turnstile when both private keys are configured and a one-time, ten-minute arithmetic CAPTCHA otherwise.
+- The contact form uses server-verified Cloudflare Turnstile when both private keys are configured and a one-time, five-minute graphical CAPTCHA otherwise.
 - Turnstile CSP permissions are scoped to `/kontakti`; production keys belong in ignored `storage/config/turnstile.php`, never in Git or `public_html`.
 - A mobile scroll-to-top button appears after 500 px and stays hidden while cookie consent is open.
 - Secondary long marketing copy, lists, and product details are limited to four lines on mobile, with `Виж още` / `Скрий` controls shown only when the content actually overflows.

@@ -96,6 +96,20 @@
         });
     });
 
+    document.querySelectorAll('[data-captcha-refresh]').forEach((button) => {
+        const challenge = button.closest('.captcha-field__challenge');
+        const image = challenge ? challenge.querySelector('[data-captcha-image]') : null;
+        if (!(button instanceof HTMLButtonElement) || !(image instanceof HTMLImageElement)) {
+            return;
+        }
+
+        button.addEventListener('click', () => {
+            const url = new URL(image.src);
+            url.searchParams.set('refresh', String(Date.now()));
+            image.src = url.toString();
+        });
+    });
+
     const mobileView = window.matchMedia('(max-width: 719px)');
 
     document.querySelectorAll('[data-catalog-filter-toggle]').forEach((toggle) => {

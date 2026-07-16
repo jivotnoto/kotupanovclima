@@ -103,7 +103,7 @@ allow_url_include = Off
 
 ## 8. Contact Form CAPTCHA
 
-The contact form is protected immediately by a one-time local arithmetic CAPTCHA. For the recommended Cloudflare Turnstile protection:
+The contact form is protected immediately by a five-minute, one-time graphical CAPTCHA. For the stronger recommended Cloudflare Turnstile protection:
 
 1. Create a free Turnstile widget in Cloudflare and allow `kotupanovclima.eu` and `www.kotupanovclima.eu`.
 2. In the hosting file manager, create this private file outside `public_html`:
