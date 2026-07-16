@@ -30,6 +30,16 @@
     const cookieConsent = document.querySelector('[data-cookie-consent]');
     const cookieAccept = document.querySelector('[data-cookie-consent-accept]');
     const scrollToTop = document.querySelector('[data-scroll-to-top]');
+    const topbar = document.querySelector('.topbar');
+
+    const updateTopbar = () => {
+        if (topbar instanceof HTMLElement) {
+            topbar.classList.toggle('is-scrolled', window.scrollY > 12);
+        }
+    };
+
+    window.addEventListener('scroll', updateTopbar, { passive: true });
+    updateTopbar();
 
     const updateScrollToTop = () => {
         if (!(scrollToTop instanceof HTMLButtonElement)) {

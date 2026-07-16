@@ -216,3 +216,10 @@ It complements Git commits with short human-readable context about what changed 
 - Restored the catalog and repair-service H1 introductions as always-visible text without disclosure controls.
 - Extended mobile disclosures to secondary service lists, product highlights, promotion notes, and the contact-page helper list.
 - Kept buttons conditional on real overflow, so short secondary content remains visible without unnecessary controls.
+
+### Sticky full-width header
+
+- Made the site header sticky on mobile and desktop without removing it from normal document flow.
+- Added a scrolled state that expands the header container to 100% width and removes its outer corner radius.
+- Reduced public-page mobile H1 headings to a responsive 26–30 px range and retained the desktop sizes.
+- Added global anchor clearance so in-page links remain visible below the sticky header.

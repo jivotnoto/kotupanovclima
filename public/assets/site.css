@@ -34,6 +34,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 7.5rem;
 }
 
 body {
@@ -90,9 +91,11 @@ button {
 }
 
 .topbar {
-    position: relative;
-    z-index: 5;
+    position: sticky;
+    top: 0;
+    z-index: 50;
     padding: 0.75rem 0 0.35rem;
+    transition: padding 0.25s ease;
 }
 
 .topbar__inner {
@@ -104,6 +107,19 @@ button {
     border: 1px solid var(--line);
     border-radius: 28px;
     box-shadow: var(--shadow-soft);
+    transition: width 0.25s ease, border-radius 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.topbar.is-scrolled {
+    padding: 0;
+}
+
+.topbar.is-scrolled .topbar__inner {
+    width: 100%;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    border-radius: 0;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
 }
 
 .topbar__row {
@@ -457,6 +473,11 @@ button {
 @media (prefers-reduced-motion: reduce) {
     .brand-logo-strip__track {
         animation: none;
+    }
+
+    .topbar,
+    .topbar__inner {
+        transition: none;
     }
 }
 
@@ -1982,6 +2003,12 @@ button {
         font-size: 2em;
         line-height: 1.02;
         text-wrap: wrap;
+    }
+
+    h1.section-heading__title,
+    h1.detail-card__title {
+        font-size: clamp(1.65rem, 7.5vw, 1.9rem);
+        line-height: 1.08;
     }
 
     .field--span-2 {
