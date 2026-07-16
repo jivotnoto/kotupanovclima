@@ -55,6 +55,7 @@ The deployment tasks are intentionally copy-only and do not delete files.
     views/
     storage/
       data/
+      config/
       logs/
 ```
 
@@ -100,7 +101,33 @@ allow_url_fopen = On
 allow_url_include = Off
 ```
 
-## 8. Manual Fallback
+## 8. Contact Form CAPTCHA
+
+The contact form is protected immediately by a one-time local arithmetic CAPTCHA. For the recommended Cloudflare Turnstile protection:
+
+1. Create a free Turnstile widget in Cloudflare and allow `kotupanovclima.eu` and `www.kotupanovclima.eu`.
+2. In the hosting file manager, create this private file outside `public_html`:
+
+```text
+/home/kotupano/kotupanovklima-app/storage/config/turnstile.php
+```
+
+3. Use this content and replace both values with the real keys:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+return [
+    'siteKey' => 'YOUR_SITE_KEY',
+    'secretKey' => 'YOUR_SECRET_KEY',
+];
+```
+
+The private file is ignored by Git and `.cpanel.yml` does not overwrite it. Environment variables `TURNSTILE_SITEKEY` and `TURNSTILE_SECRET_KEY` can be used instead when the hosting panel supports them. Never put the secret key in `public_html`, JavaScript, or Git.
+
+## 9. Manual Fallback
 
 If auto deploy tasks are not available, copy manually:
 

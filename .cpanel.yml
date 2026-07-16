@@ -3,7 +3,7 @@ deployment:
   tasks:
     - export APPPATH=/home/kotupano/kotupanovklima-app
     - export WEBPATH=/home/kotupano/public_html
-    - /bin/mkdir -p $APPPATH/src $APPPATH/views $APPPATH/storage/data $APPPATH/storage/logs $WEBPATH
+    - /bin/mkdir -p $APPPATH/src $APPPATH/views $APPPATH/storage/config $APPPATH/storage/data $APPPATH/storage/logs $WEBPATH
     - /bin/cp bootstrap.php $APPPATH/bootstrap.php
     - /bin/cp -R src/. $APPPATH/src/
     - /bin/cp -R views/. $APPPATH/views/

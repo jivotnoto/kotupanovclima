@@ -67,6 +67,10 @@ $ogImageUrl = $absoluteSiteUrl($ogImage ?? '/images/site-og-image.png');
     <link rel="apple-touch-icon" href="/images/site-icon.png">
     <link rel="stylesheet" href="/assets/site.css">
     <script src="/assets/site.js" defer></script>
+    <?php if (!empty($turnstileSiteKey)): ?>
+        <link rel="preconnect" href="https://challenges.cloudflare.com">
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <?php endif; ?>
 </head>
 <body class="<?= $isAdmin ? 'admin-body' : 'site-body' ?>">
 <?php $this->partial('partials/site-header', ['company' => $company, 'currentPath' => $currentPath, 'isAdmin' => $isAdmin]); ?>

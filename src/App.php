@@ -19,6 +19,7 @@ final class App
     private string $requestId;
     private float $startedAt;
     private string $basePath;
+    private ?array $turnstileConfiguration = null;
 
     public function __construct(string $basePath)
     {
@@ -39,7 +40,7 @@ final class App
             session_start();
         }
 
-        $this->sendSecurityHeaders();
+        $this->sendSecurityHeaders($path);
         header('X-Request-Id: ' . $this->requestId);
         register_shutdown_function(fn () => $this->logAccess());
 
@@ -290,6 +291,8 @@ final class App
         $topics = $this->contactTopics();
         $requestedTopic = trim((string) ($_GET['topic'] ?? 'general'));
         $selectedTopic = array_key_exists($requestedTopic, $topics) ? $requestedTopic : 'general';
+        $turnstile = $this->turnstileConfig();
+        $mathCaptcha = $turnstile['enabled'] ? null : $this->contactMathCaptcha();
 
         echo $this->view->render('public/contacts', [
             'pageTitle' => 'Контакти',
@@ -302,6 +305,9 @@ final class App
             'csrfToken' => $this->auth->csrfToken(),
             'contactTopics' => $topics,
             'selectedTopic' => $selectedTopic,
+            'turnstileSiteKey' => $turnstile['enabled'] ? $turnstile['siteKey'] : null,
+            'captchaQuestion' => $mathCaptcha['question'] ?? null,
+            'captchaId' => $mathCaptcha['id'] ?? null,
             'jsonLd' => [
                 $this->businessSchema($company, true),
                 $this->breadcrumbSchema([
@@ -358,6 +364,27 @@ final class App
 
         if (!$consent) {
             flash_set('contact', 'Потвърди, че си съгласен да обработим данните за отговор на запитването.', 'error');
+            redirect_to('/kontakti');
+        }
+
+        $turnstile = $this->turnstileConfig();
+        if ($turnstile['enabled']) {
+            $token = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
+            $verification = $this->verifyTurnstileToken($token, $turnstile);
+            if (!$verification['success']) {
+                $this->logger->security('contact_form_turnstile_failed', $this->requestContext([
+                    'errorCodes' => $verification['errorCodes'],
+                    'hostname' => $verification['hostname'],
+                ]), 'warn');
+                flash_set('contact', 'Потвърди, че не си робот, и опитай отново.', 'error');
+                redirect_to('/kontakti');
+            }
+        } elseif (!$this->verifyContactMathCaptcha(
+            (string) ($_POST['captcha_id'] ?? ''),
+            (string) ($_POST['captcha_answer'] ?? '')
+        )) {
+            $this->logger->security('contact_form_captcha_failed', $this->requestContext(), 'warn');
+            flash_set('contact', 'Отговорът на проверката не е правилен. Опитай отново.', 'error');
             redirect_to('/kontakti');
         }
 
@@ -1063,6 +1090,191 @@ final class App
         return filter_var($recipient, FILTER_VALIDATE_EMAIL) !== false ? $recipient : null;
     }
 
+    private function turnstileConfig(): array
+    {
+        if ($this->turnstileConfiguration !== null) {
+            return $this->turnstileConfiguration;
+        }
+
+        $fileConfig = [];
+        $configPath = $this->basePath . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'turnstile.php';
+        if (is_file($configPath)) {
+            $loaded = require $configPath;
+            if (is_array($loaded)) {
+                $fileConfig = $loaded;
+            }
+        }
+
+        $siteKey = $this->environmentValue(['TURNSTILE_SITEKEY', 'TURNSTILE_SITE_KEY'])
+            ?? trim((string) ($fileConfig['siteKey'] ?? ''));
+        $secretKey = $this->environmentValue(['TURNSTILE_SECRET_KEY'])
+            ?? trim((string) ($fileConfig['secretKey'] ?? ''));
+        $enabled = $siteKey !== '' && $secretKey !== '';
+        $testSiteKeys = [
+            '1x00000000000000000000AA',
+            '2x00000000000000000000AB',
+            '3x00000000000000000000FF',
+        ];
+
+        return $this->turnstileConfiguration = [
+            'enabled' => $enabled,
+            'siteKey' => $siteKey,
+            'secretKey' => $secretKey,
+            'testMode' => in_array($siteKey, $testSiteKeys, true),
+        ];
+    }
+
+    private function environmentValue(array $names): ?string
+    {
+        foreach ($names as $name) {
+            $value = getenv($name);
+            if (is_string($value) && trim($value) !== '') {
+                return trim($value);
+            }
+        }
+
+        return null;
+    }
+
+    private function contactMathCaptcha(): array
+    {
+        $challenge = $_SESSION['contact_math_captcha'] ?? null;
+        if (is_array($challenge)
+            && isset($challenge['id'], $challenge['question'], $challenge['answer'], $challenge['issuedAt'])
+            && time() - (int) $challenge['issuedAt'] <= 600
+        ) {
+            return $challenge;
+        }
+
+        $left = random_int(2, 9);
+        $right = random_int(1, 9);
+        $challenge = [
+            'id' => bin2hex(random_bytes(16)),
+            'question' => $left . ' + ' . $right,
+            'answer' => $left + $right,
+            'issuedAt' => time(),
+        ];
+        $_SESSION['contact_math_captcha'] = $challenge;
+
+        return $challenge;
+    }
+
+    private function verifyContactMathCaptcha(string $submittedId, string $submittedAnswer): bool
+    {
+        $challenge = $_SESSION['contact_math_captcha'] ?? null;
+        unset($_SESSION['contact_math_captcha']);
+
+        if (!is_array($challenge)
+            || !isset($challenge['id'], $challenge['answer'], $challenge['issuedAt'])
+            || time() - (int) $challenge['issuedAt'] > 600
+            || !hash_equals((string) $challenge['id'], trim($submittedId))
+            || preg_match('/^\d{1,3}$/', trim($submittedAnswer)) !== 1
+        ) {
+            return false;
+        }
+
+        return (int) trim($submittedAnswer) === (int) $challenge['answer'];
+    }
+
+    private function verifyTurnstileToken(string $token, array $config): array
+    {
+        $failure = static fn (array $codes, ?string $hostname = null): array => [
+            'success' => false,
+            'errorCodes' => array_slice(array_values(array_filter(array_map(
+                static fn ($code) => preg_replace('/[^a-z0-9_-]/i', '', (string) $code),
+                $codes
+            ))), 0, 8),
+            'hostname' => $hostname !== null ? mb_substr($hostname, 0, 255, 'UTF-8') : null,
+        ];
+
+        if ($token === '' || strlen($token) > 2048) {
+            return $failure(['missing-or-invalid-token']);
+        }
+
+        $payload = [
+            'secret' => $config['secretKey'],
+            'response' => $token,
+        ];
+        $clientIp = detect_client_ip();
+        if ($clientIp !== null && filter_var($clientIp, FILTER_VALIDATE_IP) !== false) {
+            $payload['remoteip'] = $clientIp;
+        }
+
+        $response = $this->postTurnstileVerification($payload);
+        if ($response === null) {
+            return $failure(['verification-unavailable']);
+        }
+
+        $result = json_decode($response, true);
+        if (!is_array($result)) {
+            return $failure(['invalid-verification-response']);
+        }
+
+        $hostname = isset($result['hostname']) && is_string($result['hostname']) ? strtolower($result['hostname']) : null;
+        $errorCodes = is_array($result['error-codes'] ?? null) ? $result['error-codes'] : [];
+        if (($result['success'] ?? false) !== true) {
+            return $failure($errorCodes !== [] ? $errorCodes : ['verification-failed'], $hostname);
+        }
+
+        if (!$config['testMode']) {
+            $allowedHosts = ['kotupanovclima.eu', 'www.kotupanovclima.eu'];
+            if ($hostname === null || !in_array($hostname, $allowedHosts, true)) {
+                return $failure(['hostname-mismatch'], $hostname);
+            }
+
+            if (($result['action'] ?? null) !== 'contact') {
+                return $failure(['action-mismatch'], $hostname);
+            }
+        }
+
+        return [
+            'success' => true,
+            'errorCodes' => [],
+            'hostname' => $hostname,
+        ];
+    }
+
+    private function postTurnstileVerification(array $payload): ?string
+    {
+        $endpoint = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+        $encodedPayload = http_build_query($payload, '', '&', PHP_QUERY_RFC3986);
+
+        if (function_exists('curl_init')) {
+            $curl = curl_init($endpoint);
+            if ($curl === false) {
+                return null;
+            }
+
+            curl_setopt_array($curl, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $encodedPayload,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_CONNECTTIMEOUT => 3,
+                CURLOPT_TIMEOUT => 8,
+                CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
+            ]);
+            $response = curl_exec($curl);
+            $statusCode = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+            curl_close($curl);
+
+            return is_string($response) && $statusCode === 200 ? $response : null;
+        }
+
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+                'content' => $encodedPayload,
+                'timeout' => 8,
+                'ignore_errors' => true,
+            ],
+        ]);
+        $response = @file_get_contents($endpoint, false, $context);
+        $statusLine = $http_response_header[0] ?? '';
+
+        return is_string($response) && str_contains($statusLine, ' 200 ') ? $response : null;
+    }
+
     private function limitText(mixed $value, int $length): string
     {
         $value = trim(normalize_newlines(strip_tags((string) ($value ?? ''))));
@@ -1490,13 +1702,16 @@ final class App
         ]));
     }
 
-    private function sendSecurityHeaders(): void
+    private function sendSecurityHeaders(string $path): void
     {
         header('Referrer-Policy: strict-origin-when-cross-origin');
         header('X-Content-Type-Options: nosniff');
         header('X-Frame-Options: DENY');
         header('Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()');
         header('Cross-Origin-Opener-Policy: same-origin');
-        header("Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https:;");
+        $turnstileSources = $path === '/kontakti' && $this->turnstileConfig()['enabled'];
+        $scriptSources = "'self'" . ($turnstileSources ? ' https://challenges.cloudflare.com' : '');
+        $frameSources = $turnstileSources ? ' frame-src https://challenges.cloudflare.com;' : '';
+        header("Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src {$scriptSources}; style-src 'self'; img-src 'self' data: https:;{$frameSources}");
     }
 }

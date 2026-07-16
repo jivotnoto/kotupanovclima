@@ -917,6 +917,27 @@ button {
     display: none;
 }
 
+.turnstile-field {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+.turnstile-field .cf-turnstile {
+    width: 100%;
+    max-width: 100%;
+}
+
+.turnstile-field noscript,
+.captcha-field small {
+    color: var(--text-soft);
+    font-size: 0.82rem;
+}
+
+.captcha-field input[type="text"] {
+    max-width: 10rem;
+}
+
 .checkbox {
     display: inline-flex;
     align-items: center;
@@ -2001,6 +2022,10 @@ button {
     .form-card {
         padding: 1.1rem;
         border-radius: 24px;
+    }
+
+    .promo-card {
+        padding: 0;
     }
 
     .hero__title {

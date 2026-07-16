@@ -229,3 +229,10 @@ It complements Git commits with short human-readable context about what changed 
 - Replaced nested flex intrinsic sizing with explicit one-directional CSS Grid tracks and fixed-width logo slots.
 - Added equal group spacing, strict image containment, a Safari-prefixed fade mask, and a simpler `translateX` animation.
 - Verified zero logo overlaps and equal duplicate-group widths in Chromium, Firefox, and WebKit at 320, 390, 768, and 1280 px.
+
+### Contact CAPTCHA and mobile promotion spacing
+
+- Added server-verified Cloudflare Turnstile support with private file/environment configuration and contact-page-only CSP permissions.
+- Added a one-time ten-minute arithmetic CAPTCHA fallback so local and unconfigured environments remain protected without external keys.
+- Kept CSRF, honeypot, consent, validation, rate limiting, and server-side CAPTCHA checks as independent protection layers.
+- Restored zero outer padding on promotion cards below 720 px after the shared mobile card rule, preserving the image/body spacing and rounded clipping.

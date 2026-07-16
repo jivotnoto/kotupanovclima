@@ -62,6 +62,26 @@
                 <label for="message-field">Съобщение *</label>
                 <textarea id="message-field" name="message" rows="6" maxlength="2200" required placeholder="Например: 20 кв.м стая, нужда от климатик за отопление и охлаждане, ориентировъчен бюджет..."></textarea>
             </div>
+            <?php if (!empty($turnstileSiteKey)): ?>
+                <div class="turnstile-field field--span-2">
+                    <div
+                        class="cf-turnstile"
+                        data-sitekey="<?= e($turnstileSiteKey) ?>"
+                        data-theme="light"
+                        data-language="bg"
+                        data-size="flexible"
+                        data-action="contact"
+                    ></div>
+                    <noscript>За автоматичната проверка е необходимо JavaScript да бъде включен.</noscript>
+                </div>
+            <?php else: ?>
+                <div class="field captcha-field field--span-2">
+                    <label for="captcha-answer-field">Проверка: Колко е <?= e($captchaQuestion ?? '') ?>? *</label>
+                    <input type="hidden" name="captcha_id" value="<?= e($captchaId ?? '') ?>">
+                    <input id="captcha-answer-field" type="text" name="captcha_answer" inputmode="numeric" pattern="[0-9]+" maxlength="3" required autocomplete="off">
+                    <small>Тази кратка проверка ограничава автоматичния спам.</small>
+                </div>
+            <?php endif; ?>
             <label class="checkbox field--span-2">
                 <input type="checkbox" name="privacyConsent" value="1" required>
                 <span>Съгласен съм данните да бъдат използвани за отговор на запитването според <a href="/politika-za-poveritelnost">Политиката за поверителност</a>.</span>
