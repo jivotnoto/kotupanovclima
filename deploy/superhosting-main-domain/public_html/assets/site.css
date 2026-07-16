@@ -2015,7 +2015,7 @@ button {
 
     h1.section-heading__title,
     h1.detail-card__title {
-        font-size: clamp(1.65rem, 7.5vw, 1.9rem);
+        font-size: clamp(1.45rem, calc(7.5vw - 3px), 1.7rem);
         line-height: 1.08;
     }
 
