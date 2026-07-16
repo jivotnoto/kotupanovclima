@@ -394,6 +394,7 @@ button {
 
 .brand-logo-strip {
     --brand-logo-item: clamp(5.4rem, calc((100vw - 3rem) / 3.35), 8.5rem);
+    --brand-logo-gap: 0.55rem;
     width: var(--header-container);
     max-width: calc(100vw - 1.25rem);
     margin: 0 0 1rem 50%;
@@ -409,13 +410,15 @@ button {
 .brand-logo-strip__viewport {
     overflow: hidden;
     min-width: 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
 }
 
 .brand-logo-strip__track {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
     width: max-content;
-    gap: 0;
     animation: brand-logo-strip-slide 28s linear infinite;
     will-change: transform;
 }
@@ -426,18 +429,21 @@ button {
 }
 
 .brand-logo-strip__group {
-    display: flex;
-    flex: 0 0 auto;
-    gap: 0.55rem;
-    padding-right: 0.55rem;
-    min-width: max-content;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--brand-logo-item);
+    gap: var(--brand-logo-gap);
+    width: max-content;
+    min-width: 0;
+    padding-right: var(--brand-logo-gap);
 }
 
 .brand-logo-strip__item {
     display: grid;
-    flex: 0 0 var(--brand-logo-item);
     place-items: center;
-    min-width: 0;
+    width: var(--brand-logo-item);
+    min-width: var(--brand-logo-item);
+    max-width: var(--brand-logo-item);
     min-height: 3.8rem;
     padding: 0.45rem;
     overflow: hidden;
@@ -455,18 +461,20 @@ button {
 }
 
 .brand-logo-strip__item img {
-    width: min(100%, 6.4rem);
+    width: auto;
+    max-width: min(100%, 6.4rem);
+    height: auto;
     max-height: 2.2rem;
     object-fit: contain;
 }
 
 @keyframes brand-logo-strip-slide {
     from {
-        transform: translate3d(0, 0, 0);
+        transform: translateX(0);
     }
 
     to {
-        transform: translate3d(-50%, 0, 0);
+        transform: translateX(-50%);
     }
 }
 

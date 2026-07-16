@@ -108,6 +108,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - Desktop header keeps the logo, navigation, and phone on one row; the logo is capped at 70 px.
 - Mobile header uses a hamburger menu with the phone as its final item.
 - The homepage brand strip uses duplicated fixed-width groups for continuous motion and shows at least three brands on narrow screens.
+- Brand-strip layout uses explicit CSS Grid logo slots and equal duplicate groups to avoid Firefox/WebKit intrinsic-width overlap.
 - The homepage includes three original service images for air conditioners, heat pumps, and repair/maintenance.
 - Promotion images are bounded inside their responsive image stages so square and portrait assets are not clipped on mobile.
 - Promotion images are capped at 250 px and promotion CTA buttons are centered with 10 px vertical spacing.
@@ -130,6 +131,7 @@ Update it whenever architecture, deployment assumptions, security behavior, or u
 - The UX work includes and preserves the three newer GitHub commits ending at `c4790ee` (`SEO update`, symlink cleanup, and company email update).
 - PHP 8.3 lint, JSON validation, JavaScript syntax, 67 responsive browser checks, and isolated admin regression tests passed locally.
 - No live upload or production deployment was performed for this UX work. Deploy only after an explicit user request and a fresh live backup/sync.
+- On 2026-07-16 the brand slider passed overlap and animation checks in Chromium, Firefox, and WebKit at 320, 390, 768, and 1280 px.
 
 ## Session Guidance For Future Work
 

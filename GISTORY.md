@@ -223,3 +223,9 @@ It complements Git commits with short human-readable context about what changed 
 - Added a scrolled state that expands the header container to 100% width and removes its outer corner radius.
 - Reduced public-page mobile H1 headings to a responsive 26–30 px range and retained the desktop sizes.
 - Added global anchor clearance so in-page links remain visible below the sticky header.
+
+### Cross-browser brand slider
+
+- Replaced nested flex intrinsic sizing with explicit one-directional CSS Grid tracks and fixed-width logo slots.
+- Added equal group spacing, strict image containment, a Safari-prefixed fade mask, and a simpler `translateX` animation.
+- Verified zero logo overlaps and equal duplicate-group widths in Chromium, Firefox, and WebKit at 320, 390, 768, and 1280 px.
